@@ -9,6 +9,7 @@
 !.yarn/plugins
 !.yarn/releases
 !.yarn/versions
+*lock.yaml
 
 # testing
 /coverage
@@ -40,5 +41,10 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
+# clerk configuration (can include secrets)
+/.clerk/
+
+# development
 .venv
 .env
+/.dev/
