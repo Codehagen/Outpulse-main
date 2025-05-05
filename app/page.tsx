@@ -1,74 +1,46 @@
-import {
-  SignInButton,
-  SignOutButton,
-  SignedIn,
-  SignedOut,
-} from "@clerk/nextjs";
-import { getOrCreateUserWorkspace } from "../actions/Workspace/action";
-import { Workspace } from "../lib/generated/prisma";
-import { currentUser } from "@clerk/nextjs/server";
+import { redirect } from "next/navigation";
+import { auth } from "@clerk/nextjs/server";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
-async function UserWorkspaces() {
-  const workspaces: Workspace[] = await getOrCreateUserWorkspace();
+export default async function HomePage() {
+  const { userId } = await auth();
 
+  // If user is signed in, redirect to workspaces
+  if (userId) {
+    redirect("/workspaces");
+  }
+
+  // If not signed in, show sign-in page
   return (
-    <div>
-      <h2 className="text-lg font-semibold mb-2">Your Workspaces:</h2>
-      {workspaces.length > 0 ? (
-        <ul className="list-disc list-inside">
-          {workspaces.map((ws: Workspace) => (
-            <li key={ws.id}>{ws.name}</li>
-          ))}
-        </ul>
-      ) : (
-        <p>You don&apos;t have any workspaces yet.</p>
-        // TODO: Add a button/form to create a new workspace
-      )}
-    </div>
-  );
-}
-
-export default async function Home() {
-  const user = await currentUser();
-
-  return (
-    <div className="container mx-auto p-8">
-      <header className="flex justify-between items-center mb-8">
-        <h1 className="text-2xl font-bold">My App</h1>
-        <div>
-          <SignedOut>
-            <SignInButton mode="modal">
-              <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                Sign In
-              </button>
-            </SignInButton>
-          </SignedOut>
-          <SignedIn>
-            <div className="flex items-center gap-4">
-              {user && (
-                <span className="text-sm">
-                  Welcome,{" "}
-                  {user.firstName || user.emailAddresses[0]?.emailAddress}!
-                </span>
-              )}
-              <SignOutButton>
-                <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
-                  Sign Out
-                </button>
-              </SignOutButton>
-            </div>
-          </SignedIn>
+    <div className="flex min-h-screen flex-col items-center justify-center p-4">
+      <div className="w-full max-w-md space-y-8 rounded-lg border bg-white p-6 shadow-md">
+        <div className="text-center">
+          <h1 className="text-3xl font-bold">OutPulse AI</h1>
+          <p className="mt-2 text-gray-600">
+            AI-powered outbound calling for your business
+          </p>
         </div>
-      </header>
 
-      <main>
-        <SignedOut>
-          <p>Please sign in to manage your workspaces.</p>
-        </SignedOut>
-        <SignedIn>
-          <UserWorkspaces />
-        </SignedIn>
-      </main>
+        <div className="space-y-4">
+          <Button asChild className="w-full" size="lg">
+            <Link href="/sign-in">Sign In</Link>
+          </Button>
+
+          <div className="text-center text-sm">
+            <p>
+              Don&apos;t have an account?{" "}
+              <Link href="/sign-up" className="text-primary hover:underline">
+                Sign Up
+              </Link>
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div className="mt-8 text-center text-sm text-gray-500">
+        <p>Powered by ElevenLabs AI and modern web technologies.</p>
+      </div>
     </div>
   );
 }

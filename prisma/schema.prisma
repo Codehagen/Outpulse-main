@@ -36,4 +36,56 @@ model Workspace {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   users     User[]   @relation("WorkspaceUsers")
+  agents    Agent[]
+  leads     Lead[]
+  tools     Tool[]
+}
+
+model Agent {
+  id           String        @id @default(cuid())
+  name         String
+  elevenLabsId String        @unique
+  workspace    Workspace     @relation(fields: [workspaceId], references: [id])
+  workspaceId  String
+  config       Json?
+  phoneNumbers PhoneNumber[]
+  tools        Tool[]        @relation("AgentTools")
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+}
+
+model Lead {
+  id          String    @id @default(cuid())
+  workspace   Workspace @relation(fields: [workspaceId], references: [id])
+  workspaceId String
+  name        String
+  phoneNumber String
+  status      String? // e.g., "new", "called", "failed", etc.
+  notes       String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model PhoneNumber {
+  id         String    @id @default(cuid())
+  number     String    @unique
+  label      String?
+  agent      Agent?    @relation(fields: [agentId], references: [id])
+  agentId    String?
+  assignedAt DateTime?
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+}
+
+model Tool {
+  id               String    @id @default(cuid())
+  name             String
+  description      String
+  config           Json
+  workspace        Workspace @relation(fields: [workspaceId], references: [id])
+  workspaceId      String
+  elevenLabsToolId String?
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+  agents           Agent[]   @relation("AgentTools")
 }
