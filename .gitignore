@@ -48,3 +48,8 @@ next-env.d.ts
 .venv
 .env
 /.dev/
+todo.md
+*.sql
+*lock.toml
+*.db
+*.db-journal

@@ -80,7 +80,7 @@ model PhoneNumber {
 model Tool {
   id               String    @id @default(cuid())
   name             String
-  description      String
+  description      String?
   config           Json
   workspace        Workspace @relation(fields: [workspaceId], references: [id])
   workspaceId      String

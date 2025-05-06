@@ -10,9 +10,14 @@ generator client {
   output        = "../lib/generated/prisma"
 }
 
+// datasource db {
+//   provider = "postgresql"
+//   url      = env("DATABASE_URL")
+// }
+
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider = "sqlite"
+  url      = "file:./dev.db"
 }
 
 model User {
@@ -75,7 +80,7 @@ model PhoneNumber {
 model Tool {
   id               String    @id @default(cuid())
   name             String
-  description      String
+  description      String?
   config           Json
   workspace        Workspace @relation(fields: [workspaceId], references: [id])
   workspaceId      String
