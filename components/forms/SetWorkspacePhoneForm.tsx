@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { setWorkspacePhoneNumber } from "@/actions/PhoneNumber/action";
+import { setWorkspacePhoneNumber } from "@/app/actions/PhoneNumber/action";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";

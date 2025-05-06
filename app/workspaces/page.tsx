@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { getOrCreateUserWorkspace } from "@/actions/Workspace/action";
+import { getOrCreateUserWorkspace } from "@/app/actions/Workspace/action";
 import { PlusIcon } from "lucide-react";
 
 export default async function WorkspacesPage() {

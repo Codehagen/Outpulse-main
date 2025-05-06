@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { updateAgent } from "@/actions/Agent/action";
+import { updateAgent } from "@/app/actions/Agent/action";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -16,9 +16,6 @@ import {
 import { toast } from "sonner";
 import type { Agent } from "@/lib/generated/prisma";
 import { useRouter } from "next/navigation";
-// import { Prisma } from "@prisma/client"; // No longer needed
-
-// Remove intermediate config interfaces
 
 interface EditAgentFormProps {
   agent: Agent;
@@ -175,12 +172,15 @@ export function EditAgentForm({ agent }: EditAgentFormProps) {
         <Textarea
           id="systemPrompt"
           value={systemPrompt}
-          onChange={(e) => setSystemPrompt(e.target.value)}
           placeholder="Instructions for how your agent should behave and respond."
-          disabled={isLoading}
-          rows={5}
-          required
+          disabled
+          readOnly
+          rows={15}
+          className="bg-gray-50 font-mono text-xs"
         />
+        <p className="text-xs text-gray-500">
+          The agent&apos;s system prompt cannot be changed after creation.
+        </p>
       </div>
 
       <Button type="submit" disabled={isLoading} className="w-full">

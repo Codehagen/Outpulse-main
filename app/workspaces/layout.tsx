@@ -4,7 +4,7 @@ import { redirect } from "next/navigation";
 import { WorkspaceSidebar } from "@/components/workspace-sidebar";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import { WorkspaceHeader } from "@/components/workspace-header";
-import { getWorkspaceById } from "@/actions/Workspace/action";
+import { getWorkspaceById } from "@/app/actions/Workspace/action";
 
 interface WorkspaceLayoutProps {
   children: ReactNode;

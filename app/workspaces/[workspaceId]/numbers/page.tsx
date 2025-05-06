@@ -1,4 +1,4 @@
-import { getWorkspacePhoneNumber } from "@/actions/PhoneNumber/action";
+import { getWorkspacePhoneNumber } from "@/app/actions/PhoneNumber/action";
 import { SetWorkspacePhoneForm } from "@/components/forms/SetWorkspacePhoneForm";
 import { Toaster } from "@/components/ui/sonner";
 import { Suspense } from "react";

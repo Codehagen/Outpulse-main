@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 import { notFound } from "next/navigation";
-import { getWorkspaceById } from "@/actions/Workspace/action";
+import { getWorkspaceById } from "@/app/actions/Workspace/action";
 import { WorkspaceTabs } from "@/components/workspace-tabs";
 
 interface WorkspaceLayoutProps {

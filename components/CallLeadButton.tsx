@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import React from "react";
-import { startOutboundCall } from "@/actions/Call/action";
+import { startOutboundCall } from "@/app/actions/Call/action";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,

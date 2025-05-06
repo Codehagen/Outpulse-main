@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { getWorkspaceById } from "@/actions/Workspace/action";
+import { getWorkspaceById } from "@/app/actions/Workspace/action";
 
 interface SettingsPageProps {
   params: {

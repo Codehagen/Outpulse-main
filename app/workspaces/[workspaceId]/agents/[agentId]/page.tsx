@@ -1,6 +1,6 @@
 import { Suspense } from "react";
 import { notFound } from "next/navigation";
-import { getAgentById } from "@/actions/Agent/action";
+import { getAgentById } from "@/app/actions/Agent/action";
 import { EditAgentForm } from "@/components/forms/EditAgentForm";
 import { Toaster } from "@/components/ui/sonner";
 

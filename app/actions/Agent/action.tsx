@@ -20,6 +20,7 @@ type CreateAgentParams = {
   language: string;
   firstMessage: string;
   systemPrompt: string;
+  toolIds?: string[]; // Add optional tool IDs
 };
 
 // Type for ElevenLabs API response
@@ -36,6 +37,7 @@ export async function createAgent({
   language,
   firstMessage,
   systemPrompt,
+  toolIds = [], // Default to empty array
 }: CreateAgentParams): Promise<Agent> {
   const userId = await getUserIdOrThrow();
 
@@ -66,14 +68,26 @@ export async function createAgent({
     // Create the configuration for the ElevenLabs agent
     const agentConfig = {
       conversation_config: {
+        asr: {
+          // Add ASR config
+          provider: "elevenlabs", // Default provider
+          user_input_audio_format: "ulaw_8000", // Set user input format
+        },
+        tts: {
+          // Add TTS config
+          // You might need to specify a default model_id and voice_id here
+          // model_id: "eleven_turbo_v2", // Example, choose appropriate model
+          // voice_id: "YOUR_DEFAULT_VOICE_ID", // Example, set a default voice
+          agent_output_audio_format: "ulaw_8000", // Set agent output format
+        },
         agent: {
           first_message: firstMessage,
           language: language,
           prompt: {
             prompt: systemPrompt,
-            // Default to a good LLM that works well with tools
-            llm: "claude-3-7-sonnet",
+            llm: "gemini-2.0-flash-001", // Use the requested Gemini model
             temperature: 0.7,
+            tool_ids: toolIds,
           },
         },
       },
@@ -95,6 +109,7 @@ export async function createAgent({
 
     if (!response.ok) {
       const errorData = await response.json();
+      console.error("ElevenLabs API Error:", errorData); // Log the error details
       throw new Error(
         `ElevenLabs API error: ${response.status} - ${JSON.stringify(
           errorData
@@ -112,13 +127,21 @@ export async function createAgent({
         elevenLabsId: elevenLabsAgentId,
         workspaceId,
         config: agentConfig, // Store the configuration for reference
+        // Connect the selected tools
+        tools: {
+          connect: toolIds.map((id) => ({ id })),
+        },
       },
     });
 
     return agent;
   } catch (error) {
     console.error("Failed to create agent:", error);
-    throw error;
+    // Re-throw the original error for better debugging
+    if (error instanceof Error) {
+      throw new Error(`Failed to create agent: ${error.message}`);
+    }
+    throw new Error("An unknown error occurred while creating the agent.");
   }
 }
 
@@ -276,14 +299,61 @@ export async function updateAgent(
 }
 
 /**
- * Deletes an agent both from the database and from ElevenLabs
+ * Deletes an agent by its ID
  */
 export async function deleteAgent(agentId: string): Promise<void> {
-  // Implementation would include:
-  // 1. Check if agent exists and user has access to it
-  // 2. Delete the agent from ElevenLabs
-  // 3. Delete the agent from our database
+  const userId = await getUserIdOrThrow();
 
-  // This is a skeleton for the delete function
-  throw new Error("Not implemented yet");
+  // 1. Check if agent exists and user has access
+  const agent = await prisma.agent.findFirst({
+    where: {
+      id: agentId,
+      workspace: {
+        users: {
+          some: {
+            clerkId: userId,
+          },
+        },
+      },
+    },
+    select: { id: true, elevenLabsId: true }, // Select elevenLabsId for deletion
+  });
+
+  if (!agent) {
+    throw new Error("Agent not found or you don't have access to it");
+  }
+
+  // 2. Delete from ElevenLabs (optional, depends on desired behavior)
+  const elevenLabsApiKey = process.env.ELEVENLABS_API_KEY;
+  if (elevenLabsApiKey) {
+    try {
+      const response = await fetch(
+        `https://api.elevenlabs.io/v1/convai/agents/${agent.elevenLabsId}`,
+        {
+          method: "DELETE",
+          headers: {
+            "xi-api-key": elevenLabsApiKey,
+          },
+        }
+      );
+      if (!response.ok && response.status !== 404) {
+        // Allow 404 if agent was already deleted on ElevenLabs
+        const errorData = await response.json();
+        console.warn(
+          `Could not delete agent ${agent.elevenLabsId} from ElevenLabs: ${
+            response.status
+          } - ${JSON.stringify(errorData)}`
+        );
+        // Decide if you want to throw an error here or just log it
+      }
+    } catch (error) {
+      console.error("Error deleting agent from ElevenLabs:", error);
+      // Decide if you want to throw an error here or just log it
+    }
+  }
+
+  // 3. Delete from database
+  await prisma.agent.delete({
+    where: { id: agentId },
+  });
 }

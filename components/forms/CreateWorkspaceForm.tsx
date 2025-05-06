@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { createWorkspace } from "@/actions/Workspace/action";
+import { createWorkspace } from "@/app/actions/Workspace/action";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";

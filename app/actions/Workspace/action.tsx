@@ -2,7 +2,7 @@
 
 import { auth, currentUser } from "@clerk/nextjs/server";
 import { prisma } from "@/lib/db";
-import type { Workspace } from "@/lib/generated/prisma"; // Adjust path based on schema output
+import type { Workspace, Tool } from "@/lib/generated/prisma"; // Adjust path based on schema output
 
 async function getUserIdOrThrow(): Promise<string> {
   const { userId } = await auth();
@@ -170,4 +170,39 @@ export async function deleteWorkspace(workspaceId: string): Promise<void> {
     where: { id: workspaceId },
   });
   console.log(`Deleted workspace ${workspaceId}`); // <-- Fixed the template literal
+}
+
+/**
+ * Gets all tools for a specific workspace, checking user access.
+ * @param workspaceId The ID of the workspace.
+ * @returns A promise resolving to an array of tools for the workspace.
+ */
+export async function getWorkspaceTools(workspaceId: string): Promise<Tool[]> {
+  const userId = await getUserIdOrThrow();
+
+  // Verify user has access to the workspace
+  const workspace = await prisma.workspace.findFirst({
+    where: {
+      id: workspaceId,
+      users: {
+        some: {
+          clerkId: userId,
+        },
+      },
+    },
+    select: { id: true }, // Only need to select 'id' to confirm existence and access
+  });
+
+  if (!workspace) {
+    throw new Error("Workspace not found or you don't have access to it");
+  }
+
+  // Fetch tools for the validated workspace
+  const tools = await prisma.tool.findMany({
+    where: {
+      workspaceId: workspaceId,
+    },
+  });
+
+  return tools;
 }

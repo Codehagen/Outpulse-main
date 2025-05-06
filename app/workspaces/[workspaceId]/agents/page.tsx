@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { getWorkspaceAgents } from "@/actions/Agent/action";
+import { getWorkspaceAgents } from "@/app/actions/Agent/action";
 import { Button } from "@/components/ui/button";
 import { PlusIcon } from "lucide-react";
 
