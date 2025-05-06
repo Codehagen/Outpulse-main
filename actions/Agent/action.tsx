@@ -183,16 +183,96 @@ export async function getWorkspaceAgents(
  */
 export async function updateAgent(
   agentId: string,
-  data: Partial<CreateAgentParams>
+  data: Partial<CreateAgentParams> & { workspaceId: string } // Ensure workspaceId is passed
 ): Promise<Agent> {
-  // Implementation would be similar to createAgent but with update logic
-  // This would include:
-  // 1. Check if agent exists and user has access to it
-  // 2. Update the agent in ElevenLabs
-  // 3. Update the agent in our database
+  const userId = await getUserIdOrThrow();
 
-  // This is a skeleton for the update function
-  throw new Error("Not implemented yet");
+  // 1. Check if agent exists and user has access via workspace
+  const existingAgent = await prisma.agent.findFirst({
+    where: {
+      id: agentId,
+      workspace: {
+        id: data.workspaceId,
+        users: {
+          some: {
+            clerkId: userId,
+          },
+        },
+      },
+    },
+  });
+
+  if (!existingAgent) {
+    throw new Error("Agent not found or you don't have access to it");
+  }
+
+  // 2. Prepare the payload for ElevenLabs PATCH request
+  const elevenLabsApiKey = process.env.ELEVENLABS_API_KEY;
+  if (!elevenLabsApiKey) {
+    throw new Error("ELEVENLABS_API_KEY environment variable is not set");
+  }
+
+  // Construct the config to patch, only including changed fields
+  const agentConfigPatch = {
+    conversation_config: {
+      agent: {
+        ...(data.language && { language: data.language }),
+        ...(data.firstMessage && { first_message: data.firstMessage }),
+        ...(data.systemPrompt && {
+          prompt: {
+            prompt: data.systemPrompt,
+            // Consider keeping other prompt settings or making them editable too
+            llm: "claude-3-7-sonnet",
+            temperature: 0.7,
+          },
+        }),
+      },
+    },
+    ...(data.name && { name: data.name }),
+  };
+
+  try {
+    // 3. Call ElevenLabs API to update the agent
+    const response = await fetch(
+      `https://api.elevenlabs.io/v1/convai/agents/${existingAgent.elevenLabsId}`,
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          "xi-api-key": elevenLabsApiKey,
+        },
+        body: JSON.stringify(agentConfigPatch),
+      }
+    );
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(
+        `ElevenLabs API error: ${response.status} - ${JSON.stringify(
+          errorData
+        )}`
+      );
+    }
+
+    // 4. Update the agent in our database
+    const updatedAgent = await prisma.agent.update({
+      where: { id: agentId },
+      data: {
+        name: data.name || existingAgent.name,
+        // Store the updated config (consider merging smartly if needed)
+        config: {
+          // Merge existing config with the patch
+          ...(existingAgent.config as object),
+          ...agentConfigPatch,
+        },
+      },
+    });
+
+    return updatedAgent;
+  } catch (error) {
+    console.error("Failed to update agent:", error);
+    throw error;
+  }
 }
 
 /**

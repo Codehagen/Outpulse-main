@@ -25,27 +25,32 @@ model User {
 }
 
 model Workspace {
-  id        String   @id @default(cuid())
-  name      String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  users     User[]   @relation("WorkspaceUsers")
-  agents    Agent[]
-  leads     Lead[]
-  tools     Tool[]
+  id            String       @id @default(cuid())
+  name          String
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+  users         User[]       @relation("WorkspaceUsers")
+  agents        Agent[]
+  leads         Lead[]
+  tools         Tool[]
+  calls         Call[] // Relation to calls within this workspace
+  phoneNumber   PhoneNumber? @relation("WorkspacePhoneNumber", fields: [phoneNumberId], references: [id])
+  phoneNumberId String?      @unique // Link to the single phone number for this workspace
 }
 
 model Agent {
-  id           String        @id @default(cuid())
+  id           String    @id @default(cuid())
   name         String
-  elevenLabsId String        @unique
-  workspace    Workspace     @relation(fields: [workspaceId], references: [id])
+  elevenLabsId String    @unique
+  workspace    Workspace @relation(fields: [workspaceId], references: [id])
   workspaceId  String
   config       Json?
-  phoneNumbers PhoneNumber[]
-  tools        Tool[]        @relation("AgentTools")
-  createdAt    DateTime      @default(now())
-  updatedAt    DateTime      @updatedAt
+  // Agents don't directly own numbers now, the workspace does
+  // phoneNumbers  PhoneNumber[] 
+  tools        Tool[]    @relation("AgentTools")
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  calls        Call[] // Relation to calls made by this agent
 }
 
 model Lead {
@@ -58,17 +63,22 @@ model Lead {
   notes       String?
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
+  calls       Call[] // Relation to calls made to this lead
 }
 
 model PhoneNumber {
-  id         String    @id @default(cuid())
-  number     String    @unique
-  label      String?
-  agent      Agent?    @relation(fields: [agentId], references: [id])
-  agentId    String?
-  assignedAt DateTime?
-  createdAt  DateTime  @default(now())
-  updatedAt  DateTime  @updatedAt
+  id                      String     @id @default(cuid())
+  number                  String     @unique
+  label                   String?
+  elevenLabsPhoneNumberId String?    @unique // ID from ElevenLabs for this number
+  // Remove direct agent link for now, associate with workspace
+  // agent                   Agent?    @relation(fields: [agentId], references: [id])
+  // agentId                 String?
+  workspace               Workspace? @relation("WorkspacePhoneNumber") // Relation back to Workspace
+  assignedAt              DateTime? // When was it assigned to the workspace?
+  createdAt               DateTime   @default(now())
+  updatedAt               DateTime   @updatedAt
+  calls                   Call[] // Relation to calls made with this number
 }
 
 model Tool {
@@ -82,4 +92,26 @@ model Tool {
   createdAt        DateTime  @default(now())
   updatedAt        DateTime  @updatedAt
   agents           Agent[]   @relation("AgentTools")
+}
+
+model Call {
+  id            String      @id @default(cuid())
+  workspace     Workspace   @relation(fields: [workspaceId], references: [id])
+  workspaceId   String
+  agent         Agent       @relation(fields: [agentId], references: [id])
+  agentId       String
+  lead          Lead        @relation(fields: [leadId], references: [id])
+  leadId        String
+  // Call uses the workspace phone number
+  phoneNumber   PhoneNumber @relation(fields: [phoneNumberId], references: [id])
+  phoneNumberId String
+  callSid       String? // From Twilio/ElevenLabs
+  status        String // e.g., "initiating", "ringing", "answered", "completed", "failed", "busy", "no-answer"
+  startedAt     DateTime    @default(now())
+  endedAt       DateTime?
+  duration      Int? // In seconds
+  notes         String?
+  recordingUrl  String? // If available
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
 }

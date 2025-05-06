@@ -43,6 +43,11 @@ export type PhoneNumber = $Result.DefaultSelection<Prisma.$PhoneNumberPayload>
  * 
  */
 export type Tool = $Result.DefaultSelection<Prisma.$ToolPayload>
+/**
+ * Model Call
+ * 
+ */
+export type Call = $Result.DefaultSelection<Prisma.$CallPayload>
 
 /**
  * ##  Prisma Client ʲˢ
@@ -228,6 +233,16 @@ export class PrismaClient<
     * ```
     */
   get tool(): Prisma.ToolDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.call`: Exposes CRUD operations for the **Call** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Calls
+    * const calls = await prisma.call.findMany()
+    * ```
+    */
+  get call(): Prisma.CallDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -673,7 +688,8 @@ export namespace Prisma {
     Agent: 'Agent',
     Lead: 'Lead',
     PhoneNumber: 'PhoneNumber',
-    Tool: 'Tool'
+    Tool: 'Tool',
+    Call: 'Call'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -692,7 +708,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "workspace" | "agent" | "lead" | "phoneNumber" | "tool"
+      modelProps: "user" | "workspace" | "agent" | "lead" | "phoneNumber" | "tool" | "call"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1140,6 +1156,80 @@ export namespace Prisma {
           }
         }
       }
+      Call: {
+        payload: Prisma.$CallPayload<ExtArgs>
+        fields: Prisma.CallFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.CallFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CallPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.CallFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CallPayload>
+          }
+          findFirst: {
+            args: Prisma.CallFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CallPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.CallFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CallPayload>
+          }
+          findMany: {
+            args: Prisma.CallFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CallPayload>[]
+          }
+          create: {
+            args: Prisma.CallCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CallPayload>
+          }
+          createMany: {
+            args: Prisma.CallCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.CallCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CallPayload>[]
+          }
+          delete: {
+            args: Prisma.CallDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CallPayload>
+          }
+          update: {
+            args: Prisma.CallUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CallPayload>
+          }
+          deleteMany: {
+            args: Prisma.CallDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.CallUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.CallUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CallPayload>[]
+          }
+          upsert: {
+            args: Prisma.CallUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CallPayload>
+          }
+          aggregate: {
+            args: Prisma.CallAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateCall>
+          }
+          groupBy: {
+            args: Prisma.CallGroupByArgs<ExtArgs>
+            result: $Utils.Optional<CallGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.CallCountArgs<ExtArgs>
+            result: $Utils.Optional<CallCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -1230,6 +1320,7 @@ export namespace Prisma {
     lead?: LeadOmit
     phoneNumber?: PhoneNumberOmit
     tool?: ToolOmit
+    call?: CallOmit
   }
 
   /* Types for Logging */
@@ -1359,6 +1450,7 @@ export namespace Prisma {
     agents: number
     leads: number
     tools: number
+    calls: number
   }
 
   export type WorkspaceCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -1366,6 +1458,7 @@ export namespace Prisma {
     agents?: boolean | WorkspaceCountOutputTypeCountAgentsArgs
     leads?: boolean | WorkspaceCountOutputTypeCountLeadsArgs
     tools?: boolean | WorkspaceCountOutputTypeCountToolsArgs
+    calls?: boolean | WorkspaceCountOutputTypeCountCallsArgs
   }
 
   // Custom InputTypes
@@ -1407,19 +1500,26 @@ export namespace Prisma {
     where?: ToolWhereInput
   }
 
+  /**
+   * WorkspaceCountOutputType without action
+   */
+  export type WorkspaceCountOutputTypeCountCallsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CallWhereInput
+  }
+
 
   /**
    * Count Type AgentCountOutputType
    */
 
   export type AgentCountOutputType = {
-    phoneNumbers: number
     tools: number
+    calls: number
   }
 
   export type AgentCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    phoneNumbers?: boolean | AgentCountOutputTypeCountPhoneNumbersArgs
     tools?: boolean | AgentCountOutputTypeCountToolsArgs
+    calls?: boolean | AgentCountOutputTypeCountCallsArgs
   }
 
   // Custom InputTypes
@@ -1436,15 +1536,77 @@ export namespace Prisma {
   /**
    * AgentCountOutputType without action
    */
-  export type AgentCountOutputTypeCountPhoneNumbersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: PhoneNumberWhereInput
+  export type AgentCountOutputTypeCountToolsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ToolWhereInput
   }
 
   /**
    * AgentCountOutputType without action
    */
-  export type AgentCountOutputTypeCountToolsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: ToolWhereInput
+  export type AgentCountOutputTypeCountCallsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CallWhereInput
+  }
+
+
+  /**
+   * Count Type LeadCountOutputType
+   */
+
+  export type LeadCountOutputType = {
+    calls: number
+  }
+
+  export type LeadCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    calls?: boolean | LeadCountOutputTypeCountCallsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * LeadCountOutputType without action
+   */
+  export type LeadCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LeadCountOutputType
+     */
+    select?: LeadCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * LeadCountOutputType without action
+   */
+  export type LeadCountOutputTypeCountCallsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CallWhereInput
+  }
+
+
+  /**
+   * Count Type PhoneNumberCountOutputType
+   */
+
+  export type PhoneNumberCountOutputType = {
+    calls: number
+  }
+
+  export type PhoneNumberCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    calls?: boolean | PhoneNumberCountOutputTypeCountCallsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * PhoneNumberCountOutputType without action
+   */
+  export type PhoneNumberCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PhoneNumberCountOutputType
+     */
+    select?: PhoneNumberCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * PhoneNumberCountOutputType without action
+   */
+  export type PhoneNumberCountOutputTypeCountCallsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CallWhereInput
   }
 
 
@@ -2581,6 +2743,7 @@ export namespace Prisma {
     name: string | null
     createdAt: Date | null
     updatedAt: Date | null
+    phoneNumberId: string | null
   }
 
   export type WorkspaceMaxAggregateOutputType = {
@@ -2588,6 +2751,7 @@ export namespace Prisma {
     name: string | null
     createdAt: Date | null
     updatedAt: Date | null
+    phoneNumberId: string | null
   }
 
   export type WorkspaceCountAggregateOutputType = {
@@ -2595,6 +2759,7 @@ export namespace Prisma {
     name: number
     createdAt: number
     updatedAt: number
+    phoneNumberId: number
     _all: number
   }
 
@@ -2604,6 +2769,7 @@ export namespace Prisma {
     name?: true
     createdAt?: true
     updatedAt?: true
+    phoneNumberId?: true
   }
 
   export type WorkspaceMaxAggregateInputType = {
@@ -2611,6 +2777,7 @@ export namespace Prisma {
     name?: true
     createdAt?: true
     updatedAt?: true
+    phoneNumberId?: true
   }
 
   export type WorkspaceCountAggregateInputType = {
@@ -2618,6 +2785,7 @@ export namespace Prisma {
     name?: true
     createdAt?: true
     updatedAt?: true
+    phoneNumberId?: true
     _all?: true
   }
 
@@ -2698,6 +2866,7 @@ export namespace Prisma {
     name: string
     createdAt: Date
     updatedAt: Date
+    phoneNumberId: string | null
     _count: WorkspaceCountAggregateOutputType | null
     _min: WorkspaceMinAggregateOutputType | null
     _max: WorkspaceMaxAggregateOutputType | null
@@ -2722,10 +2891,13 @@ export namespace Prisma {
     name?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    phoneNumberId?: boolean
     users?: boolean | Workspace$usersArgs<ExtArgs>
     agents?: boolean | Workspace$agentsArgs<ExtArgs>
     leads?: boolean | Workspace$leadsArgs<ExtArgs>
     tools?: boolean | Workspace$toolsArgs<ExtArgs>
+    calls?: boolean | Workspace$callsArgs<ExtArgs>
+    phoneNumber?: boolean | Workspace$phoneNumberArgs<ExtArgs>
     _count?: boolean | WorkspaceCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["workspace"]>
 
@@ -2734,6 +2906,8 @@ export namespace Prisma {
     name?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    phoneNumberId?: boolean
+    phoneNumber?: boolean | Workspace$phoneNumberArgs<ExtArgs>
   }, ExtArgs["result"]["workspace"]>
 
   export type WorkspaceSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -2741,6 +2915,8 @@ export namespace Prisma {
     name?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    phoneNumberId?: boolean
+    phoneNumber?: boolean | Workspace$phoneNumberArgs<ExtArgs>
   }, ExtArgs["result"]["workspace"]>
 
   export type WorkspaceSelectScalar = {
@@ -2748,18 +2924,25 @@ export namespace Prisma {
     name?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    phoneNumberId?: boolean
   }
 
-  export type WorkspaceOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "createdAt" | "updatedAt", ExtArgs["result"]["workspace"]>
+  export type WorkspaceOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "createdAt" | "updatedAt" | "phoneNumberId", ExtArgs["result"]["workspace"]>
   export type WorkspaceInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     users?: boolean | Workspace$usersArgs<ExtArgs>
     agents?: boolean | Workspace$agentsArgs<ExtArgs>
     leads?: boolean | Workspace$leadsArgs<ExtArgs>
     tools?: boolean | Workspace$toolsArgs<ExtArgs>
+    calls?: boolean | Workspace$callsArgs<ExtArgs>
+    phoneNumber?: boolean | Workspace$phoneNumberArgs<ExtArgs>
     _count?: boolean | WorkspaceCountOutputTypeDefaultArgs<ExtArgs>
   }
-  export type WorkspaceIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
-  export type WorkspaceIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+  export type WorkspaceIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    phoneNumber?: boolean | Workspace$phoneNumberArgs<ExtArgs>
+  }
+  export type WorkspaceIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    phoneNumber?: boolean | Workspace$phoneNumberArgs<ExtArgs>
+  }
 
   export type $WorkspacePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Workspace"
@@ -2768,12 +2951,15 @@ export namespace Prisma {
       agents: Prisma.$AgentPayload<ExtArgs>[]
       leads: Prisma.$LeadPayload<ExtArgs>[]
       tools: Prisma.$ToolPayload<ExtArgs>[]
+      calls: Prisma.$CallPayload<ExtArgs>[]
+      phoneNumber: Prisma.$PhoneNumberPayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
       name: string
       createdAt: Date
       updatedAt: Date
+      phoneNumberId: string | null
     }, ExtArgs["result"]["workspace"]>
     composites: {}
   }
@@ -3172,6 +3358,8 @@ export namespace Prisma {
     agents<T extends Workspace$agentsArgs<ExtArgs> = {}>(args?: Subset<T, Workspace$agentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AgentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     leads<T extends Workspace$leadsArgs<ExtArgs> = {}>(args?: Subset<T, Workspace$leadsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LeadPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     tools<T extends Workspace$toolsArgs<ExtArgs> = {}>(args?: Subset<T, Workspace$toolsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ToolPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    calls<T extends Workspace$callsArgs<ExtArgs> = {}>(args?: Subset<T, Workspace$callsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CallPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    phoneNumber<T extends Workspace$phoneNumberArgs<ExtArgs> = {}>(args?: Subset<T, Workspace$phoneNumberArgs<ExtArgs>>): Prisma__PhoneNumberClient<$Result.GetResult<Prisma.$PhoneNumberPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -3205,6 +3393,7 @@ export namespace Prisma {
     readonly name: FieldRef<"Workspace", 'String'>
     readonly createdAt: FieldRef<"Workspace", 'DateTime'>
     readonly updatedAt: FieldRef<"Workspace", 'DateTime'>
+    readonly phoneNumberId: FieldRef<"Workspace", 'String'>
   }
     
 
@@ -3454,6 +3643,10 @@ export namespace Prisma {
      */
     data: WorkspaceCreateManyInput | WorkspaceCreateManyInput[]
     skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: WorkspaceIncludeCreateManyAndReturn<ExtArgs> | null
   }
 
   /**
@@ -3524,6 +3717,10 @@ export namespace Prisma {
      * Limit how many Workspaces to update.
      */
     limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: WorkspaceIncludeUpdateManyAndReturn<ExtArgs> | null
   }
 
   /**
@@ -3686,6 +3883,49 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: ToolScalarFieldEnum | ToolScalarFieldEnum[]
+  }
+
+  /**
+   * Workspace.calls
+   */
+  export type Workspace$callsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Call
+     */
+    select?: CallSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Call
+     */
+    omit?: CallOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CallInclude<ExtArgs> | null
+    where?: CallWhereInput
+    orderBy?: CallOrderByWithRelationInput | CallOrderByWithRelationInput[]
+    cursor?: CallWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: CallScalarFieldEnum | CallScalarFieldEnum[]
+  }
+
+  /**
+   * Workspace.phoneNumber
+   */
+  export type Workspace$phoneNumberArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PhoneNumber
+     */
+    select?: PhoneNumberSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PhoneNumber
+     */
+    omit?: PhoneNumberOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PhoneNumberInclude<ExtArgs> | null
+    where?: PhoneNumberWhereInput
   }
 
   /**
@@ -3884,8 +4124,8 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     workspace?: boolean | WorkspaceDefaultArgs<ExtArgs>
-    phoneNumbers?: boolean | Agent$phoneNumbersArgs<ExtArgs>
     tools?: boolean | Agent$toolsArgs<ExtArgs>
+    calls?: boolean | Agent$callsArgs<ExtArgs>
     _count?: boolean | AgentCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["agent"]>
 
@@ -3924,8 +4164,8 @@ export namespace Prisma {
   export type AgentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "elevenLabsId" | "workspaceId" | "config" | "createdAt" | "updatedAt", ExtArgs["result"]["agent"]>
   export type AgentInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     workspace?: boolean | WorkspaceDefaultArgs<ExtArgs>
-    phoneNumbers?: boolean | Agent$phoneNumbersArgs<ExtArgs>
     tools?: boolean | Agent$toolsArgs<ExtArgs>
+    calls?: boolean | Agent$callsArgs<ExtArgs>
     _count?: boolean | AgentCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type AgentIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -3939,8 +4179,8 @@ export namespace Prisma {
     name: "Agent"
     objects: {
       workspace: Prisma.$WorkspacePayload<ExtArgs>
-      phoneNumbers: Prisma.$PhoneNumberPayload<ExtArgs>[]
       tools: Prisma.$ToolPayload<ExtArgs>[]
+      calls: Prisma.$CallPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -4345,8 +4585,8 @@ export namespace Prisma {
   export interface Prisma__AgentClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     workspace<T extends WorkspaceDefaultArgs<ExtArgs> = {}>(args?: Subset<T, WorkspaceDefaultArgs<ExtArgs>>): Prisma__WorkspaceClient<$Result.GetResult<Prisma.$WorkspacePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    phoneNumbers<T extends Agent$phoneNumbersArgs<ExtArgs> = {}>(args?: Subset<T, Agent$phoneNumbersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PhoneNumberPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     tools<T extends Agent$toolsArgs<ExtArgs> = {}>(args?: Subset<T, Agent$toolsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ToolPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    calls<T extends Agent$callsArgs<ExtArgs> = {}>(args?: Subset<T, Agent$callsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CallPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -4779,30 +5019,6 @@ export namespace Prisma {
   }
 
   /**
-   * Agent.phoneNumbers
-   */
-  export type Agent$phoneNumbersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the PhoneNumber
-     */
-    select?: PhoneNumberSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the PhoneNumber
-     */
-    omit?: PhoneNumberOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: PhoneNumberInclude<ExtArgs> | null
-    where?: PhoneNumberWhereInput
-    orderBy?: PhoneNumberOrderByWithRelationInput | PhoneNumberOrderByWithRelationInput[]
-    cursor?: PhoneNumberWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: PhoneNumberScalarFieldEnum | PhoneNumberScalarFieldEnum[]
-  }
-
-  /**
    * Agent.tools
    */
   export type Agent$toolsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -4824,6 +5040,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: ToolScalarFieldEnum | ToolScalarFieldEnum[]
+  }
+
+  /**
+   * Agent.calls
+   */
+  export type Agent$callsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Call
+     */
+    select?: CallSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Call
+     */
+    omit?: CallOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CallInclude<ExtArgs> | null
+    where?: CallWhereInput
+    orderBy?: CallOrderByWithRelationInput | CallOrderByWithRelationInput[]
+    cursor?: CallWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: CallScalarFieldEnum | CallScalarFieldEnum[]
   }
 
   /**
@@ -5034,6 +5274,8 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     workspace?: boolean | WorkspaceDefaultArgs<ExtArgs>
+    calls?: boolean | Lead$callsArgs<ExtArgs>
+    _count?: boolean | LeadCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["lead"]>
 
   export type LeadSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -5074,6 +5316,8 @@ export namespace Prisma {
   export type LeadOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "workspaceId" | "name" | "phoneNumber" | "status" | "notes" | "createdAt" | "updatedAt", ExtArgs["result"]["lead"]>
   export type LeadInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     workspace?: boolean | WorkspaceDefaultArgs<ExtArgs>
+    calls?: boolean | Lead$callsArgs<ExtArgs>
+    _count?: boolean | LeadCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type LeadIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     workspace?: boolean | WorkspaceDefaultArgs<ExtArgs>
@@ -5086,6 +5330,7 @@ export namespace Prisma {
     name: "Lead"
     objects: {
       workspace: Prisma.$WorkspacePayload<ExtArgs>
+      calls: Prisma.$CallPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -5491,6 +5736,7 @@ export namespace Prisma {
   export interface Prisma__LeadClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     workspace<T extends WorkspaceDefaultArgs<ExtArgs> = {}>(args?: Subset<T, WorkspaceDefaultArgs<ExtArgs>>): Prisma__WorkspaceClient<$Result.GetResult<Prisma.$WorkspacePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    calls<T extends Lead$callsArgs<ExtArgs> = {}>(args?: Subset<T, Lead$callsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CallPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -5924,6 +6170,30 @@ export namespace Prisma {
   }
 
   /**
+   * Lead.calls
+   */
+  export type Lead$callsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Call
+     */
+    select?: CallSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Call
+     */
+    omit?: CallOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CallInclude<ExtArgs> | null
+    where?: CallWhereInput
+    orderBy?: CallOrderByWithRelationInput | CallOrderByWithRelationInput[]
+    cursor?: CallWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: CallScalarFieldEnum | CallScalarFieldEnum[]
+  }
+
+  /**
    * Lead without action
    */
   export type LeadDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -5956,7 +6226,7 @@ export namespace Prisma {
     id: string | null
     number: string | null
     label: string | null
-    agentId: string | null
+    elevenLabsPhoneNumberId: string | null
     assignedAt: Date | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -5966,7 +6236,7 @@ export namespace Prisma {
     id: string | null
     number: string | null
     label: string | null
-    agentId: string | null
+    elevenLabsPhoneNumberId: string | null
     assignedAt: Date | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -5976,7 +6246,7 @@ export namespace Prisma {
     id: number
     number: number
     label: number
-    agentId: number
+    elevenLabsPhoneNumberId: number
     assignedAt: number
     createdAt: number
     updatedAt: number
@@ -5988,7 +6258,7 @@ export namespace Prisma {
     id?: true
     number?: true
     label?: true
-    agentId?: true
+    elevenLabsPhoneNumberId?: true
     assignedAt?: true
     createdAt?: true
     updatedAt?: true
@@ -5998,7 +6268,7 @@ export namespace Prisma {
     id?: true
     number?: true
     label?: true
-    agentId?: true
+    elevenLabsPhoneNumberId?: true
     assignedAt?: true
     createdAt?: true
     updatedAt?: true
@@ -6008,7 +6278,7 @@ export namespace Prisma {
     id?: true
     number?: true
     label?: true
-    agentId?: true
+    elevenLabsPhoneNumberId?: true
     assignedAt?: true
     createdAt?: true
     updatedAt?: true
@@ -6091,7 +6361,7 @@ export namespace Prisma {
     id: string
     number: string
     label: string | null
-    agentId: string | null
+    elevenLabsPhoneNumberId: string | null
     assignedAt: Date | null
     createdAt: Date
     updatedAt: Date
@@ -6118,66 +6388,65 @@ export namespace Prisma {
     id?: boolean
     number?: boolean
     label?: boolean
-    agentId?: boolean
+    elevenLabsPhoneNumberId?: boolean
     assignedAt?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    agent?: boolean | PhoneNumber$agentArgs<ExtArgs>
+    workspace?: boolean | PhoneNumber$workspaceArgs<ExtArgs>
+    calls?: boolean | PhoneNumber$callsArgs<ExtArgs>
+    _count?: boolean | PhoneNumberCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["phoneNumber"]>
 
   export type PhoneNumberSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     number?: boolean
     label?: boolean
-    agentId?: boolean
+    elevenLabsPhoneNumberId?: boolean
     assignedAt?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    agent?: boolean | PhoneNumber$agentArgs<ExtArgs>
   }, ExtArgs["result"]["phoneNumber"]>
 
   export type PhoneNumberSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     number?: boolean
     label?: boolean
-    agentId?: boolean
+    elevenLabsPhoneNumberId?: boolean
     assignedAt?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    agent?: boolean | PhoneNumber$agentArgs<ExtArgs>
   }, ExtArgs["result"]["phoneNumber"]>
 
   export type PhoneNumberSelectScalar = {
     id?: boolean
     number?: boolean
     label?: boolean
-    agentId?: boolean
+    elevenLabsPhoneNumberId?: boolean
     assignedAt?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type PhoneNumberOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "number" | "label" | "agentId" | "assignedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["phoneNumber"]>
+  export type PhoneNumberOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "number" | "label" | "elevenLabsPhoneNumberId" | "assignedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["phoneNumber"]>
   export type PhoneNumberInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    agent?: boolean | PhoneNumber$agentArgs<ExtArgs>
+    workspace?: boolean | PhoneNumber$workspaceArgs<ExtArgs>
+    calls?: boolean | PhoneNumber$callsArgs<ExtArgs>
+    _count?: boolean | PhoneNumberCountOutputTypeDefaultArgs<ExtArgs>
   }
-  export type PhoneNumberIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    agent?: boolean | PhoneNumber$agentArgs<ExtArgs>
-  }
-  export type PhoneNumberIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    agent?: boolean | PhoneNumber$agentArgs<ExtArgs>
-  }
+  export type PhoneNumberIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+  export type PhoneNumberIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
 
   export type $PhoneNumberPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "PhoneNumber"
     objects: {
-      agent: Prisma.$AgentPayload<ExtArgs> | null
+      workspace: Prisma.$WorkspacePayload<ExtArgs> | null
+      calls: Prisma.$CallPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
       number: string
       label: string | null
-      agentId: string | null
+      elevenLabsPhoneNumberId: string | null
       assignedAt: Date | null
       createdAt: Date
       updatedAt: Date
@@ -6575,7 +6844,8 @@ export namespace Prisma {
    */
   export interface Prisma__PhoneNumberClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    agent<T extends PhoneNumber$agentArgs<ExtArgs> = {}>(args?: Subset<T, PhoneNumber$agentArgs<ExtArgs>>): Prisma__AgentClient<$Result.GetResult<Prisma.$AgentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    workspace<T extends PhoneNumber$workspaceArgs<ExtArgs> = {}>(args?: Subset<T, PhoneNumber$workspaceArgs<ExtArgs>>): Prisma__WorkspaceClient<$Result.GetResult<Prisma.$WorkspacePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    calls<T extends PhoneNumber$callsArgs<ExtArgs> = {}>(args?: Subset<T, PhoneNumber$callsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CallPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -6608,7 +6878,7 @@ export namespace Prisma {
     readonly id: FieldRef<"PhoneNumber", 'String'>
     readonly number: FieldRef<"PhoneNumber", 'String'>
     readonly label: FieldRef<"PhoneNumber", 'String'>
-    readonly agentId: FieldRef<"PhoneNumber", 'String'>
+    readonly elevenLabsPhoneNumberId: FieldRef<"PhoneNumber", 'String'>
     readonly assignedAt: FieldRef<"PhoneNumber", 'DateTime'>
     readonly createdAt: FieldRef<"PhoneNumber", 'DateTime'>
     readonly updatedAt: FieldRef<"PhoneNumber", 'DateTime'>
@@ -6861,10 +7131,6 @@ export namespace Prisma {
      */
     data: PhoneNumberCreateManyInput | PhoneNumberCreateManyInput[]
     skipDuplicates?: boolean
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: PhoneNumberIncludeCreateManyAndReturn<ExtArgs> | null
   }
 
   /**
@@ -6935,10 +7201,6 @@ export namespace Prisma {
      * Limit how many PhoneNumbers to update.
      */
     limit?: number
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: PhoneNumberIncludeUpdateManyAndReturn<ExtArgs> | null
   }
 
   /**
@@ -7008,22 +7270,46 @@ export namespace Prisma {
   }
 
   /**
-   * PhoneNumber.agent
+   * PhoneNumber.workspace
    */
-  export type PhoneNumber$agentArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type PhoneNumber$workspaceArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Agent
+     * Select specific fields to fetch from the Workspace
      */
-    select?: AgentSelect<ExtArgs> | null
+    select?: WorkspaceSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Agent
+     * Omit specific fields from the Workspace
      */
-    omit?: AgentOmit<ExtArgs> | null
+    omit?: WorkspaceOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: AgentInclude<ExtArgs> | null
-    where?: AgentWhereInput
+    include?: WorkspaceInclude<ExtArgs> | null
+    where?: WorkspaceWhereInput
+  }
+
+  /**
+   * PhoneNumber.calls
+   */
+  export type PhoneNumber$callsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Call
+     */
+    select?: CallSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Call
+     */
+    omit?: CallOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CallInclude<ExtArgs> | null
+    where?: CallWhereInput
+    orderBy?: CallOrderByWithRelationInput | CallOrderByWithRelationInput[]
+    cursor?: CallWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: CallScalarFieldEnum | CallScalarFieldEnum[]
   }
 
   /**
@@ -8169,6 +8455,1239 @@ export namespace Prisma {
 
 
   /**
+   * Model Call
+   */
+
+  export type AggregateCall = {
+    _count: CallCountAggregateOutputType | null
+    _avg: CallAvgAggregateOutputType | null
+    _sum: CallSumAggregateOutputType | null
+    _min: CallMinAggregateOutputType | null
+    _max: CallMaxAggregateOutputType | null
+  }
+
+  export type CallAvgAggregateOutputType = {
+    duration: number | null
+  }
+
+  export type CallSumAggregateOutputType = {
+    duration: number | null
+  }
+
+  export type CallMinAggregateOutputType = {
+    id: string | null
+    workspaceId: string | null
+    agentId: string | null
+    leadId: string | null
+    phoneNumberId: string | null
+    callSid: string | null
+    status: string | null
+    startedAt: Date | null
+    endedAt: Date | null
+    duration: number | null
+    notes: string | null
+    recordingUrl: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type CallMaxAggregateOutputType = {
+    id: string | null
+    workspaceId: string | null
+    agentId: string | null
+    leadId: string | null
+    phoneNumberId: string | null
+    callSid: string | null
+    status: string | null
+    startedAt: Date | null
+    endedAt: Date | null
+    duration: number | null
+    notes: string | null
+    recordingUrl: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type CallCountAggregateOutputType = {
+    id: number
+    workspaceId: number
+    agentId: number
+    leadId: number
+    phoneNumberId: number
+    callSid: number
+    status: number
+    startedAt: number
+    endedAt: number
+    duration: number
+    notes: number
+    recordingUrl: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type CallAvgAggregateInputType = {
+    duration?: true
+  }
+
+  export type CallSumAggregateInputType = {
+    duration?: true
+  }
+
+  export type CallMinAggregateInputType = {
+    id?: true
+    workspaceId?: true
+    agentId?: true
+    leadId?: true
+    phoneNumberId?: true
+    callSid?: true
+    status?: true
+    startedAt?: true
+    endedAt?: true
+    duration?: true
+    notes?: true
+    recordingUrl?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type CallMaxAggregateInputType = {
+    id?: true
+    workspaceId?: true
+    agentId?: true
+    leadId?: true
+    phoneNumberId?: true
+    callSid?: true
+    status?: true
+    startedAt?: true
+    endedAt?: true
+    duration?: true
+    notes?: true
+    recordingUrl?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type CallCountAggregateInputType = {
+    id?: true
+    workspaceId?: true
+    agentId?: true
+    leadId?: true
+    phoneNumberId?: true
+    callSid?: true
+    status?: true
+    startedAt?: true
+    endedAt?: true
+    duration?: true
+    notes?: true
+    recordingUrl?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type CallAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Call to aggregate.
+     */
+    where?: CallWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Calls to fetch.
+     */
+    orderBy?: CallOrderByWithRelationInput | CallOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: CallWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Calls from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Calls.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Calls
+    **/
+    _count?: true | CallCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: CallAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: CallSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: CallMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: CallMaxAggregateInputType
+  }
+
+  export type GetCallAggregateType<T extends CallAggregateArgs> = {
+        [P in keyof T & keyof AggregateCall]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateCall[P]>
+      : GetScalarType<T[P], AggregateCall[P]>
+  }
+
+
+
+
+  export type CallGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CallWhereInput
+    orderBy?: CallOrderByWithAggregationInput | CallOrderByWithAggregationInput[]
+    by: CallScalarFieldEnum[] | CallScalarFieldEnum
+    having?: CallScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: CallCountAggregateInputType | true
+    _avg?: CallAvgAggregateInputType
+    _sum?: CallSumAggregateInputType
+    _min?: CallMinAggregateInputType
+    _max?: CallMaxAggregateInputType
+  }
+
+  export type CallGroupByOutputType = {
+    id: string
+    workspaceId: string
+    agentId: string
+    leadId: string
+    phoneNumberId: string
+    callSid: string | null
+    status: string
+    startedAt: Date
+    endedAt: Date | null
+    duration: number | null
+    notes: string | null
+    recordingUrl: string | null
+    createdAt: Date
+    updatedAt: Date
+    _count: CallCountAggregateOutputType | null
+    _avg: CallAvgAggregateOutputType | null
+    _sum: CallSumAggregateOutputType | null
+    _min: CallMinAggregateOutputType | null
+    _max: CallMaxAggregateOutputType | null
+  }
+
+  type GetCallGroupByPayload<T extends CallGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<CallGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof CallGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], CallGroupByOutputType[P]>
+            : GetScalarType<T[P], CallGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type CallSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    workspaceId?: boolean
+    agentId?: boolean
+    leadId?: boolean
+    phoneNumberId?: boolean
+    callSid?: boolean
+    status?: boolean
+    startedAt?: boolean
+    endedAt?: boolean
+    duration?: boolean
+    notes?: boolean
+    recordingUrl?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    workspace?: boolean | WorkspaceDefaultArgs<ExtArgs>
+    agent?: boolean | AgentDefaultArgs<ExtArgs>
+    lead?: boolean | LeadDefaultArgs<ExtArgs>
+    phoneNumber?: boolean | PhoneNumberDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["call"]>
+
+  export type CallSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    workspaceId?: boolean
+    agentId?: boolean
+    leadId?: boolean
+    phoneNumberId?: boolean
+    callSid?: boolean
+    status?: boolean
+    startedAt?: boolean
+    endedAt?: boolean
+    duration?: boolean
+    notes?: boolean
+    recordingUrl?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    workspace?: boolean | WorkspaceDefaultArgs<ExtArgs>
+    agent?: boolean | AgentDefaultArgs<ExtArgs>
+    lead?: boolean | LeadDefaultArgs<ExtArgs>
+    phoneNumber?: boolean | PhoneNumberDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["call"]>
+
+  export type CallSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    workspaceId?: boolean
+    agentId?: boolean
+    leadId?: boolean
+    phoneNumberId?: boolean
+    callSid?: boolean
+    status?: boolean
+    startedAt?: boolean
+    endedAt?: boolean
+    duration?: boolean
+    notes?: boolean
+    recordingUrl?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    workspace?: boolean | WorkspaceDefaultArgs<ExtArgs>
+    agent?: boolean | AgentDefaultArgs<ExtArgs>
+    lead?: boolean | LeadDefaultArgs<ExtArgs>
+    phoneNumber?: boolean | PhoneNumberDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["call"]>
+
+  export type CallSelectScalar = {
+    id?: boolean
+    workspaceId?: boolean
+    agentId?: boolean
+    leadId?: boolean
+    phoneNumberId?: boolean
+    callSid?: boolean
+    status?: boolean
+    startedAt?: boolean
+    endedAt?: boolean
+    duration?: boolean
+    notes?: boolean
+    recordingUrl?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type CallOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "workspaceId" | "agentId" | "leadId" | "phoneNumberId" | "callSid" | "status" | "startedAt" | "endedAt" | "duration" | "notes" | "recordingUrl" | "createdAt" | "updatedAt", ExtArgs["result"]["call"]>
+  export type CallInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    workspace?: boolean | WorkspaceDefaultArgs<ExtArgs>
+    agent?: boolean | AgentDefaultArgs<ExtArgs>
+    lead?: boolean | LeadDefaultArgs<ExtArgs>
+    phoneNumber?: boolean | PhoneNumberDefaultArgs<ExtArgs>
+  }
+  export type CallIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    workspace?: boolean | WorkspaceDefaultArgs<ExtArgs>
+    agent?: boolean | AgentDefaultArgs<ExtArgs>
+    lead?: boolean | LeadDefaultArgs<ExtArgs>
+    phoneNumber?: boolean | PhoneNumberDefaultArgs<ExtArgs>
+  }
+  export type CallIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    workspace?: boolean | WorkspaceDefaultArgs<ExtArgs>
+    agent?: boolean | AgentDefaultArgs<ExtArgs>
+    lead?: boolean | LeadDefaultArgs<ExtArgs>
+    phoneNumber?: boolean | PhoneNumberDefaultArgs<ExtArgs>
+  }
+
+  export type $CallPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Call"
+    objects: {
+      workspace: Prisma.$WorkspacePayload<ExtArgs>
+      agent: Prisma.$AgentPayload<ExtArgs>
+      lead: Prisma.$LeadPayload<ExtArgs>
+      phoneNumber: Prisma.$PhoneNumberPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      workspaceId: string
+      agentId: string
+      leadId: string
+      phoneNumberId: string
+      callSid: string | null
+      status: string
+      startedAt: Date
+      endedAt: Date | null
+      duration: number | null
+      notes: string | null
+      recordingUrl: string | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["call"]>
+    composites: {}
+  }
+
+  type CallGetPayload<S extends boolean | null | undefined | CallDefaultArgs> = $Result.GetResult<Prisma.$CallPayload, S>
+
+  type CallCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<CallFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: CallCountAggregateInputType | true
+    }
+
+  export interface CallDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Call'], meta: { name: 'Call' } }
+    /**
+     * Find zero or one Call that matches the filter.
+     * @param {CallFindUniqueArgs} args - Arguments to find a Call
+     * @example
+     * // Get one Call
+     * const call = await prisma.call.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends CallFindUniqueArgs>(args: SelectSubset<T, CallFindUniqueArgs<ExtArgs>>): Prisma__CallClient<$Result.GetResult<Prisma.$CallPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Call that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {CallFindUniqueOrThrowArgs} args - Arguments to find a Call
+     * @example
+     * // Get one Call
+     * const call = await prisma.call.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends CallFindUniqueOrThrowArgs>(args: SelectSubset<T, CallFindUniqueOrThrowArgs<ExtArgs>>): Prisma__CallClient<$Result.GetResult<Prisma.$CallPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Call that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CallFindFirstArgs} args - Arguments to find a Call
+     * @example
+     * // Get one Call
+     * const call = await prisma.call.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends CallFindFirstArgs>(args?: SelectSubset<T, CallFindFirstArgs<ExtArgs>>): Prisma__CallClient<$Result.GetResult<Prisma.$CallPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Call that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CallFindFirstOrThrowArgs} args - Arguments to find a Call
+     * @example
+     * // Get one Call
+     * const call = await prisma.call.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends CallFindFirstOrThrowArgs>(args?: SelectSubset<T, CallFindFirstOrThrowArgs<ExtArgs>>): Prisma__CallClient<$Result.GetResult<Prisma.$CallPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Calls that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CallFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Calls
+     * const calls = await prisma.call.findMany()
+     * 
+     * // Get first 10 Calls
+     * const calls = await prisma.call.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const callWithIdOnly = await prisma.call.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends CallFindManyArgs>(args?: SelectSubset<T, CallFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CallPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Call.
+     * @param {CallCreateArgs} args - Arguments to create a Call.
+     * @example
+     * // Create one Call
+     * const Call = await prisma.call.create({
+     *   data: {
+     *     // ... data to create a Call
+     *   }
+     * })
+     * 
+     */
+    create<T extends CallCreateArgs>(args: SelectSubset<T, CallCreateArgs<ExtArgs>>): Prisma__CallClient<$Result.GetResult<Prisma.$CallPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Calls.
+     * @param {CallCreateManyArgs} args - Arguments to create many Calls.
+     * @example
+     * // Create many Calls
+     * const call = await prisma.call.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends CallCreateManyArgs>(args?: SelectSubset<T, CallCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Calls and returns the data saved in the database.
+     * @param {CallCreateManyAndReturnArgs} args - Arguments to create many Calls.
+     * @example
+     * // Create many Calls
+     * const call = await prisma.call.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Calls and only return the `id`
+     * const callWithIdOnly = await prisma.call.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends CallCreateManyAndReturnArgs>(args?: SelectSubset<T, CallCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CallPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Call.
+     * @param {CallDeleteArgs} args - Arguments to delete one Call.
+     * @example
+     * // Delete one Call
+     * const Call = await prisma.call.delete({
+     *   where: {
+     *     // ... filter to delete one Call
+     *   }
+     * })
+     * 
+     */
+    delete<T extends CallDeleteArgs>(args: SelectSubset<T, CallDeleteArgs<ExtArgs>>): Prisma__CallClient<$Result.GetResult<Prisma.$CallPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Call.
+     * @param {CallUpdateArgs} args - Arguments to update one Call.
+     * @example
+     * // Update one Call
+     * const call = await prisma.call.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends CallUpdateArgs>(args: SelectSubset<T, CallUpdateArgs<ExtArgs>>): Prisma__CallClient<$Result.GetResult<Prisma.$CallPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Calls.
+     * @param {CallDeleteManyArgs} args - Arguments to filter Calls to delete.
+     * @example
+     * // Delete a few Calls
+     * const { count } = await prisma.call.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends CallDeleteManyArgs>(args?: SelectSubset<T, CallDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Calls.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CallUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Calls
+     * const call = await prisma.call.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends CallUpdateManyArgs>(args: SelectSubset<T, CallUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Calls and returns the data updated in the database.
+     * @param {CallUpdateManyAndReturnArgs} args - Arguments to update many Calls.
+     * @example
+     * // Update many Calls
+     * const call = await prisma.call.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Calls and only return the `id`
+     * const callWithIdOnly = await prisma.call.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends CallUpdateManyAndReturnArgs>(args: SelectSubset<T, CallUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CallPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Call.
+     * @param {CallUpsertArgs} args - Arguments to update or create a Call.
+     * @example
+     * // Update or create a Call
+     * const call = await prisma.call.upsert({
+     *   create: {
+     *     // ... data to create a Call
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Call we want to update
+     *   }
+     * })
+     */
+    upsert<T extends CallUpsertArgs>(args: SelectSubset<T, CallUpsertArgs<ExtArgs>>): Prisma__CallClient<$Result.GetResult<Prisma.$CallPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Calls.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CallCountArgs} args - Arguments to filter Calls to count.
+     * @example
+     * // Count the number of Calls
+     * const count = await prisma.call.count({
+     *   where: {
+     *     // ... the filter for the Calls we want to count
+     *   }
+     * })
+    **/
+    count<T extends CallCountArgs>(
+      args?: Subset<T, CallCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], CallCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Call.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CallAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends CallAggregateArgs>(args: Subset<T, CallAggregateArgs>): Prisma.PrismaPromise<GetCallAggregateType<T>>
+
+    /**
+     * Group by Call.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CallGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends CallGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: CallGroupByArgs['orderBy'] }
+        : { orderBy?: CallGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, CallGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetCallGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Call model
+   */
+  readonly fields: CallFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Call.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__CallClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    workspace<T extends WorkspaceDefaultArgs<ExtArgs> = {}>(args?: Subset<T, WorkspaceDefaultArgs<ExtArgs>>): Prisma__WorkspaceClient<$Result.GetResult<Prisma.$WorkspacePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    agent<T extends AgentDefaultArgs<ExtArgs> = {}>(args?: Subset<T, AgentDefaultArgs<ExtArgs>>): Prisma__AgentClient<$Result.GetResult<Prisma.$AgentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    lead<T extends LeadDefaultArgs<ExtArgs> = {}>(args?: Subset<T, LeadDefaultArgs<ExtArgs>>): Prisma__LeadClient<$Result.GetResult<Prisma.$LeadPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    phoneNumber<T extends PhoneNumberDefaultArgs<ExtArgs> = {}>(args?: Subset<T, PhoneNumberDefaultArgs<ExtArgs>>): Prisma__PhoneNumberClient<$Result.GetResult<Prisma.$PhoneNumberPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Call model
+   */
+  interface CallFieldRefs {
+    readonly id: FieldRef<"Call", 'String'>
+    readonly workspaceId: FieldRef<"Call", 'String'>
+    readonly agentId: FieldRef<"Call", 'String'>
+    readonly leadId: FieldRef<"Call", 'String'>
+    readonly phoneNumberId: FieldRef<"Call", 'String'>
+    readonly callSid: FieldRef<"Call", 'String'>
+    readonly status: FieldRef<"Call", 'String'>
+    readonly startedAt: FieldRef<"Call", 'DateTime'>
+    readonly endedAt: FieldRef<"Call", 'DateTime'>
+    readonly duration: FieldRef<"Call", 'Int'>
+    readonly notes: FieldRef<"Call", 'String'>
+    readonly recordingUrl: FieldRef<"Call", 'String'>
+    readonly createdAt: FieldRef<"Call", 'DateTime'>
+    readonly updatedAt: FieldRef<"Call", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Call findUnique
+   */
+  export type CallFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Call
+     */
+    select?: CallSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Call
+     */
+    omit?: CallOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CallInclude<ExtArgs> | null
+    /**
+     * Filter, which Call to fetch.
+     */
+    where: CallWhereUniqueInput
+  }
+
+  /**
+   * Call findUniqueOrThrow
+   */
+  export type CallFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Call
+     */
+    select?: CallSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Call
+     */
+    omit?: CallOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CallInclude<ExtArgs> | null
+    /**
+     * Filter, which Call to fetch.
+     */
+    where: CallWhereUniqueInput
+  }
+
+  /**
+   * Call findFirst
+   */
+  export type CallFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Call
+     */
+    select?: CallSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Call
+     */
+    omit?: CallOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CallInclude<ExtArgs> | null
+    /**
+     * Filter, which Call to fetch.
+     */
+    where?: CallWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Calls to fetch.
+     */
+    orderBy?: CallOrderByWithRelationInput | CallOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Calls.
+     */
+    cursor?: CallWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Calls from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Calls.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Calls.
+     */
+    distinct?: CallScalarFieldEnum | CallScalarFieldEnum[]
+  }
+
+  /**
+   * Call findFirstOrThrow
+   */
+  export type CallFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Call
+     */
+    select?: CallSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Call
+     */
+    omit?: CallOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CallInclude<ExtArgs> | null
+    /**
+     * Filter, which Call to fetch.
+     */
+    where?: CallWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Calls to fetch.
+     */
+    orderBy?: CallOrderByWithRelationInput | CallOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Calls.
+     */
+    cursor?: CallWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Calls from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Calls.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Calls.
+     */
+    distinct?: CallScalarFieldEnum | CallScalarFieldEnum[]
+  }
+
+  /**
+   * Call findMany
+   */
+  export type CallFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Call
+     */
+    select?: CallSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Call
+     */
+    omit?: CallOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CallInclude<ExtArgs> | null
+    /**
+     * Filter, which Calls to fetch.
+     */
+    where?: CallWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Calls to fetch.
+     */
+    orderBy?: CallOrderByWithRelationInput | CallOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Calls.
+     */
+    cursor?: CallWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Calls from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Calls.
+     */
+    skip?: number
+    distinct?: CallScalarFieldEnum | CallScalarFieldEnum[]
+  }
+
+  /**
+   * Call create
+   */
+  export type CallCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Call
+     */
+    select?: CallSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Call
+     */
+    omit?: CallOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CallInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Call.
+     */
+    data: XOR<CallCreateInput, CallUncheckedCreateInput>
+  }
+
+  /**
+   * Call createMany
+   */
+  export type CallCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Calls.
+     */
+    data: CallCreateManyInput | CallCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Call createManyAndReturn
+   */
+  export type CallCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Call
+     */
+    select?: CallSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Call
+     */
+    omit?: CallOmit<ExtArgs> | null
+    /**
+     * The data used to create many Calls.
+     */
+    data: CallCreateManyInput | CallCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CallIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Call update
+   */
+  export type CallUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Call
+     */
+    select?: CallSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Call
+     */
+    omit?: CallOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CallInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Call.
+     */
+    data: XOR<CallUpdateInput, CallUncheckedUpdateInput>
+    /**
+     * Choose, which Call to update.
+     */
+    where: CallWhereUniqueInput
+  }
+
+  /**
+   * Call updateMany
+   */
+  export type CallUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Calls.
+     */
+    data: XOR<CallUpdateManyMutationInput, CallUncheckedUpdateManyInput>
+    /**
+     * Filter which Calls to update
+     */
+    where?: CallWhereInput
+    /**
+     * Limit how many Calls to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Call updateManyAndReturn
+   */
+  export type CallUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Call
+     */
+    select?: CallSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Call
+     */
+    omit?: CallOmit<ExtArgs> | null
+    /**
+     * The data used to update Calls.
+     */
+    data: XOR<CallUpdateManyMutationInput, CallUncheckedUpdateManyInput>
+    /**
+     * Filter which Calls to update
+     */
+    where?: CallWhereInput
+    /**
+     * Limit how many Calls to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CallIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Call upsert
+   */
+  export type CallUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Call
+     */
+    select?: CallSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Call
+     */
+    omit?: CallOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CallInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Call to update in case it exists.
+     */
+    where: CallWhereUniqueInput
+    /**
+     * In case the Call found by the `where` argument doesn't exist, create a new Call with this data.
+     */
+    create: XOR<CallCreateInput, CallUncheckedCreateInput>
+    /**
+     * In case the Call was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<CallUpdateInput, CallUncheckedUpdateInput>
+  }
+
+  /**
+   * Call delete
+   */
+  export type CallDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Call
+     */
+    select?: CallSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Call
+     */
+    omit?: CallOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CallInclude<ExtArgs> | null
+    /**
+     * Filter which Call to delete.
+     */
+    where: CallWhereUniqueInput
+  }
+
+  /**
+   * Call deleteMany
+   */
+  export type CallDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Calls to delete
+     */
+    where?: CallWhereInput
+    /**
+     * Limit how many Calls to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Call without action
+   */
+  export type CallDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Call
+     */
+    select?: CallSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Call
+     */
+    omit?: CallOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CallInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -8198,7 +9717,8 @@ export namespace Prisma {
     id: 'id',
     name: 'name',
     createdAt: 'createdAt',
-    updatedAt: 'updatedAt'
+    updatedAt: 'updatedAt',
+    phoneNumberId: 'phoneNumberId'
   };
 
   export type WorkspaceScalarFieldEnum = (typeof WorkspaceScalarFieldEnum)[keyof typeof WorkspaceScalarFieldEnum]
@@ -8235,7 +9755,7 @@ export namespace Prisma {
     id: 'id',
     number: 'number',
     label: 'label',
-    agentId: 'agentId',
+    elevenLabsPhoneNumberId: 'elevenLabsPhoneNumberId',
     assignedAt: 'assignedAt',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
@@ -8256,6 +9776,26 @@ export namespace Prisma {
   };
 
   export type ToolScalarFieldEnum = (typeof ToolScalarFieldEnum)[keyof typeof ToolScalarFieldEnum]
+
+
+  export const CallScalarFieldEnum: {
+    id: 'id',
+    workspaceId: 'workspaceId',
+    agentId: 'agentId',
+    leadId: 'leadId',
+    phoneNumberId: 'phoneNumberId',
+    callSid: 'callSid',
+    status: 'status',
+    startedAt: 'startedAt',
+    endedAt: 'endedAt',
+    duration: 'duration',
+    notes: 'notes',
+    recordingUrl: 'recordingUrl',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type CallScalarFieldEnum = (typeof CallScalarFieldEnum)[keyof typeof CallScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -8365,6 +9905,20 @@ export namespace Prisma {
    */
   export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
     
+
+
+  /**
+   * Reference to a field of type 'Float'
+   */
+  export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
+    
+
+
+  /**
+   * Reference to a field of type 'Float[]'
+   */
+  export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
+    
   /**
    * Deep Input Types
    */
@@ -8438,10 +9992,13 @@ export namespace Prisma {
     name?: StringFilter<"Workspace"> | string
     createdAt?: DateTimeFilter<"Workspace"> | Date | string
     updatedAt?: DateTimeFilter<"Workspace"> | Date | string
+    phoneNumberId?: StringNullableFilter<"Workspace"> | string | null
     users?: UserListRelationFilter
     agents?: AgentListRelationFilter
     leads?: LeadListRelationFilter
     tools?: ToolListRelationFilter
+    calls?: CallListRelationFilter
+    phoneNumber?: XOR<PhoneNumberNullableScalarRelationFilter, PhoneNumberWhereInput> | null
   }
 
   export type WorkspaceOrderByWithRelationInput = {
@@ -8449,14 +10006,18 @@ export namespace Prisma {
     name?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    phoneNumberId?: SortOrderInput | SortOrder
     users?: UserOrderByRelationAggregateInput
     agents?: AgentOrderByRelationAggregateInput
     leads?: LeadOrderByRelationAggregateInput
     tools?: ToolOrderByRelationAggregateInput
+    calls?: CallOrderByRelationAggregateInput
+    phoneNumber?: PhoneNumberOrderByWithRelationInput
   }
 
   export type WorkspaceWhereUniqueInput = Prisma.AtLeast<{
     id?: string
+    phoneNumberId?: string
     AND?: WorkspaceWhereInput | WorkspaceWhereInput[]
     OR?: WorkspaceWhereInput[]
     NOT?: WorkspaceWhereInput | WorkspaceWhereInput[]
@@ -8467,13 +10028,16 @@ export namespace Prisma {
     agents?: AgentListRelationFilter
     leads?: LeadListRelationFilter
     tools?: ToolListRelationFilter
-  }, "id">
+    calls?: CallListRelationFilter
+    phoneNumber?: XOR<PhoneNumberNullableScalarRelationFilter, PhoneNumberWhereInput> | null
+  }, "id" | "phoneNumberId">
 
   export type WorkspaceOrderByWithAggregationInput = {
     id?: SortOrder
     name?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    phoneNumberId?: SortOrderInput | SortOrder
     _count?: WorkspaceCountOrderByAggregateInput
     _max?: WorkspaceMaxOrderByAggregateInput
     _min?: WorkspaceMinOrderByAggregateInput
@@ -8487,6 +10051,7 @@ export namespace Prisma {
     name?: StringWithAggregatesFilter<"Workspace"> | string
     createdAt?: DateTimeWithAggregatesFilter<"Workspace"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Workspace"> | Date | string
+    phoneNumberId?: StringNullableWithAggregatesFilter<"Workspace"> | string | null
   }
 
   export type AgentWhereInput = {
@@ -8501,8 +10066,8 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Agent"> | Date | string
     updatedAt?: DateTimeFilter<"Agent"> | Date | string
     workspace?: XOR<WorkspaceScalarRelationFilter, WorkspaceWhereInput>
-    phoneNumbers?: PhoneNumberListRelationFilter
     tools?: ToolListRelationFilter
+    calls?: CallListRelationFilter
   }
 
   export type AgentOrderByWithRelationInput = {
@@ -8514,8 +10079,8 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     workspace?: WorkspaceOrderByWithRelationInput
-    phoneNumbers?: PhoneNumberOrderByRelationAggregateInput
     tools?: ToolOrderByRelationAggregateInput
+    calls?: CallOrderByRelationAggregateInput
   }
 
   export type AgentWhereUniqueInput = Prisma.AtLeast<{
@@ -8530,8 +10095,8 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Agent"> | Date | string
     updatedAt?: DateTimeFilter<"Agent"> | Date | string
     workspace?: XOR<WorkspaceScalarRelationFilter, WorkspaceWhereInput>
-    phoneNumbers?: PhoneNumberListRelationFilter
     tools?: ToolListRelationFilter
+    calls?: CallListRelationFilter
   }, "id" | "elevenLabsId">
 
   export type AgentOrderByWithAggregationInput = {
@@ -8573,6 +10138,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Lead"> | Date | string
     updatedAt?: DateTimeFilter<"Lead"> | Date | string
     workspace?: XOR<WorkspaceScalarRelationFilter, WorkspaceWhereInput>
+    calls?: CallListRelationFilter
   }
 
   export type LeadOrderByWithRelationInput = {
@@ -8585,6 +10151,7 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     workspace?: WorkspaceOrderByWithRelationInput
+    calls?: CallOrderByRelationAggregateInput
   }
 
   export type LeadWhereUniqueInput = Prisma.AtLeast<{
@@ -8600,6 +10167,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Lead"> | Date | string
     updatedAt?: DateTimeFilter<"Lead"> | Date | string
     workspace?: XOR<WorkspaceScalarRelationFilter, WorkspaceWhereInput>
+    calls?: CallListRelationFilter
   }, "id">
 
   export type LeadOrderByWithAggregationInput = {
@@ -8637,43 +10205,46 @@ export namespace Prisma {
     id?: StringFilter<"PhoneNumber"> | string
     number?: StringFilter<"PhoneNumber"> | string
     label?: StringNullableFilter<"PhoneNumber"> | string | null
-    agentId?: StringNullableFilter<"PhoneNumber"> | string | null
+    elevenLabsPhoneNumberId?: StringNullableFilter<"PhoneNumber"> | string | null
     assignedAt?: DateTimeNullableFilter<"PhoneNumber"> | Date | string | null
     createdAt?: DateTimeFilter<"PhoneNumber"> | Date | string
     updatedAt?: DateTimeFilter<"PhoneNumber"> | Date | string
-    agent?: XOR<AgentNullableScalarRelationFilter, AgentWhereInput> | null
+    workspace?: XOR<WorkspaceNullableScalarRelationFilter, WorkspaceWhereInput> | null
+    calls?: CallListRelationFilter
   }
 
   export type PhoneNumberOrderByWithRelationInput = {
     id?: SortOrder
     number?: SortOrder
     label?: SortOrderInput | SortOrder
-    agentId?: SortOrderInput | SortOrder
+    elevenLabsPhoneNumberId?: SortOrderInput | SortOrder
     assignedAt?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    agent?: AgentOrderByWithRelationInput
+    workspace?: WorkspaceOrderByWithRelationInput
+    calls?: CallOrderByRelationAggregateInput
   }
 
   export type PhoneNumberWhereUniqueInput = Prisma.AtLeast<{
     id?: string
     number?: string
+    elevenLabsPhoneNumberId?: string
     AND?: PhoneNumberWhereInput | PhoneNumberWhereInput[]
     OR?: PhoneNumberWhereInput[]
     NOT?: PhoneNumberWhereInput | PhoneNumberWhereInput[]
     label?: StringNullableFilter<"PhoneNumber"> | string | null
-    agentId?: StringNullableFilter<"PhoneNumber"> | string | null
     assignedAt?: DateTimeNullableFilter<"PhoneNumber"> | Date | string | null
     createdAt?: DateTimeFilter<"PhoneNumber"> | Date | string
     updatedAt?: DateTimeFilter<"PhoneNumber"> | Date | string
-    agent?: XOR<AgentNullableScalarRelationFilter, AgentWhereInput> | null
-  }, "id" | "number">
+    workspace?: XOR<WorkspaceNullableScalarRelationFilter, WorkspaceWhereInput> | null
+    calls?: CallListRelationFilter
+  }, "id" | "number" | "elevenLabsPhoneNumberId">
 
   export type PhoneNumberOrderByWithAggregationInput = {
     id?: SortOrder
     number?: SortOrder
     label?: SortOrderInput | SortOrder
-    agentId?: SortOrderInput | SortOrder
+    elevenLabsPhoneNumberId?: SortOrderInput | SortOrder
     assignedAt?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -8689,7 +10260,7 @@ export namespace Prisma {
     id?: StringWithAggregatesFilter<"PhoneNumber"> | string
     number?: StringWithAggregatesFilter<"PhoneNumber"> | string
     label?: StringNullableWithAggregatesFilter<"PhoneNumber"> | string | null
-    agentId?: StringNullableWithAggregatesFilter<"PhoneNumber"> | string | null
+    elevenLabsPhoneNumberId?: StringNullableWithAggregatesFilter<"PhoneNumber"> | string | null
     assignedAt?: DateTimeNullableWithAggregatesFilter<"PhoneNumber"> | Date | string | null
     createdAt?: DateTimeWithAggregatesFilter<"PhoneNumber"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"PhoneNumber"> | Date | string
@@ -8768,6 +10339,117 @@ export namespace Prisma {
     updatedAt?: DateTimeWithAggregatesFilter<"Tool"> | Date | string
   }
 
+  export type CallWhereInput = {
+    AND?: CallWhereInput | CallWhereInput[]
+    OR?: CallWhereInput[]
+    NOT?: CallWhereInput | CallWhereInput[]
+    id?: StringFilter<"Call"> | string
+    workspaceId?: StringFilter<"Call"> | string
+    agentId?: StringFilter<"Call"> | string
+    leadId?: StringFilter<"Call"> | string
+    phoneNumberId?: StringFilter<"Call"> | string
+    callSid?: StringNullableFilter<"Call"> | string | null
+    status?: StringFilter<"Call"> | string
+    startedAt?: DateTimeFilter<"Call"> | Date | string
+    endedAt?: DateTimeNullableFilter<"Call"> | Date | string | null
+    duration?: IntNullableFilter<"Call"> | number | null
+    notes?: StringNullableFilter<"Call"> | string | null
+    recordingUrl?: StringNullableFilter<"Call"> | string | null
+    createdAt?: DateTimeFilter<"Call"> | Date | string
+    updatedAt?: DateTimeFilter<"Call"> | Date | string
+    workspace?: XOR<WorkspaceScalarRelationFilter, WorkspaceWhereInput>
+    agent?: XOR<AgentScalarRelationFilter, AgentWhereInput>
+    lead?: XOR<LeadScalarRelationFilter, LeadWhereInput>
+    phoneNumber?: XOR<PhoneNumberScalarRelationFilter, PhoneNumberWhereInput>
+  }
+
+  export type CallOrderByWithRelationInput = {
+    id?: SortOrder
+    workspaceId?: SortOrder
+    agentId?: SortOrder
+    leadId?: SortOrder
+    phoneNumberId?: SortOrder
+    callSid?: SortOrderInput | SortOrder
+    status?: SortOrder
+    startedAt?: SortOrder
+    endedAt?: SortOrderInput | SortOrder
+    duration?: SortOrderInput | SortOrder
+    notes?: SortOrderInput | SortOrder
+    recordingUrl?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    workspace?: WorkspaceOrderByWithRelationInput
+    agent?: AgentOrderByWithRelationInput
+    lead?: LeadOrderByWithRelationInput
+    phoneNumber?: PhoneNumberOrderByWithRelationInput
+  }
+
+  export type CallWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: CallWhereInput | CallWhereInput[]
+    OR?: CallWhereInput[]
+    NOT?: CallWhereInput | CallWhereInput[]
+    workspaceId?: StringFilter<"Call"> | string
+    agentId?: StringFilter<"Call"> | string
+    leadId?: StringFilter<"Call"> | string
+    phoneNumberId?: StringFilter<"Call"> | string
+    callSid?: StringNullableFilter<"Call"> | string | null
+    status?: StringFilter<"Call"> | string
+    startedAt?: DateTimeFilter<"Call"> | Date | string
+    endedAt?: DateTimeNullableFilter<"Call"> | Date | string | null
+    duration?: IntNullableFilter<"Call"> | number | null
+    notes?: StringNullableFilter<"Call"> | string | null
+    recordingUrl?: StringNullableFilter<"Call"> | string | null
+    createdAt?: DateTimeFilter<"Call"> | Date | string
+    updatedAt?: DateTimeFilter<"Call"> | Date | string
+    workspace?: XOR<WorkspaceScalarRelationFilter, WorkspaceWhereInput>
+    agent?: XOR<AgentScalarRelationFilter, AgentWhereInput>
+    lead?: XOR<LeadScalarRelationFilter, LeadWhereInput>
+    phoneNumber?: XOR<PhoneNumberScalarRelationFilter, PhoneNumberWhereInput>
+  }, "id">
+
+  export type CallOrderByWithAggregationInput = {
+    id?: SortOrder
+    workspaceId?: SortOrder
+    agentId?: SortOrder
+    leadId?: SortOrder
+    phoneNumberId?: SortOrder
+    callSid?: SortOrderInput | SortOrder
+    status?: SortOrder
+    startedAt?: SortOrder
+    endedAt?: SortOrderInput | SortOrder
+    duration?: SortOrderInput | SortOrder
+    notes?: SortOrderInput | SortOrder
+    recordingUrl?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: CallCountOrderByAggregateInput
+    _avg?: CallAvgOrderByAggregateInput
+    _max?: CallMaxOrderByAggregateInput
+    _min?: CallMinOrderByAggregateInput
+    _sum?: CallSumOrderByAggregateInput
+  }
+
+  export type CallScalarWhereWithAggregatesInput = {
+    AND?: CallScalarWhereWithAggregatesInput | CallScalarWhereWithAggregatesInput[]
+    OR?: CallScalarWhereWithAggregatesInput[]
+    NOT?: CallScalarWhereWithAggregatesInput | CallScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"Call"> | string
+    workspaceId?: StringWithAggregatesFilter<"Call"> | string
+    agentId?: StringWithAggregatesFilter<"Call"> | string
+    leadId?: StringWithAggregatesFilter<"Call"> | string
+    phoneNumberId?: StringWithAggregatesFilter<"Call"> | string
+    callSid?: StringNullableWithAggregatesFilter<"Call"> | string | null
+    status?: StringWithAggregatesFilter<"Call"> | string
+    startedAt?: DateTimeWithAggregatesFilter<"Call"> | Date | string
+    endedAt?: DateTimeNullableWithAggregatesFilter<"Call"> | Date | string | null
+    duration?: IntNullableWithAggregatesFilter<"Call"> | number | null
+    notes?: StringNullableWithAggregatesFilter<"Call"> | string | null
+    recordingUrl?: StringNullableWithAggregatesFilter<"Call"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"Call"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"Call"> | Date | string
+  }
+
   export type UserCreateInput = {
     id?: string
     clerkId: string
@@ -8844,6 +10526,8 @@ export namespace Prisma {
     agents?: AgentCreateNestedManyWithoutWorkspaceInput
     leads?: LeadCreateNestedManyWithoutWorkspaceInput
     tools?: ToolCreateNestedManyWithoutWorkspaceInput
+    calls?: CallCreateNestedManyWithoutWorkspaceInput
+    phoneNumber?: PhoneNumberCreateNestedOneWithoutWorkspaceInput
   }
 
   export type WorkspaceUncheckedCreateInput = {
@@ -8851,10 +10535,12 @@ export namespace Prisma {
     name: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    phoneNumberId?: string | null
     users?: UserUncheckedCreateNestedManyWithoutWorkspacesInput
     agents?: AgentUncheckedCreateNestedManyWithoutWorkspaceInput
     leads?: LeadUncheckedCreateNestedManyWithoutWorkspaceInput
     tools?: ToolUncheckedCreateNestedManyWithoutWorkspaceInput
+    calls?: CallUncheckedCreateNestedManyWithoutWorkspaceInput
   }
 
   export type WorkspaceUpdateInput = {
@@ -8866,6 +10552,8 @@ export namespace Prisma {
     agents?: AgentUpdateManyWithoutWorkspaceNestedInput
     leads?: LeadUpdateManyWithoutWorkspaceNestedInput
     tools?: ToolUpdateManyWithoutWorkspaceNestedInput
+    calls?: CallUpdateManyWithoutWorkspaceNestedInput
+    phoneNumber?: PhoneNumberUpdateOneWithoutWorkspaceNestedInput
   }
 
   export type WorkspaceUncheckedUpdateInput = {
@@ -8873,10 +10561,12 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    phoneNumberId?: NullableStringFieldUpdateOperationsInput | string | null
     users?: UserUncheckedUpdateManyWithoutWorkspacesNestedInput
     agents?: AgentUncheckedUpdateManyWithoutWorkspaceNestedInput
     leads?: LeadUncheckedUpdateManyWithoutWorkspaceNestedInput
     tools?: ToolUncheckedUpdateManyWithoutWorkspaceNestedInput
+    calls?: CallUncheckedUpdateManyWithoutWorkspaceNestedInput
   }
 
   export type WorkspaceCreateManyInput = {
@@ -8884,6 +10574,7 @@ export namespace Prisma {
     name: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    phoneNumberId?: string | null
   }
 
   export type WorkspaceUpdateManyMutationInput = {
@@ -8898,6 +10589,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    phoneNumberId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type AgentCreateInput = {
@@ -8908,8 +10600,8 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     workspace: WorkspaceCreateNestedOneWithoutAgentsInput
-    phoneNumbers?: PhoneNumberCreateNestedManyWithoutAgentInput
     tools?: ToolCreateNestedManyWithoutAgentsInput
+    calls?: CallCreateNestedManyWithoutAgentInput
   }
 
   export type AgentUncheckedCreateInput = {
@@ -8920,8 +10612,8 @@ export namespace Prisma {
     config?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
-    phoneNumbers?: PhoneNumberUncheckedCreateNestedManyWithoutAgentInput
     tools?: ToolUncheckedCreateNestedManyWithoutAgentsInput
+    calls?: CallUncheckedCreateNestedManyWithoutAgentInput
   }
 
   export type AgentUpdateInput = {
@@ -8932,8 +10624,8 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     workspace?: WorkspaceUpdateOneRequiredWithoutAgentsNestedInput
-    phoneNumbers?: PhoneNumberUpdateManyWithoutAgentNestedInput
     tools?: ToolUpdateManyWithoutAgentsNestedInput
+    calls?: CallUpdateManyWithoutAgentNestedInput
   }
 
   export type AgentUncheckedUpdateInput = {
@@ -8944,8 +10636,8 @@ export namespace Prisma {
     config?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    phoneNumbers?: PhoneNumberUncheckedUpdateManyWithoutAgentNestedInput
     tools?: ToolUncheckedUpdateManyWithoutAgentsNestedInput
+    calls?: CallUncheckedUpdateManyWithoutAgentNestedInput
   }
 
   export type AgentCreateManyInput = {
@@ -8986,6 +10678,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     workspace: WorkspaceCreateNestedOneWithoutLeadsInput
+    calls?: CallCreateNestedManyWithoutLeadInput
   }
 
   export type LeadUncheckedCreateInput = {
@@ -8997,6 +10690,7 @@ export namespace Prisma {
     notes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    calls?: CallUncheckedCreateNestedManyWithoutLeadInput
   }
 
   export type LeadUpdateInput = {
@@ -9008,6 +10702,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     workspace?: WorkspaceUpdateOneRequiredWithoutLeadsNestedInput
+    calls?: CallUpdateManyWithoutLeadNestedInput
   }
 
   export type LeadUncheckedUpdateInput = {
@@ -9019,6 +10714,7 @@ export namespace Prisma {
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    calls?: CallUncheckedUpdateManyWithoutLeadNestedInput
   }
 
   export type LeadCreateManyInput = {
@@ -9057,47 +10753,55 @@ export namespace Prisma {
     id?: string
     number: string
     label?: string | null
+    elevenLabsPhoneNumberId?: string | null
     assignedAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    agent?: AgentCreateNestedOneWithoutPhoneNumbersInput
+    workspace?: WorkspaceCreateNestedOneWithoutPhoneNumberInput
+    calls?: CallCreateNestedManyWithoutPhoneNumberInput
   }
 
   export type PhoneNumberUncheckedCreateInput = {
     id?: string
     number: string
     label?: string | null
-    agentId?: string | null
+    elevenLabsPhoneNumberId?: string | null
     assignedAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    workspace?: WorkspaceUncheckedCreateNestedOneWithoutPhoneNumberInput
+    calls?: CallUncheckedCreateNestedManyWithoutPhoneNumberInput
   }
 
   export type PhoneNumberUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     number?: StringFieldUpdateOperationsInput | string
     label?: NullableStringFieldUpdateOperationsInput | string | null
+    elevenLabsPhoneNumberId?: NullableStringFieldUpdateOperationsInput | string | null
     assignedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    agent?: AgentUpdateOneWithoutPhoneNumbersNestedInput
+    workspace?: WorkspaceUpdateOneWithoutPhoneNumberNestedInput
+    calls?: CallUpdateManyWithoutPhoneNumberNestedInput
   }
 
   export type PhoneNumberUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     number?: StringFieldUpdateOperationsInput | string
     label?: NullableStringFieldUpdateOperationsInput | string | null
-    agentId?: NullableStringFieldUpdateOperationsInput | string | null
+    elevenLabsPhoneNumberId?: NullableStringFieldUpdateOperationsInput | string | null
     assignedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    workspace?: WorkspaceUncheckedUpdateOneWithoutPhoneNumberNestedInput
+    calls?: CallUncheckedUpdateManyWithoutPhoneNumberNestedInput
   }
 
   export type PhoneNumberCreateManyInput = {
     id?: string
     number: string
     label?: string | null
-    agentId?: string | null
+    elevenLabsPhoneNumberId?: string | null
     assignedAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -9107,6 +10811,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     number?: StringFieldUpdateOperationsInput | string
     label?: NullableStringFieldUpdateOperationsInput | string | null
+    elevenLabsPhoneNumberId?: NullableStringFieldUpdateOperationsInput | string | null
     assignedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -9116,7 +10821,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     number?: StringFieldUpdateOperationsInput | string
     label?: NullableStringFieldUpdateOperationsInput | string | null
-    agentId?: NullableStringFieldUpdateOperationsInput | string | null
+    elevenLabsPhoneNumberId?: NullableStringFieldUpdateOperationsInput | string | null
     assignedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -9198,6 +10903,121 @@ export namespace Prisma {
     config?: JsonNullValueInput | InputJsonValue
     workspaceId?: StringFieldUpdateOperationsInput | string
     elevenLabsToolId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CallCreateInput = {
+    id?: string
+    callSid?: string | null
+    status: string
+    startedAt?: Date | string
+    endedAt?: Date | string | null
+    duration?: number | null
+    notes?: string | null
+    recordingUrl?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    workspace: WorkspaceCreateNestedOneWithoutCallsInput
+    agent: AgentCreateNestedOneWithoutCallsInput
+    lead: LeadCreateNestedOneWithoutCallsInput
+    phoneNumber: PhoneNumberCreateNestedOneWithoutCallsInput
+  }
+
+  export type CallUncheckedCreateInput = {
+    id?: string
+    workspaceId: string
+    agentId: string
+    leadId: string
+    phoneNumberId: string
+    callSid?: string | null
+    status: string
+    startedAt?: Date | string
+    endedAt?: Date | string | null
+    duration?: number | null
+    notes?: string | null
+    recordingUrl?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type CallUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    callSid?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    endedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    duration?: NullableIntFieldUpdateOperationsInput | number | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    recordingUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    workspace?: WorkspaceUpdateOneRequiredWithoutCallsNestedInput
+    agent?: AgentUpdateOneRequiredWithoutCallsNestedInput
+    lead?: LeadUpdateOneRequiredWithoutCallsNestedInput
+    phoneNumber?: PhoneNumberUpdateOneRequiredWithoutCallsNestedInput
+  }
+
+  export type CallUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    workspaceId?: StringFieldUpdateOperationsInput | string
+    agentId?: StringFieldUpdateOperationsInput | string
+    leadId?: StringFieldUpdateOperationsInput | string
+    phoneNumberId?: StringFieldUpdateOperationsInput | string
+    callSid?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    endedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    duration?: NullableIntFieldUpdateOperationsInput | number | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    recordingUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CallCreateManyInput = {
+    id?: string
+    workspaceId: string
+    agentId: string
+    leadId: string
+    phoneNumberId: string
+    callSid?: string | null
+    status: string
+    startedAt?: Date | string
+    endedAt?: Date | string | null
+    duration?: number | null
+    notes?: string | null
+    recordingUrl?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type CallUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    callSid?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    endedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    duration?: NullableIntFieldUpdateOperationsInput | number | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    recordingUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CallUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    workspaceId?: StringFieldUpdateOperationsInput | string
+    agentId?: StringFieldUpdateOperationsInput | string
+    leadId?: StringFieldUpdateOperationsInput | string
+    phoneNumberId?: StringFieldUpdateOperationsInput | string
+    callSid?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    endedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    duration?: NullableIntFieldUpdateOperationsInput | number | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    recordingUrl?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -9359,6 +11179,17 @@ export namespace Prisma {
     none?: ToolWhereInput
   }
 
+  export type CallListRelationFilter = {
+    every?: CallWhereInput
+    some?: CallWhereInput
+    none?: CallWhereInput
+  }
+
+  export type PhoneNumberNullableScalarRelationFilter = {
+    is?: PhoneNumberWhereInput | null
+    isNot?: PhoneNumberWhereInput | null
+  }
+
   export type UserOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
@@ -9375,11 +11206,16 @@ export namespace Prisma {
     _count?: SortOrder
   }
 
+  export type CallOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
   export type WorkspaceCountOrderByAggregateInput = {
     id?: SortOrder
     name?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    phoneNumberId?: SortOrder
   }
 
   export type WorkspaceMaxOrderByAggregateInput = {
@@ -9387,6 +11223,7 @@ export namespace Prisma {
     name?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    phoneNumberId?: SortOrder
   }
 
   export type WorkspaceMinOrderByAggregateInput = {
@@ -9394,6 +11231,7 @@ export namespace Prisma {
     name?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    phoneNumberId?: SortOrder
   }
   export type JsonNullableFilter<$PrismaModel = never> =
     | PatchUndefined<
@@ -9422,16 +11260,6 @@ export namespace Prisma {
   export type WorkspaceScalarRelationFilter = {
     is?: WorkspaceWhereInput
     isNot?: WorkspaceWhereInput
-  }
-
-  export type PhoneNumberListRelationFilter = {
-    every?: PhoneNumberWhereInput
-    some?: PhoneNumberWhereInput
-    none?: PhoneNumberWhereInput
-  }
-
-  export type PhoneNumberOrderByRelationAggregateInput = {
-    _count?: SortOrder
   }
 
   export type AgentCountOrderByAggregateInput = {
@@ -9532,16 +11360,16 @@ export namespace Prisma {
     not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
   }
 
-  export type AgentNullableScalarRelationFilter = {
-    is?: AgentWhereInput | null
-    isNot?: AgentWhereInput | null
+  export type WorkspaceNullableScalarRelationFilter = {
+    is?: WorkspaceWhereInput | null
+    isNot?: WorkspaceWhereInput | null
   }
 
   export type PhoneNumberCountOrderByAggregateInput = {
     id?: SortOrder
     number?: SortOrder
     label?: SortOrder
-    agentId?: SortOrder
+    elevenLabsPhoneNumberId?: SortOrder
     assignedAt?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -9551,7 +11379,7 @@ export namespace Prisma {
     id?: SortOrder
     number?: SortOrder
     label?: SortOrder
-    agentId?: SortOrder
+    elevenLabsPhoneNumberId?: SortOrder
     assignedAt?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -9561,7 +11389,7 @@ export namespace Prisma {
     id?: SortOrder
     number?: SortOrder
     label?: SortOrder
-    agentId?: SortOrder
+    elevenLabsPhoneNumberId?: SortOrder
     assignedAt?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -9661,6 +11489,107 @@ export namespace Prisma {
     _max?: NestedJsonFilter<$PrismaModel>
   }
 
+  export type IntNullableFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableFilter<$PrismaModel> | number | null
+  }
+
+  export type AgentScalarRelationFilter = {
+    is?: AgentWhereInput
+    isNot?: AgentWhereInput
+  }
+
+  export type LeadScalarRelationFilter = {
+    is?: LeadWhereInput
+    isNot?: LeadWhereInput
+  }
+
+  export type PhoneNumberScalarRelationFilter = {
+    is?: PhoneNumberWhereInput
+    isNot?: PhoneNumberWhereInput
+  }
+
+  export type CallCountOrderByAggregateInput = {
+    id?: SortOrder
+    workspaceId?: SortOrder
+    agentId?: SortOrder
+    leadId?: SortOrder
+    phoneNumberId?: SortOrder
+    callSid?: SortOrder
+    status?: SortOrder
+    startedAt?: SortOrder
+    endedAt?: SortOrder
+    duration?: SortOrder
+    notes?: SortOrder
+    recordingUrl?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type CallAvgOrderByAggregateInput = {
+    duration?: SortOrder
+  }
+
+  export type CallMaxOrderByAggregateInput = {
+    id?: SortOrder
+    workspaceId?: SortOrder
+    agentId?: SortOrder
+    leadId?: SortOrder
+    phoneNumberId?: SortOrder
+    callSid?: SortOrder
+    status?: SortOrder
+    startedAt?: SortOrder
+    endedAt?: SortOrder
+    duration?: SortOrder
+    notes?: SortOrder
+    recordingUrl?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type CallMinOrderByAggregateInput = {
+    id?: SortOrder
+    workspaceId?: SortOrder
+    agentId?: SortOrder
+    leadId?: SortOrder
+    phoneNumberId?: SortOrder
+    callSid?: SortOrder
+    status?: SortOrder
+    startedAt?: SortOrder
+    endedAt?: SortOrder
+    duration?: SortOrder
+    notes?: SortOrder
+    recordingUrl?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type CallSumOrderByAggregateInput = {
+    duration?: SortOrder
+  }
+
+  export type IntNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedIntNullableFilter<$PrismaModel>
+    _max?: NestedIntNullableFilter<$PrismaModel>
+  }
+
   export type WorkspaceCreateNestedManyWithoutUsersInput = {
     create?: XOR<WorkspaceCreateWithoutUsersInput, WorkspaceUncheckedCreateWithoutUsersInput> | WorkspaceCreateWithoutUsersInput[] | WorkspaceUncheckedCreateWithoutUsersInput[]
     connectOrCreate?: WorkspaceCreateOrConnectWithoutUsersInput | WorkspaceCreateOrConnectWithoutUsersInput[]
@@ -9738,6 +11667,19 @@ export namespace Prisma {
     connect?: ToolWhereUniqueInput | ToolWhereUniqueInput[]
   }
 
+  export type CallCreateNestedManyWithoutWorkspaceInput = {
+    create?: XOR<CallCreateWithoutWorkspaceInput, CallUncheckedCreateWithoutWorkspaceInput> | CallCreateWithoutWorkspaceInput[] | CallUncheckedCreateWithoutWorkspaceInput[]
+    connectOrCreate?: CallCreateOrConnectWithoutWorkspaceInput | CallCreateOrConnectWithoutWorkspaceInput[]
+    createMany?: CallCreateManyWorkspaceInputEnvelope
+    connect?: CallWhereUniqueInput | CallWhereUniqueInput[]
+  }
+
+  export type PhoneNumberCreateNestedOneWithoutWorkspaceInput = {
+    create?: XOR<PhoneNumberCreateWithoutWorkspaceInput, PhoneNumberUncheckedCreateWithoutWorkspaceInput>
+    connectOrCreate?: PhoneNumberCreateOrConnectWithoutWorkspaceInput
+    connect?: PhoneNumberWhereUniqueInput
+  }
+
   export type UserUncheckedCreateNestedManyWithoutWorkspacesInput = {
     create?: XOR<UserCreateWithoutWorkspacesInput, UserUncheckedCreateWithoutWorkspacesInput> | UserCreateWithoutWorkspacesInput[] | UserUncheckedCreateWithoutWorkspacesInput[]
     connectOrCreate?: UserCreateOrConnectWithoutWorkspacesInput | UserCreateOrConnectWithoutWorkspacesInput[]
@@ -9763,6 +11705,13 @@ export namespace Prisma {
     connectOrCreate?: ToolCreateOrConnectWithoutWorkspaceInput | ToolCreateOrConnectWithoutWorkspaceInput[]
     createMany?: ToolCreateManyWorkspaceInputEnvelope
     connect?: ToolWhereUniqueInput | ToolWhereUniqueInput[]
+  }
+
+  export type CallUncheckedCreateNestedManyWithoutWorkspaceInput = {
+    create?: XOR<CallCreateWithoutWorkspaceInput, CallUncheckedCreateWithoutWorkspaceInput> | CallCreateWithoutWorkspaceInput[] | CallUncheckedCreateWithoutWorkspaceInput[]
+    connectOrCreate?: CallCreateOrConnectWithoutWorkspaceInput | CallCreateOrConnectWithoutWorkspaceInput[]
+    createMany?: CallCreateManyWorkspaceInputEnvelope
+    connect?: CallWhereUniqueInput | CallWhereUniqueInput[]
   }
 
   export type UserUpdateManyWithoutWorkspacesNestedInput = {
@@ -9820,6 +11769,30 @@ export namespace Prisma {
     deleteMany?: ToolScalarWhereInput | ToolScalarWhereInput[]
   }
 
+  export type CallUpdateManyWithoutWorkspaceNestedInput = {
+    create?: XOR<CallCreateWithoutWorkspaceInput, CallUncheckedCreateWithoutWorkspaceInput> | CallCreateWithoutWorkspaceInput[] | CallUncheckedCreateWithoutWorkspaceInput[]
+    connectOrCreate?: CallCreateOrConnectWithoutWorkspaceInput | CallCreateOrConnectWithoutWorkspaceInput[]
+    upsert?: CallUpsertWithWhereUniqueWithoutWorkspaceInput | CallUpsertWithWhereUniqueWithoutWorkspaceInput[]
+    createMany?: CallCreateManyWorkspaceInputEnvelope
+    set?: CallWhereUniqueInput | CallWhereUniqueInput[]
+    disconnect?: CallWhereUniqueInput | CallWhereUniqueInput[]
+    delete?: CallWhereUniqueInput | CallWhereUniqueInput[]
+    connect?: CallWhereUniqueInput | CallWhereUniqueInput[]
+    update?: CallUpdateWithWhereUniqueWithoutWorkspaceInput | CallUpdateWithWhereUniqueWithoutWorkspaceInput[]
+    updateMany?: CallUpdateManyWithWhereWithoutWorkspaceInput | CallUpdateManyWithWhereWithoutWorkspaceInput[]
+    deleteMany?: CallScalarWhereInput | CallScalarWhereInput[]
+  }
+
+  export type PhoneNumberUpdateOneWithoutWorkspaceNestedInput = {
+    create?: XOR<PhoneNumberCreateWithoutWorkspaceInput, PhoneNumberUncheckedCreateWithoutWorkspaceInput>
+    connectOrCreate?: PhoneNumberCreateOrConnectWithoutWorkspaceInput
+    upsert?: PhoneNumberUpsertWithoutWorkspaceInput
+    disconnect?: PhoneNumberWhereInput | boolean
+    delete?: PhoneNumberWhereInput | boolean
+    connect?: PhoneNumberWhereUniqueInput
+    update?: XOR<XOR<PhoneNumberUpdateToOneWithWhereWithoutWorkspaceInput, PhoneNumberUpdateWithoutWorkspaceInput>, PhoneNumberUncheckedUpdateWithoutWorkspaceInput>
+  }
+
   export type UserUncheckedUpdateManyWithoutWorkspacesNestedInput = {
     create?: XOR<UserCreateWithoutWorkspacesInput, UserUncheckedCreateWithoutWorkspacesInput> | UserCreateWithoutWorkspacesInput[] | UserUncheckedCreateWithoutWorkspacesInput[]
     connectOrCreate?: UserCreateOrConnectWithoutWorkspacesInput | UserCreateOrConnectWithoutWorkspacesInput[]
@@ -9875,17 +11848,24 @@ export namespace Prisma {
     deleteMany?: ToolScalarWhereInput | ToolScalarWhereInput[]
   }
 
+  export type CallUncheckedUpdateManyWithoutWorkspaceNestedInput = {
+    create?: XOR<CallCreateWithoutWorkspaceInput, CallUncheckedCreateWithoutWorkspaceInput> | CallCreateWithoutWorkspaceInput[] | CallUncheckedCreateWithoutWorkspaceInput[]
+    connectOrCreate?: CallCreateOrConnectWithoutWorkspaceInput | CallCreateOrConnectWithoutWorkspaceInput[]
+    upsert?: CallUpsertWithWhereUniqueWithoutWorkspaceInput | CallUpsertWithWhereUniqueWithoutWorkspaceInput[]
+    createMany?: CallCreateManyWorkspaceInputEnvelope
+    set?: CallWhereUniqueInput | CallWhereUniqueInput[]
+    disconnect?: CallWhereUniqueInput | CallWhereUniqueInput[]
+    delete?: CallWhereUniqueInput | CallWhereUniqueInput[]
+    connect?: CallWhereUniqueInput | CallWhereUniqueInput[]
+    update?: CallUpdateWithWhereUniqueWithoutWorkspaceInput | CallUpdateWithWhereUniqueWithoutWorkspaceInput[]
+    updateMany?: CallUpdateManyWithWhereWithoutWorkspaceInput | CallUpdateManyWithWhereWithoutWorkspaceInput[]
+    deleteMany?: CallScalarWhereInput | CallScalarWhereInput[]
+  }
+
   export type WorkspaceCreateNestedOneWithoutAgentsInput = {
     create?: XOR<WorkspaceCreateWithoutAgentsInput, WorkspaceUncheckedCreateWithoutAgentsInput>
     connectOrCreate?: WorkspaceCreateOrConnectWithoutAgentsInput
     connect?: WorkspaceWhereUniqueInput
-  }
-
-  export type PhoneNumberCreateNestedManyWithoutAgentInput = {
-    create?: XOR<PhoneNumberCreateWithoutAgentInput, PhoneNumberUncheckedCreateWithoutAgentInput> | PhoneNumberCreateWithoutAgentInput[] | PhoneNumberUncheckedCreateWithoutAgentInput[]
-    connectOrCreate?: PhoneNumberCreateOrConnectWithoutAgentInput | PhoneNumberCreateOrConnectWithoutAgentInput[]
-    createMany?: PhoneNumberCreateManyAgentInputEnvelope
-    connect?: PhoneNumberWhereUniqueInput | PhoneNumberWhereUniqueInput[]
   }
 
   export type ToolCreateNestedManyWithoutAgentsInput = {
@@ -9894,11 +11874,11 @@ export namespace Prisma {
     connect?: ToolWhereUniqueInput | ToolWhereUniqueInput[]
   }
 
-  export type PhoneNumberUncheckedCreateNestedManyWithoutAgentInput = {
-    create?: XOR<PhoneNumberCreateWithoutAgentInput, PhoneNumberUncheckedCreateWithoutAgentInput> | PhoneNumberCreateWithoutAgentInput[] | PhoneNumberUncheckedCreateWithoutAgentInput[]
-    connectOrCreate?: PhoneNumberCreateOrConnectWithoutAgentInput | PhoneNumberCreateOrConnectWithoutAgentInput[]
-    createMany?: PhoneNumberCreateManyAgentInputEnvelope
-    connect?: PhoneNumberWhereUniqueInput | PhoneNumberWhereUniqueInput[]
+  export type CallCreateNestedManyWithoutAgentInput = {
+    create?: XOR<CallCreateWithoutAgentInput, CallUncheckedCreateWithoutAgentInput> | CallCreateWithoutAgentInput[] | CallUncheckedCreateWithoutAgentInput[]
+    connectOrCreate?: CallCreateOrConnectWithoutAgentInput | CallCreateOrConnectWithoutAgentInput[]
+    createMany?: CallCreateManyAgentInputEnvelope
+    connect?: CallWhereUniqueInput | CallWhereUniqueInput[]
   }
 
   export type ToolUncheckedCreateNestedManyWithoutAgentsInput = {
@@ -9907,26 +11887,19 @@ export namespace Prisma {
     connect?: ToolWhereUniqueInput | ToolWhereUniqueInput[]
   }
 
+  export type CallUncheckedCreateNestedManyWithoutAgentInput = {
+    create?: XOR<CallCreateWithoutAgentInput, CallUncheckedCreateWithoutAgentInput> | CallCreateWithoutAgentInput[] | CallUncheckedCreateWithoutAgentInput[]
+    connectOrCreate?: CallCreateOrConnectWithoutAgentInput | CallCreateOrConnectWithoutAgentInput[]
+    createMany?: CallCreateManyAgentInputEnvelope
+    connect?: CallWhereUniqueInput | CallWhereUniqueInput[]
+  }
+
   export type WorkspaceUpdateOneRequiredWithoutAgentsNestedInput = {
     create?: XOR<WorkspaceCreateWithoutAgentsInput, WorkspaceUncheckedCreateWithoutAgentsInput>
     connectOrCreate?: WorkspaceCreateOrConnectWithoutAgentsInput
     upsert?: WorkspaceUpsertWithoutAgentsInput
     connect?: WorkspaceWhereUniqueInput
     update?: XOR<XOR<WorkspaceUpdateToOneWithWhereWithoutAgentsInput, WorkspaceUpdateWithoutAgentsInput>, WorkspaceUncheckedUpdateWithoutAgentsInput>
-  }
-
-  export type PhoneNumberUpdateManyWithoutAgentNestedInput = {
-    create?: XOR<PhoneNumberCreateWithoutAgentInput, PhoneNumberUncheckedCreateWithoutAgentInput> | PhoneNumberCreateWithoutAgentInput[] | PhoneNumberUncheckedCreateWithoutAgentInput[]
-    connectOrCreate?: PhoneNumberCreateOrConnectWithoutAgentInput | PhoneNumberCreateOrConnectWithoutAgentInput[]
-    upsert?: PhoneNumberUpsertWithWhereUniqueWithoutAgentInput | PhoneNumberUpsertWithWhereUniqueWithoutAgentInput[]
-    createMany?: PhoneNumberCreateManyAgentInputEnvelope
-    set?: PhoneNumberWhereUniqueInput | PhoneNumberWhereUniqueInput[]
-    disconnect?: PhoneNumberWhereUniqueInput | PhoneNumberWhereUniqueInput[]
-    delete?: PhoneNumberWhereUniqueInput | PhoneNumberWhereUniqueInput[]
-    connect?: PhoneNumberWhereUniqueInput | PhoneNumberWhereUniqueInput[]
-    update?: PhoneNumberUpdateWithWhereUniqueWithoutAgentInput | PhoneNumberUpdateWithWhereUniqueWithoutAgentInput[]
-    updateMany?: PhoneNumberUpdateManyWithWhereWithoutAgentInput | PhoneNumberUpdateManyWithWhereWithoutAgentInput[]
-    deleteMany?: PhoneNumberScalarWhereInput | PhoneNumberScalarWhereInput[]
   }
 
   export type ToolUpdateManyWithoutAgentsNestedInput = {
@@ -9942,18 +11915,18 @@ export namespace Prisma {
     deleteMany?: ToolScalarWhereInput | ToolScalarWhereInput[]
   }
 
-  export type PhoneNumberUncheckedUpdateManyWithoutAgentNestedInput = {
-    create?: XOR<PhoneNumberCreateWithoutAgentInput, PhoneNumberUncheckedCreateWithoutAgentInput> | PhoneNumberCreateWithoutAgentInput[] | PhoneNumberUncheckedCreateWithoutAgentInput[]
-    connectOrCreate?: PhoneNumberCreateOrConnectWithoutAgentInput | PhoneNumberCreateOrConnectWithoutAgentInput[]
-    upsert?: PhoneNumberUpsertWithWhereUniqueWithoutAgentInput | PhoneNumberUpsertWithWhereUniqueWithoutAgentInput[]
-    createMany?: PhoneNumberCreateManyAgentInputEnvelope
-    set?: PhoneNumberWhereUniqueInput | PhoneNumberWhereUniqueInput[]
-    disconnect?: PhoneNumberWhereUniqueInput | PhoneNumberWhereUniqueInput[]
-    delete?: PhoneNumberWhereUniqueInput | PhoneNumberWhereUniqueInput[]
-    connect?: PhoneNumberWhereUniqueInput | PhoneNumberWhereUniqueInput[]
-    update?: PhoneNumberUpdateWithWhereUniqueWithoutAgentInput | PhoneNumberUpdateWithWhereUniqueWithoutAgentInput[]
-    updateMany?: PhoneNumberUpdateManyWithWhereWithoutAgentInput | PhoneNumberUpdateManyWithWhereWithoutAgentInput[]
-    deleteMany?: PhoneNumberScalarWhereInput | PhoneNumberScalarWhereInput[]
+  export type CallUpdateManyWithoutAgentNestedInput = {
+    create?: XOR<CallCreateWithoutAgentInput, CallUncheckedCreateWithoutAgentInput> | CallCreateWithoutAgentInput[] | CallUncheckedCreateWithoutAgentInput[]
+    connectOrCreate?: CallCreateOrConnectWithoutAgentInput | CallCreateOrConnectWithoutAgentInput[]
+    upsert?: CallUpsertWithWhereUniqueWithoutAgentInput | CallUpsertWithWhereUniqueWithoutAgentInput[]
+    createMany?: CallCreateManyAgentInputEnvelope
+    set?: CallWhereUniqueInput | CallWhereUniqueInput[]
+    disconnect?: CallWhereUniqueInput | CallWhereUniqueInput[]
+    delete?: CallWhereUniqueInput | CallWhereUniqueInput[]
+    connect?: CallWhereUniqueInput | CallWhereUniqueInput[]
+    update?: CallUpdateWithWhereUniqueWithoutAgentInput | CallUpdateWithWhereUniqueWithoutAgentInput[]
+    updateMany?: CallUpdateManyWithWhereWithoutAgentInput | CallUpdateManyWithWhereWithoutAgentInput[]
+    deleteMany?: CallScalarWhereInput | CallScalarWhereInput[]
   }
 
   export type ToolUncheckedUpdateManyWithoutAgentsNestedInput = {
@@ -9969,10 +11942,38 @@ export namespace Prisma {
     deleteMany?: ToolScalarWhereInput | ToolScalarWhereInput[]
   }
 
+  export type CallUncheckedUpdateManyWithoutAgentNestedInput = {
+    create?: XOR<CallCreateWithoutAgentInput, CallUncheckedCreateWithoutAgentInput> | CallCreateWithoutAgentInput[] | CallUncheckedCreateWithoutAgentInput[]
+    connectOrCreate?: CallCreateOrConnectWithoutAgentInput | CallCreateOrConnectWithoutAgentInput[]
+    upsert?: CallUpsertWithWhereUniqueWithoutAgentInput | CallUpsertWithWhereUniqueWithoutAgentInput[]
+    createMany?: CallCreateManyAgentInputEnvelope
+    set?: CallWhereUniqueInput | CallWhereUniqueInput[]
+    disconnect?: CallWhereUniqueInput | CallWhereUniqueInput[]
+    delete?: CallWhereUniqueInput | CallWhereUniqueInput[]
+    connect?: CallWhereUniqueInput | CallWhereUniqueInput[]
+    update?: CallUpdateWithWhereUniqueWithoutAgentInput | CallUpdateWithWhereUniqueWithoutAgentInput[]
+    updateMany?: CallUpdateManyWithWhereWithoutAgentInput | CallUpdateManyWithWhereWithoutAgentInput[]
+    deleteMany?: CallScalarWhereInput | CallScalarWhereInput[]
+  }
+
   export type WorkspaceCreateNestedOneWithoutLeadsInput = {
     create?: XOR<WorkspaceCreateWithoutLeadsInput, WorkspaceUncheckedCreateWithoutLeadsInput>
     connectOrCreate?: WorkspaceCreateOrConnectWithoutLeadsInput
     connect?: WorkspaceWhereUniqueInput
+  }
+
+  export type CallCreateNestedManyWithoutLeadInput = {
+    create?: XOR<CallCreateWithoutLeadInput, CallUncheckedCreateWithoutLeadInput> | CallCreateWithoutLeadInput[] | CallUncheckedCreateWithoutLeadInput[]
+    connectOrCreate?: CallCreateOrConnectWithoutLeadInput | CallCreateOrConnectWithoutLeadInput[]
+    createMany?: CallCreateManyLeadInputEnvelope
+    connect?: CallWhereUniqueInput | CallWhereUniqueInput[]
+  }
+
+  export type CallUncheckedCreateNestedManyWithoutLeadInput = {
+    create?: XOR<CallCreateWithoutLeadInput, CallUncheckedCreateWithoutLeadInput> | CallCreateWithoutLeadInput[] | CallUncheckedCreateWithoutLeadInput[]
+    connectOrCreate?: CallCreateOrConnectWithoutLeadInput | CallCreateOrConnectWithoutLeadInput[]
+    createMany?: CallCreateManyLeadInputEnvelope
+    connect?: CallWhereUniqueInput | CallWhereUniqueInput[]
   }
 
   export type WorkspaceUpdateOneRequiredWithoutLeadsNestedInput = {
@@ -9983,24 +11984,110 @@ export namespace Prisma {
     update?: XOR<XOR<WorkspaceUpdateToOneWithWhereWithoutLeadsInput, WorkspaceUpdateWithoutLeadsInput>, WorkspaceUncheckedUpdateWithoutLeadsInput>
   }
 
-  export type AgentCreateNestedOneWithoutPhoneNumbersInput = {
-    create?: XOR<AgentCreateWithoutPhoneNumbersInput, AgentUncheckedCreateWithoutPhoneNumbersInput>
-    connectOrCreate?: AgentCreateOrConnectWithoutPhoneNumbersInput
-    connect?: AgentWhereUniqueInput
+  export type CallUpdateManyWithoutLeadNestedInput = {
+    create?: XOR<CallCreateWithoutLeadInput, CallUncheckedCreateWithoutLeadInput> | CallCreateWithoutLeadInput[] | CallUncheckedCreateWithoutLeadInput[]
+    connectOrCreate?: CallCreateOrConnectWithoutLeadInput | CallCreateOrConnectWithoutLeadInput[]
+    upsert?: CallUpsertWithWhereUniqueWithoutLeadInput | CallUpsertWithWhereUniqueWithoutLeadInput[]
+    createMany?: CallCreateManyLeadInputEnvelope
+    set?: CallWhereUniqueInput | CallWhereUniqueInput[]
+    disconnect?: CallWhereUniqueInput | CallWhereUniqueInput[]
+    delete?: CallWhereUniqueInput | CallWhereUniqueInput[]
+    connect?: CallWhereUniqueInput | CallWhereUniqueInput[]
+    update?: CallUpdateWithWhereUniqueWithoutLeadInput | CallUpdateWithWhereUniqueWithoutLeadInput[]
+    updateMany?: CallUpdateManyWithWhereWithoutLeadInput | CallUpdateManyWithWhereWithoutLeadInput[]
+    deleteMany?: CallScalarWhereInput | CallScalarWhereInput[]
+  }
+
+  export type CallUncheckedUpdateManyWithoutLeadNestedInput = {
+    create?: XOR<CallCreateWithoutLeadInput, CallUncheckedCreateWithoutLeadInput> | CallCreateWithoutLeadInput[] | CallUncheckedCreateWithoutLeadInput[]
+    connectOrCreate?: CallCreateOrConnectWithoutLeadInput | CallCreateOrConnectWithoutLeadInput[]
+    upsert?: CallUpsertWithWhereUniqueWithoutLeadInput | CallUpsertWithWhereUniqueWithoutLeadInput[]
+    createMany?: CallCreateManyLeadInputEnvelope
+    set?: CallWhereUniqueInput | CallWhereUniqueInput[]
+    disconnect?: CallWhereUniqueInput | CallWhereUniqueInput[]
+    delete?: CallWhereUniqueInput | CallWhereUniqueInput[]
+    connect?: CallWhereUniqueInput | CallWhereUniqueInput[]
+    update?: CallUpdateWithWhereUniqueWithoutLeadInput | CallUpdateWithWhereUniqueWithoutLeadInput[]
+    updateMany?: CallUpdateManyWithWhereWithoutLeadInput | CallUpdateManyWithWhereWithoutLeadInput[]
+    deleteMany?: CallScalarWhereInput | CallScalarWhereInput[]
+  }
+
+  export type WorkspaceCreateNestedOneWithoutPhoneNumberInput = {
+    create?: XOR<WorkspaceCreateWithoutPhoneNumberInput, WorkspaceUncheckedCreateWithoutPhoneNumberInput>
+    connectOrCreate?: WorkspaceCreateOrConnectWithoutPhoneNumberInput
+    connect?: WorkspaceWhereUniqueInput
+  }
+
+  export type CallCreateNestedManyWithoutPhoneNumberInput = {
+    create?: XOR<CallCreateWithoutPhoneNumberInput, CallUncheckedCreateWithoutPhoneNumberInput> | CallCreateWithoutPhoneNumberInput[] | CallUncheckedCreateWithoutPhoneNumberInput[]
+    connectOrCreate?: CallCreateOrConnectWithoutPhoneNumberInput | CallCreateOrConnectWithoutPhoneNumberInput[]
+    createMany?: CallCreateManyPhoneNumberInputEnvelope
+    connect?: CallWhereUniqueInput | CallWhereUniqueInput[]
+  }
+
+  export type WorkspaceUncheckedCreateNestedOneWithoutPhoneNumberInput = {
+    create?: XOR<WorkspaceCreateWithoutPhoneNumberInput, WorkspaceUncheckedCreateWithoutPhoneNumberInput>
+    connectOrCreate?: WorkspaceCreateOrConnectWithoutPhoneNumberInput
+    connect?: WorkspaceWhereUniqueInput
+  }
+
+  export type CallUncheckedCreateNestedManyWithoutPhoneNumberInput = {
+    create?: XOR<CallCreateWithoutPhoneNumberInput, CallUncheckedCreateWithoutPhoneNumberInput> | CallCreateWithoutPhoneNumberInput[] | CallUncheckedCreateWithoutPhoneNumberInput[]
+    connectOrCreate?: CallCreateOrConnectWithoutPhoneNumberInput | CallCreateOrConnectWithoutPhoneNumberInput[]
+    createMany?: CallCreateManyPhoneNumberInputEnvelope
+    connect?: CallWhereUniqueInput | CallWhereUniqueInput[]
   }
 
   export type NullableDateTimeFieldUpdateOperationsInput = {
     set?: Date | string | null
   }
 
-  export type AgentUpdateOneWithoutPhoneNumbersNestedInput = {
-    create?: XOR<AgentCreateWithoutPhoneNumbersInput, AgentUncheckedCreateWithoutPhoneNumbersInput>
-    connectOrCreate?: AgentCreateOrConnectWithoutPhoneNumbersInput
-    upsert?: AgentUpsertWithoutPhoneNumbersInput
-    disconnect?: AgentWhereInput | boolean
-    delete?: AgentWhereInput | boolean
-    connect?: AgentWhereUniqueInput
-    update?: XOR<XOR<AgentUpdateToOneWithWhereWithoutPhoneNumbersInput, AgentUpdateWithoutPhoneNumbersInput>, AgentUncheckedUpdateWithoutPhoneNumbersInput>
+  export type WorkspaceUpdateOneWithoutPhoneNumberNestedInput = {
+    create?: XOR<WorkspaceCreateWithoutPhoneNumberInput, WorkspaceUncheckedCreateWithoutPhoneNumberInput>
+    connectOrCreate?: WorkspaceCreateOrConnectWithoutPhoneNumberInput
+    upsert?: WorkspaceUpsertWithoutPhoneNumberInput
+    disconnect?: WorkspaceWhereInput | boolean
+    delete?: WorkspaceWhereInput | boolean
+    connect?: WorkspaceWhereUniqueInput
+    update?: XOR<XOR<WorkspaceUpdateToOneWithWhereWithoutPhoneNumberInput, WorkspaceUpdateWithoutPhoneNumberInput>, WorkspaceUncheckedUpdateWithoutPhoneNumberInput>
+  }
+
+  export type CallUpdateManyWithoutPhoneNumberNestedInput = {
+    create?: XOR<CallCreateWithoutPhoneNumberInput, CallUncheckedCreateWithoutPhoneNumberInput> | CallCreateWithoutPhoneNumberInput[] | CallUncheckedCreateWithoutPhoneNumberInput[]
+    connectOrCreate?: CallCreateOrConnectWithoutPhoneNumberInput | CallCreateOrConnectWithoutPhoneNumberInput[]
+    upsert?: CallUpsertWithWhereUniqueWithoutPhoneNumberInput | CallUpsertWithWhereUniqueWithoutPhoneNumberInput[]
+    createMany?: CallCreateManyPhoneNumberInputEnvelope
+    set?: CallWhereUniqueInput | CallWhereUniqueInput[]
+    disconnect?: CallWhereUniqueInput | CallWhereUniqueInput[]
+    delete?: CallWhereUniqueInput | CallWhereUniqueInput[]
+    connect?: CallWhereUniqueInput | CallWhereUniqueInput[]
+    update?: CallUpdateWithWhereUniqueWithoutPhoneNumberInput | CallUpdateWithWhereUniqueWithoutPhoneNumberInput[]
+    updateMany?: CallUpdateManyWithWhereWithoutPhoneNumberInput | CallUpdateManyWithWhereWithoutPhoneNumberInput[]
+    deleteMany?: CallScalarWhereInput | CallScalarWhereInput[]
+  }
+
+  export type WorkspaceUncheckedUpdateOneWithoutPhoneNumberNestedInput = {
+    create?: XOR<WorkspaceCreateWithoutPhoneNumberInput, WorkspaceUncheckedCreateWithoutPhoneNumberInput>
+    connectOrCreate?: WorkspaceCreateOrConnectWithoutPhoneNumberInput
+    upsert?: WorkspaceUpsertWithoutPhoneNumberInput
+    disconnect?: WorkspaceWhereInput | boolean
+    delete?: WorkspaceWhereInput | boolean
+    connect?: WorkspaceWhereUniqueInput
+    update?: XOR<XOR<WorkspaceUpdateToOneWithWhereWithoutPhoneNumberInput, WorkspaceUpdateWithoutPhoneNumberInput>, WorkspaceUncheckedUpdateWithoutPhoneNumberInput>
+  }
+
+  export type CallUncheckedUpdateManyWithoutPhoneNumberNestedInput = {
+    create?: XOR<CallCreateWithoutPhoneNumberInput, CallUncheckedCreateWithoutPhoneNumberInput> | CallCreateWithoutPhoneNumberInput[] | CallUncheckedCreateWithoutPhoneNumberInput[]
+    connectOrCreate?: CallCreateOrConnectWithoutPhoneNumberInput | CallCreateOrConnectWithoutPhoneNumberInput[]
+    upsert?: CallUpsertWithWhereUniqueWithoutPhoneNumberInput | CallUpsertWithWhereUniqueWithoutPhoneNumberInput[]
+    createMany?: CallCreateManyPhoneNumberInputEnvelope
+    set?: CallWhereUniqueInput | CallWhereUniqueInput[]
+    disconnect?: CallWhereUniqueInput | CallWhereUniqueInput[]
+    delete?: CallWhereUniqueInput | CallWhereUniqueInput[]
+    connect?: CallWhereUniqueInput | CallWhereUniqueInput[]
+    update?: CallUpdateWithWhereUniqueWithoutPhoneNumberInput | CallUpdateWithWhereUniqueWithoutPhoneNumberInput[]
+    updateMany?: CallUpdateManyWithWhereWithoutPhoneNumberInput | CallUpdateManyWithWhereWithoutPhoneNumberInput[]
+    deleteMany?: CallScalarWhereInput | CallScalarWhereInput[]
   }
 
   export type WorkspaceCreateNestedOneWithoutToolsInput = {
@@ -10053,6 +12140,70 @@ export namespace Prisma {
     update?: AgentUpdateWithWhereUniqueWithoutToolsInput | AgentUpdateWithWhereUniqueWithoutToolsInput[]
     updateMany?: AgentUpdateManyWithWhereWithoutToolsInput | AgentUpdateManyWithWhereWithoutToolsInput[]
     deleteMany?: AgentScalarWhereInput | AgentScalarWhereInput[]
+  }
+
+  export type WorkspaceCreateNestedOneWithoutCallsInput = {
+    create?: XOR<WorkspaceCreateWithoutCallsInput, WorkspaceUncheckedCreateWithoutCallsInput>
+    connectOrCreate?: WorkspaceCreateOrConnectWithoutCallsInput
+    connect?: WorkspaceWhereUniqueInput
+  }
+
+  export type AgentCreateNestedOneWithoutCallsInput = {
+    create?: XOR<AgentCreateWithoutCallsInput, AgentUncheckedCreateWithoutCallsInput>
+    connectOrCreate?: AgentCreateOrConnectWithoutCallsInput
+    connect?: AgentWhereUniqueInput
+  }
+
+  export type LeadCreateNestedOneWithoutCallsInput = {
+    create?: XOR<LeadCreateWithoutCallsInput, LeadUncheckedCreateWithoutCallsInput>
+    connectOrCreate?: LeadCreateOrConnectWithoutCallsInput
+    connect?: LeadWhereUniqueInput
+  }
+
+  export type PhoneNumberCreateNestedOneWithoutCallsInput = {
+    create?: XOR<PhoneNumberCreateWithoutCallsInput, PhoneNumberUncheckedCreateWithoutCallsInput>
+    connectOrCreate?: PhoneNumberCreateOrConnectWithoutCallsInput
+    connect?: PhoneNumberWhereUniqueInput
+  }
+
+  export type NullableIntFieldUpdateOperationsInput = {
+    set?: number | null
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
+  }
+
+  export type WorkspaceUpdateOneRequiredWithoutCallsNestedInput = {
+    create?: XOR<WorkspaceCreateWithoutCallsInput, WorkspaceUncheckedCreateWithoutCallsInput>
+    connectOrCreate?: WorkspaceCreateOrConnectWithoutCallsInput
+    upsert?: WorkspaceUpsertWithoutCallsInput
+    connect?: WorkspaceWhereUniqueInput
+    update?: XOR<XOR<WorkspaceUpdateToOneWithWhereWithoutCallsInput, WorkspaceUpdateWithoutCallsInput>, WorkspaceUncheckedUpdateWithoutCallsInput>
+  }
+
+  export type AgentUpdateOneRequiredWithoutCallsNestedInput = {
+    create?: XOR<AgentCreateWithoutCallsInput, AgentUncheckedCreateWithoutCallsInput>
+    connectOrCreate?: AgentCreateOrConnectWithoutCallsInput
+    upsert?: AgentUpsertWithoutCallsInput
+    connect?: AgentWhereUniqueInput
+    update?: XOR<XOR<AgentUpdateToOneWithWhereWithoutCallsInput, AgentUpdateWithoutCallsInput>, AgentUncheckedUpdateWithoutCallsInput>
+  }
+
+  export type LeadUpdateOneRequiredWithoutCallsNestedInput = {
+    create?: XOR<LeadCreateWithoutCallsInput, LeadUncheckedCreateWithoutCallsInput>
+    connectOrCreate?: LeadCreateOrConnectWithoutCallsInput
+    upsert?: LeadUpsertWithoutCallsInput
+    connect?: LeadWhereUniqueInput
+    update?: XOR<XOR<LeadUpdateToOneWithWhereWithoutCallsInput, LeadUpdateWithoutCallsInput>, LeadUncheckedUpdateWithoutCallsInput>
+  }
+
+  export type PhoneNumberUpdateOneRequiredWithoutCallsNestedInput = {
+    create?: XOR<PhoneNumberCreateWithoutCallsInput, PhoneNumberUncheckedCreateWithoutCallsInput>
+    connectOrCreate?: PhoneNumberCreateOrConnectWithoutCallsInput
+    upsert?: PhoneNumberUpsertWithoutCallsInput
+    connect?: PhoneNumberWhereUniqueInput
+    update?: XOR<XOR<PhoneNumberUpdateToOneWithWhereWithoutCallsInput, PhoneNumberUpdateWithoutCallsInput>, PhoneNumberUncheckedUpdateWithoutCallsInput>
   }
 
   export type NestedStringFilter<$PrismaModel = never> = {
@@ -10235,6 +12386,33 @@ export namespace Prisma {
     not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
   }
 
+  export type NestedIntNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedIntNullableFilter<$PrismaModel>
+    _max?: NestedIntNullableFilter<$PrismaModel>
+  }
+
+  export type NestedFloatNullableFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatNullableFilter<$PrismaModel> | number | null
+  }
+
   export type WorkspaceCreateWithoutUsersInput = {
     id?: string
     name: string
@@ -10243,6 +12421,8 @@ export namespace Prisma {
     agents?: AgentCreateNestedManyWithoutWorkspaceInput
     leads?: LeadCreateNestedManyWithoutWorkspaceInput
     tools?: ToolCreateNestedManyWithoutWorkspaceInput
+    calls?: CallCreateNestedManyWithoutWorkspaceInput
+    phoneNumber?: PhoneNumberCreateNestedOneWithoutWorkspaceInput
   }
 
   export type WorkspaceUncheckedCreateWithoutUsersInput = {
@@ -10250,9 +12430,11 @@ export namespace Prisma {
     name: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    phoneNumberId?: string | null
     agents?: AgentUncheckedCreateNestedManyWithoutWorkspaceInput
     leads?: LeadUncheckedCreateNestedManyWithoutWorkspaceInput
     tools?: ToolUncheckedCreateNestedManyWithoutWorkspaceInput
+    calls?: CallUncheckedCreateNestedManyWithoutWorkspaceInput
   }
 
   export type WorkspaceCreateOrConnectWithoutUsersInput = {
@@ -10284,6 +12466,7 @@ export namespace Prisma {
     name?: StringFilter<"Workspace"> | string
     createdAt?: DateTimeFilter<"Workspace"> | Date | string
     updatedAt?: DateTimeFilter<"Workspace"> | Date | string
+    phoneNumberId?: StringNullableFilter<"Workspace"> | string | null
   }
 
   export type UserCreateWithoutWorkspacesInput = {
@@ -10316,8 +12499,8 @@ export namespace Prisma {
     config?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
-    phoneNumbers?: PhoneNumberCreateNestedManyWithoutAgentInput
     tools?: ToolCreateNestedManyWithoutAgentsInput
+    calls?: CallCreateNestedManyWithoutAgentInput
   }
 
   export type AgentUncheckedCreateWithoutWorkspaceInput = {
@@ -10327,8 +12510,8 @@ export namespace Prisma {
     config?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
-    phoneNumbers?: PhoneNumberUncheckedCreateNestedManyWithoutAgentInput
     tools?: ToolUncheckedCreateNestedManyWithoutAgentsInput
+    calls?: CallUncheckedCreateNestedManyWithoutAgentInput
   }
 
   export type AgentCreateOrConnectWithoutWorkspaceInput = {
@@ -10349,6 +12532,7 @@ export namespace Prisma {
     notes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    calls?: CallCreateNestedManyWithoutLeadInput
   }
 
   export type LeadUncheckedCreateWithoutWorkspaceInput = {
@@ -10359,6 +12543,7 @@ export namespace Prisma {
     notes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    calls?: CallUncheckedCreateNestedManyWithoutLeadInput
   }
 
   export type LeadCreateOrConnectWithoutWorkspaceInput = {
@@ -10401,6 +12586,75 @@ export namespace Prisma {
   export type ToolCreateManyWorkspaceInputEnvelope = {
     data: ToolCreateManyWorkspaceInput | ToolCreateManyWorkspaceInput[]
     skipDuplicates?: boolean
+  }
+
+  export type CallCreateWithoutWorkspaceInput = {
+    id?: string
+    callSid?: string | null
+    status: string
+    startedAt?: Date | string
+    endedAt?: Date | string | null
+    duration?: number | null
+    notes?: string | null
+    recordingUrl?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    agent: AgentCreateNestedOneWithoutCallsInput
+    lead: LeadCreateNestedOneWithoutCallsInput
+    phoneNumber: PhoneNumberCreateNestedOneWithoutCallsInput
+  }
+
+  export type CallUncheckedCreateWithoutWorkspaceInput = {
+    id?: string
+    agentId: string
+    leadId: string
+    phoneNumberId: string
+    callSid?: string | null
+    status: string
+    startedAt?: Date | string
+    endedAt?: Date | string | null
+    duration?: number | null
+    notes?: string | null
+    recordingUrl?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type CallCreateOrConnectWithoutWorkspaceInput = {
+    where: CallWhereUniqueInput
+    create: XOR<CallCreateWithoutWorkspaceInput, CallUncheckedCreateWithoutWorkspaceInput>
+  }
+
+  export type CallCreateManyWorkspaceInputEnvelope = {
+    data: CallCreateManyWorkspaceInput | CallCreateManyWorkspaceInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type PhoneNumberCreateWithoutWorkspaceInput = {
+    id?: string
+    number: string
+    label?: string | null
+    elevenLabsPhoneNumberId?: string | null
+    assignedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    calls?: CallCreateNestedManyWithoutPhoneNumberInput
+  }
+
+  export type PhoneNumberUncheckedCreateWithoutWorkspaceInput = {
+    id?: string
+    number: string
+    label?: string | null
+    elevenLabsPhoneNumberId?: string | null
+    assignedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    calls?: CallUncheckedCreateNestedManyWithoutPhoneNumberInput
+  }
+
+  export type PhoneNumberCreateOrConnectWithoutWorkspaceInput = {
+    where: PhoneNumberWhereUniqueInput
+    create: XOR<PhoneNumberCreateWithoutWorkspaceInput, PhoneNumberUncheckedCreateWithoutWorkspaceInput>
   }
 
   export type UserUpsertWithWhereUniqueWithoutWorkspacesInput = {
@@ -10520,6 +12774,75 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"Tool"> | Date | string
   }
 
+  export type CallUpsertWithWhereUniqueWithoutWorkspaceInput = {
+    where: CallWhereUniqueInput
+    update: XOR<CallUpdateWithoutWorkspaceInput, CallUncheckedUpdateWithoutWorkspaceInput>
+    create: XOR<CallCreateWithoutWorkspaceInput, CallUncheckedCreateWithoutWorkspaceInput>
+  }
+
+  export type CallUpdateWithWhereUniqueWithoutWorkspaceInput = {
+    where: CallWhereUniqueInput
+    data: XOR<CallUpdateWithoutWorkspaceInput, CallUncheckedUpdateWithoutWorkspaceInput>
+  }
+
+  export type CallUpdateManyWithWhereWithoutWorkspaceInput = {
+    where: CallScalarWhereInput
+    data: XOR<CallUpdateManyMutationInput, CallUncheckedUpdateManyWithoutWorkspaceInput>
+  }
+
+  export type CallScalarWhereInput = {
+    AND?: CallScalarWhereInput | CallScalarWhereInput[]
+    OR?: CallScalarWhereInput[]
+    NOT?: CallScalarWhereInput | CallScalarWhereInput[]
+    id?: StringFilter<"Call"> | string
+    workspaceId?: StringFilter<"Call"> | string
+    agentId?: StringFilter<"Call"> | string
+    leadId?: StringFilter<"Call"> | string
+    phoneNumberId?: StringFilter<"Call"> | string
+    callSid?: StringNullableFilter<"Call"> | string | null
+    status?: StringFilter<"Call"> | string
+    startedAt?: DateTimeFilter<"Call"> | Date | string
+    endedAt?: DateTimeNullableFilter<"Call"> | Date | string | null
+    duration?: IntNullableFilter<"Call"> | number | null
+    notes?: StringNullableFilter<"Call"> | string | null
+    recordingUrl?: StringNullableFilter<"Call"> | string | null
+    createdAt?: DateTimeFilter<"Call"> | Date | string
+    updatedAt?: DateTimeFilter<"Call"> | Date | string
+  }
+
+  export type PhoneNumberUpsertWithoutWorkspaceInput = {
+    update: XOR<PhoneNumberUpdateWithoutWorkspaceInput, PhoneNumberUncheckedUpdateWithoutWorkspaceInput>
+    create: XOR<PhoneNumberCreateWithoutWorkspaceInput, PhoneNumberUncheckedCreateWithoutWorkspaceInput>
+    where?: PhoneNumberWhereInput
+  }
+
+  export type PhoneNumberUpdateToOneWithWhereWithoutWorkspaceInput = {
+    where?: PhoneNumberWhereInput
+    data: XOR<PhoneNumberUpdateWithoutWorkspaceInput, PhoneNumberUncheckedUpdateWithoutWorkspaceInput>
+  }
+
+  export type PhoneNumberUpdateWithoutWorkspaceInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    number?: StringFieldUpdateOperationsInput | string
+    label?: NullableStringFieldUpdateOperationsInput | string | null
+    elevenLabsPhoneNumberId?: NullableStringFieldUpdateOperationsInput | string | null
+    assignedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    calls?: CallUpdateManyWithoutPhoneNumberNestedInput
+  }
+
+  export type PhoneNumberUncheckedUpdateWithoutWorkspaceInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    number?: StringFieldUpdateOperationsInput | string
+    label?: NullableStringFieldUpdateOperationsInput | string | null
+    elevenLabsPhoneNumberId?: NullableStringFieldUpdateOperationsInput | string | null
+    assignedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    calls?: CallUncheckedUpdateManyWithoutPhoneNumberNestedInput
+  }
+
   export type WorkspaceCreateWithoutAgentsInput = {
     id?: string
     name: string
@@ -10528,6 +12851,8 @@ export namespace Prisma {
     users?: UserCreateNestedManyWithoutWorkspacesInput
     leads?: LeadCreateNestedManyWithoutWorkspaceInput
     tools?: ToolCreateNestedManyWithoutWorkspaceInput
+    calls?: CallCreateNestedManyWithoutWorkspaceInput
+    phoneNumber?: PhoneNumberCreateNestedOneWithoutWorkspaceInput
   }
 
   export type WorkspaceUncheckedCreateWithoutAgentsInput = {
@@ -10535,42 +12860,16 @@ export namespace Prisma {
     name: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    phoneNumberId?: string | null
     users?: UserUncheckedCreateNestedManyWithoutWorkspacesInput
     leads?: LeadUncheckedCreateNestedManyWithoutWorkspaceInput
     tools?: ToolUncheckedCreateNestedManyWithoutWorkspaceInput
+    calls?: CallUncheckedCreateNestedManyWithoutWorkspaceInput
   }
 
   export type WorkspaceCreateOrConnectWithoutAgentsInput = {
     where: WorkspaceWhereUniqueInput
     create: XOR<WorkspaceCreateWithoutAgentsInput, WorkspaceUncheckedCreateWithoutAgentsInput>
-  }
-
-  export type PhoneNumberCreateWithoutAgentInput = {
-    id?: string
-    number: string
-    label?: string | null
-    assignedAt?: Date | string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type PhoneNumberUncheckedCreateWithoutAgentInput = {
-    id?: string
-    number: string
-    label?: string | null
-    assignedAt?: Date | string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type PhoneNumberCreateOrConnectWithoutAgentInput = {
-    where: PhoneNumberWhereUniqueInput
-    create: XOR<PhoneNumberCreateWithoutAgentInput, PhoneNumberUncheckedCreateWithoutAgentInput>
-  }
-
-  export type PhoneNumberCreateManyAgentInputEnvelope = {
-    data: PhoneNumberCreateManyAgentInput | PhoneNumberCreateManyAgentInput[]
-    skipDuplicates?: boolean
   }
 
   export type ToolCreateWithoutAgentsInput = {
@@ -10600,6 +12899,48 @@ export namespace Prisma {
     create: XOR<ToolCreateWithoutAgentsInput, ToolUncheckedCreateWithoutAgentsInput>
   }
 
+  export type CallCreateWithoutAgentInput = {
+    id?: string
+    callSid?: string | null
+    status: string
+    startedAt?: Date | string
+    endedAt?: Date | string | null
+    duration?: number | null
+    notes?: string | null
+    recordingUrl?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    workspace: WorkspaceCreateNestedOneWithoutCallsInput
+    lead: LeadCreateNestedOneWithoutCallsInput
+    phoneNumber: PhoneNumberCreateNestedOneWithoutCallsInput
+  }
+
+  export type CallUncheckedCreateWithoutAgentInput = {
+    id?: string
+    workspaceId: string
+    leadId: string
+    phoneNumberId: string
+    callSid?: string | null
+    status: string
+    startedAt?: Date | string
+    endedAt?: Date | string | null
+    duration?: number | null
+    notes?: string | null
+    recordingUrl?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type CallCreateOrConnectWithoutAgentInput = {
+    where: CallWhereUniqueInput
+    create: XOR<CallCreateWithoutAgentInput, CallUncheckedCreateWithoutAgentInput>
+  }
+
+  export type CallCreateManyAgentInputEnvelope = {
+    data: CallCreateManyAgentInput | CallCreateManyAgentInput[]
+    skipDuplicates?: boolean
+  }
+
   export type WorkspaceUpsertWithoutAgentsInput = {
     update: XOR<WorkspaceUpdateWithoutAgentsInput, WorkspaceUncheckedUpdateWithoutAgentsInput>
     create: XOR<WorkspaceCreateWithoutAgentsInput, WorkspaceUncheckedCreateWithoutAgentsInput>
@@ -10619,6 +12960,8 @@ export namespace Prisma {
     users?: UserUpdateManyWithoutWorkspacesNestedInput
     leads?: LeadUpdateManyWithoutWorkspaceNestedInput
     tools?: ToolUpdateManyWithoutWorkspaceNestedInput
+    calls?: CallUpdateManyWithoutWorkspaceNestedInput
+    phoneNumber?: PhoneNumberUpdateOneWithoutWorkspaceNestedInput
   }
 
   export type WorkspaceUncheckedUpdateWithoutAgentsInput = {
@@ -10626,38 +12969,11 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    phoneNumberId?: NullableStringFieldUpdateOperationsInput | string | null
     users?: UserUncheckedUpdateManyWithoutWorkspacesNestedInput
     leads?: LeadUncheckedUpdateManyWithoutWorkspaceNestedInput
     tools?: ToolUncheckedUpdateManyWithoutWorkspaceNestedInput
-  }
-
-  export type PhoneNumberUpsertWithWhereUniqueWithoutAgentInput = {
-    where: PhoneNumberWhereUniqueInput
-    update: XOR<PhoneNumberUpdateWithoutAgentInput, PhoneNumberUncheckedUpdateWithoutAgentInput>
-    create: XOR<PhoneNumberCreateWithoutAgentInput, PhoneNumberUncheckedCreateWithoutAgentInput>
-  }
-
-  export type PhoneNumberUpdateWithWhereUniqueWithoutAgentInput = {
-    where: PhoneNumberWhereUniqueInput
-    data: XOR<PhoneNumberUpdateWithoutAgentInput, PhoneNumberUncheckedUpdateWithoutAgentInput>
-  }
-
-  export type PhoneNumberUpdateManyWithWhereWithoutAgentInput = {
-    where: PhoneNumberScalarWhereInput
-    data: XOR<PhoneNumberUpdateManyMutationInput, PhoneNumberUncheckedUpdateManyWithoutAgentInput>
-  }
-
-  export type PhoneNumberScalarWhereInput = {
-    AND?: PhoneNumberScalarWhereInput | PhoneNumberScalarWhereInput[]
-    OR?: PhoneNumberScalarWhereInput[]
-    NOT?: PhoneNumberScalarWhereInput | PhoneNumberScalarWhereInput[]
-    id?: StringFilter<"PhoneNumber"> | string
-    number?: StringFilter<"PhoneNumber"> | string
-    label?: StringNullableFilter<"PhoneNumber"> | string | null
-    agentId?: StringNullableFilter<"PhoneNumber"> | string | null
-    assignedAt?: DateTimeNullableFilter<"PhoneNumber"> | Date | string | null
-    createdAt?: DateTimeFilter<"PhoneNumber"> | Date | string
-    updatedAt?: DateTimeFilter<"PhoneNumber"> | Date | string
+    calls?: CallUncheckedUpdateManyWithoutWorkspaceNestedInput
   }
 
   export type ToolUpsertWithWhereUniqueWithoutAgentsInput = {
@@ -10676,6 +12992,22 @@ export namespace Prisma {
     data: XOR<ToolUpdateManyMutationInput, ToolUncheckedUpdateManyWithoutAgentsInput>
   }
 
+  export type CallUpsertWithWhereUniqueWithoutAgentInput = {
+    where: CallWhereUniqueInput
+    update: XOR<CallUpdateWithoutAgentInput, CallUncheckedUpdateWithoutAgentInput>
+    create: XOR<CallCreateWithoutAgentInput, CallUncheckedCreateWithoutAgentInput>
+  }
+
+  export type CallUpdateWithWhereUniqueWithoutAgentInput = {
+    where: CallWhereUniqueInput
+    data: XOR<CallUpdateWithoutAgentInput, CallUncheckedUpdateWithoutAgentInput>
+  }
+
+  export type CallUpdateManyWithWhereWithoutAgentInput = {
+    where: CallScalarWhereInput
+    data: XOR<CallUpdateManyMutationInput, CallUncheckedUpdateManyWithoutAgentInput>
+  }
+
   export type WorkspaceCreateWithoutLeadsInput = {
     id?: string
     name: string
@@ -10684,6 +13016,8 @@ export namespace Prisma {
     users?: UserCreateNestedManyWithoutWorkspacesInput
     agents?: AgentCreateNestedManyWithoutWorkspaceInput
     tools?: ToolCreateNestedManyWithoutWorkspaceInput
+    calls?: CallCreateNestedManyWithoutWorkspaceInput
+    phoneNumber?: PhoneNumberCreateNestedOneWithoutWorkspaceInput
   }
 
   export type WorkspaceUncheckedCreateWithoutLeadsInput = {
@@ -10691,14 +13025,58 @@ export namespace Prisma {
     name: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    phoneNumberId?: string | null
     users?: UserUncheckedCreateNestedManyWithoutWorkspacesInput
     agents?: AgentUncheckedCreateNestedManyWithoutWorkspaceInput
     tools?: ToolUncheckedCreateNestedManyWithoutWorkspaceInput
+    calls?: CallUncheckedCreateNestedManyWithoutWorkspaceInput
   }
 
   export type WorkspaceCreateOrConnectWithoutLeadsInput = {
     where: WorkspaceWhereUniqueInput
     create: XOR<WorkspaceCreateWithoutLeadsInput, WorkspaceUncheckedCreateWithoutLeadsInput>
+  }
+
+  export type CallCreateWithoutLeadInput = {
+    id?: string
+    callSid?: string | null
+    status: string
+    startedAt?: Date | string
+    endedAt?: Date | string | null
+    duration?: number | null
+    notes?: string | null
+    recordingUrl?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    workspace: WorkspaceCreateNestedOneWithoutCallsInput
+    agent: AgentCreateNestedOneWithoutCallsInput
+    phoneNumber: PhoneNumberCreateNestedOneWithoutCallsInput
+  }
+
+  export type CallUncheckedCreateWithoutLeadInput = {
+    id?: string
+    workspaceId: string
+    agentId: string
+    phoneNumberId: string
+    callSid?: string | null
+    status: string
+    startedAt?: Date | string
+    endedAt?: Date | string | null
+    duration?: number | null
+    notes?: string | null
+    recordingUrl?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type CallCreateOrConnectWithoutLeadInput = {
+    where: CallWhereUniqueInput
+    create: XOR<CallCreateWithoutLeadInput, CallUncheckedCreateWithoutLeadInput>
+  }
+
+  export type CallCreateManyLeadInputEnvelope = {
+    data: CallCreateManyLeadInput | CallCreateManyLeadInput[]
+    skipDuplicates?: boolean
   }
 
   export type WorkspaceUpsertWithoutLeadsInput = {
@@ -10720,6 +13098,8 @@ export namespace Prisma {
     users?: UserUpdateManyWithoutWorkspacesNestedInput
     agents?: AgentUpdateManyWithoutWorkspaceNestedInput
     tools?: ToolUpdateManyWithoutWorkspaceNestedInput
+    calls?: CallUpdateManyWithoutWorkspaceNestedInput
+    phoneNumber?: PhoneNumberUpdateOneWithoutWorkspaceNestedInput
   }
 
   export type WorkspaceUncheckedUpdateWithoutLeadsInput = {
@@ -10727,69 +13107,149 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    phoneNumberId?: NullableStringFieldUpdateOperationsInput | string | null
     users?: UserUncheckedUpdateManyWithoutWorkspacesNestedInput
     agents?: AgentUncheckedUpdateManyWithoutWorkspaceNestedInput
     tools?: ToolUncheckedUpdateManyWithoutWorkspaceNestedInput
+    calls?: CallUncheckedUpdateManyWithoutWorkspaceNestedInput
   }
 
-  export type AgentCreateWithoutPhoneNumbersInput = {
+  export type CallUpsertWithWhereUniqueWithoutLeadInput = {
+    where: CallWhereUniqueInput
+    update: XOR<CallUpdateWithoutLeadInput, CallUncheckedUpdateWithoutLeadInput>
+    create: XOR<CallCreateWithoutLeadInput, CallUncheckedCreateWithoutLeadInput>
+  }
+
+  export type CallUpdateWithWhereUniqueWithoutLeadInput = {
+    where: CallWhereUniqueInput
+    data: XOR<CallUpdateWithoutLeadInput, CallUncheckedUpdateWithoutLeadInput>
+  }
+
+  export type CallUpdateManyWithWhereWithoutLeadInput = {
+    where: CallScalarWhereInput
+    data: XOR<CallUpdateManyMutationInput, CallUncheckedUpdateManyWithoutLeadInput>
+  }
+
+  export type WorkspaceCreateWithoutPhoneNumberInput = {
     id?: string
     name: string
-    elevenLabsId: string
-    config?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
-    workspace: WorkspaceCreateNestedOneWithoutAgentsInput
-    tools?: ToolCreateNestedManyWithoutAgentsInput
+    users?: UserCreateNestedManyWithoutWorkspacesInput
+    agents?: AgentCreateNestedManyWithoutWorkspaceInput
+    leads?: LeadCreateNestedManyWithoutWorkspaceInput
+    tools?: ToolCreateNestedManyWithoutWorkspaceInput
+    calls?: CallCreateNestedManyWithoutWorkspaceInput
   }
 
-  export type AgentUncheckedCreateWithoutPhoneNumbersInput = {
+  export type WorkspaceUncheckedCreateWithoutPhoneNumberInput = {
     id?: string
     name: string
-    elevenLabsId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    users?: UserUncheckedCreateNestedManyWithoutWorkspacesInput
+    agents?: AgentUncheckedCreateNestedManyWithoutWorkspaceInput
+    leads?: LeadUncheckedCreateNestedManyWithoutWorkspaceInput
+    tools?: ToolUncheckedCreateNestedManyWithoutWorkspaceInput
+    calls?: CallUncheckedCreateNestedManyWithoutWorkspaceInput
+  }
+
+  export type WorkspaceCreateOrConnectWithoutPhoneNumberInput = {
+    where: WorkspaceWhereUniqueInput
+    create: XOR<WorkspaceCreateWithoutPhoneNumberInput, WorkspaceUncheckedCreateWithoutPhoneNumberInput>
+  }
+
+  export type CallCreateWithoutPhoneNumberInput = {
+    id?: string
+    callSid?: string | null
+    status: string
+    startedAt?: Date | string
+    endedAt?: Date | string | null
+    duration?: number | null
+    notes?: string | null
+    recordingUrl?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    workspace: WorkspaceCreateNestedOneWithoutCallsInput
+    agent: AgentCreateNestedOneWithoutCallsInput
+    lead: LeadCreateNestedOneWithoutCallsInput
+  }
+
+  export type CallUncheckedCreateWithoutPhoneNumberInput = {
+    id?: string
     workspaceId: string
-    config?: NullableJsonNullValueInput | InputJsonValue
+    agentId: string
+    leadId: string
+    callSid?: string | null
+    status: string
+    startedAt?: Date | string
+    endedAt?: Date | string | null
+    duration?: number | null
+    notes?: string | null
+    recordingUrl?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    tools?: ToolUncheckedCreateNestedManyWithoutAgentsInput
   }
 
-  export type AgentCreateOrConnectWithoutPhoneNumbersInput = {
-    where: AgentWhereUniqueInput
-    create: XOR<AgentCreateWithoutPhoneNumbersInput, AgentUncheckedCreateWithoutPhoneNumbersInput>
+  export type CallCreateOrConnectWithoutPhoneNumberInput = {
+    where: CallWhereUniqueInput
+    create: XOR<CallCreateWithoutPhoneNumberInput, CallUncheckedCreateWithoutPhoneNumberInput>
   }
 
-  export type AgentUpsertWithoutPhoneNumbersInput = {
-    update: XOR<AgentUpdateWithoutPhoneNumbersInput, AgentUncheckedUpdateWithoutPhoneNumbersInput>
-    create: XOR<AgentCreateWithoutPhoneNumbersInput, AgentUncheckedCreateWithoutPhoneNumbersInput>
-    where?: AgentWhereInput
+  export type CallCreateManyPhoneNumberInputEnvelope = {
+    data: CallCreateManyPhoneNumberInput | CallCreateManyPhoneNumberInput[]
+    skipDuplicates?: boolean
   }
 
-  export type AgentUpdateToOneWithWhereWithoutPhoneNumbersInput = {
-    where?: AgentWhereInput
-    data: XOR<AgentUpdateWithoutPhoneNumbersInput, AgentUncheckedUpdateWithoutPhoneNumbersInput>
+  export type WorkspaceUpsertWithoutPhoneNumberInput = {
+    update: XOR<WorkspaceUpdateWithoutPhoneNumberInput, WorkspaceUncheckedUpdateWithoutPhoneNumberInput>
+    create: XOR<WorkspaceCreateWithoutPhoneNumberInput, WorkspaceUncheckedCreateWithoutPhoneNumberInput>
+    where?: WorkspaceWhereInput
   }
 
-  export type AgentUpdateWithoutPhoneNumbersInput = {
+  export type WorkspaceUpdateToOneWithWhereWithoutPhoneNumberInput = {
+    where?: WorkspaceWhereInput
+    data: XOR<WorkspaceUpdateWithoutPhoneNumberInput, WorkspaceUncheckedUpdateWithoutPhoneNumberInput>
+  }
+
+  export type WorkspaceUpdateWithoutPhoneNumberInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
-    elevenLabsId?: StringFieldUpdateOperationsInput | string
-    config?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    workspace?: WorkspaceUpdateOneRequiredWithoutAgentsNestedInput
-    tools?: ToolUpdateManyWithoutAgentsNestedInput
+    users?: UserUpdateManyWithoutWorkspacesNestedInput
+    agents?: AgentUpdateManyWithoutWorkspaceNestedInput
+    leads?: LeadUpdateManyWithoutWorkspaceNestedInput
+    tools?: ToolUpdateManyWithoutWorkspaceNestedInput
+    calls?: CallUpdateManyWithoutWorkspaceNestedInput
   }
 
-  export type AgentUncheckedUpdateWithoutPhoneNumbersInput = {
+  export type WorkspaceUncheckedUpdateWithoutPhoneNumberInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
-    elevenLabsId?: StringFieldUpdateOperationsInput | string
-    workspaceId?: StringFieldUpdateOperationsInput | string
-    config?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    tools?: ToolUncheckedUpdateManyWithoutAgentsNestedInput
+    users?: UserUncheckedUpdateManyWithoutWorkspacesNestedInput
+    agents?: AgentUncheckedUpdateManyWithoutWorkspaceNestedInput
+    leads?: LeadUncheckedUpdateManyWithoutWorkspaceNestedInput
+    tools?: ToolUncheckedUpdateManyWithoutWorkspaceNestedInput
+    calls?: CallUncheckedUpdateManyWithoutWorkspaceNestedInput
+  }
+
+  export type CallUpsertWithWhereUniqueWithoutPhoneNumberInput = {
+    where: CallWhereUniqueInput
+    update: XOR<CallUpdateWithoutPhoneNumberInput, CallUncheckedUpdateWithoutPhoneNumberInput>
+    create: XOR<CallCreateWithoutPhoneNumberInput, CallUncheckedCreateWithoutPhoneNumberInput>
+  }
+
+  export type CallUpdateWithWhereUniqueWithoutPhoneNumberInput = {
+    where: CallWhereUniqueInput
+    data: XOR<CallUpdateWithoutPhoneNumberInput, CallUncheckedUpdateWithoutPhoneNumberInput>
+  }
+
+  export type CallUpdateManyWithWhereWithoutPhoneNumberInput = {
+    where: CallScalarWhereInput
+    data: XOR<CallUpdateManyMutationInput, CallUncheckedUpdateManyWithoutPhoneNumberInput>
   }
 
   export type WorkspaceCreateWithoutToolsInput = {
@@ -10800,6 +13260,8 @@ export namespace Prisma {
     users?: UserCreateNestedManyWithoutWorkspacesInput
     agents?: AgentCreateNestedManyWithoutWorkspaceInput
     leads?: LeadCreateNestedManyWithoutWorkspaceInput
+    calls?: CallCreateNestedManyWithoutWorkspaceInput
+    phoneNumber?: PhoneNumberCreateNestedOneWithoutWorkspaceInput
   }
 
   export type WorkspaceUncheckedCreateWithoutToolsInput = {
@@ -10807,9 +13269,11 @@ export namespace Prisma {
     name: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    phoneNumberId?: string | null
     users?: UserUncheckedCreateNestedManyWithoutWorkspacesInput
     agents?: AgentUncheckedCreateNestedManyWithoutWorkspaceInput
     leads?: LeadUncheckedCreateNestedManyWithoutWorkspaceInput
+    calls?: CallUncheckedCreateNestedManyWithoutWorkspaceInput
   }
 
   export type WorkspaceCreateOrConnectWithoutToolsInput = {
@@ -10825,7 +13289,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     workspace: WorkspaceCreateNestedOneWithoutAgentsInput
-    phoneNumbers?: PhoneNumberCreateNestedManyWithoutAgentInput
+    calls?: CallCreateNestedManyWithoutAgentInput
   }
 
   export type AgentUncheckedCreateWithoutToolsInput = {
@@ -10836,7 +13300,7 @@ export namespace Prisma {
     config?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
-    phoneNumbers?: PhoneNumberUncheckedCreateNestedManyWithoutAgentInput
+    calls?: CallUncheckedCreateNestedManyWithoutAgentInput
   }
 
   export type AgentCreateOrConnectWithoutToolsInput = {
@@ -10863,6 +13327,8 @@ export namespace Prisma {
     users?: UserUpdateManyWithoutWorkspacesNestedInput
     agents?: AgentUpdateManyWithoutWorkspaceNestedInput
     leads?: LeadUpdateManyWithoutWorkspaceNestedInput
+    calls?: CallUpdateManyWithoutWorkspaceNestedInput
+    phoneNumber?: PhoneNumberUpdateOneWithoutWorkspaceNestedInput
   }
 
   export type WorkspaceUncheckedUpdateWithoutToolsInput = {
@@ -10870,9 +13336,11 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    phoneNumberId?: NullableStringFieldUpdateOperationsInput | string | null
     users?: UserUncheckedUpdateManyWithoutWorkspacesNestedInput
     agents?: AgentUncheckedUpdateManyWithoutWorkspaceNestedInput
     leads?: LeadUncheckedUpdateManyWithoutWorkspaceNestedInput
+    calls?: CallUncheckedUpdateManyWithoutWorkspaceNestedInput
   }
 
   export type AgentUpsertWithWhereUniqueWithoutToolsInput = {
@@ -10891,6 +13359,250 @@ export namespace Prisma {
     data: XOR<AgentUpdateManyMutationInput, AgentUncheckedUpdateManyWithoutToolsInput>
   }
 
+  export type WorkspaceCreateWithoutCallsInput = {
+    id?: string
+    name: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    users?: UserCreateNestedManyWithoutWorkspacesInput
+    agents?: AgentCreateNestedManyWithoutWorkspaceInput
+    leads?: LeadCreateNestedManyWithoutWorkspaceInput
+    tools?: ToolCreateNestedManyWithoutWorkspaceInput
+    phoneNumber?: PhoneNumberCreateNestedOneWithoutWorkspaceInput
+  }
+
+  export type WorkspaceUncheckedCreateWithoutCallsInput = {
+    id?: string
+    name: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    phoneNumberId?: string | null
+    users?: UserUncheckedCreateNestedManyWithoutWorkspacesInput
+    agents?: AgentUncheckedCreateNestedManyWithoutWorkspaceInput
+    leads?: LeadUncheckedCreateNestedManyWithoutWorkspaceInput
+    tools?: ToolUncheckedCreateNestedManyWithoutWorkspaceInput
+  }
+
+  export type WorkspaceCreateOrConnectWithoutCallsInput = {
+    where: WorkspaceWhereUniqueInput
+    create: XOR<WorkspaceCreateWithoutCallsInput, WorkspaceUncheckedCreateWithoutCallsInput>
+  }
+
+  export type AgentCreateWithoutCallsInput = {
+    id?: string
+    name: string
+    elevenLabsId: string
+    config?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    workspace: WorkspaceCreateNestedOneWithoutAgentsInput
+    tools?: ToolCreateNestedManyWithoutAgentsInput
+  }
+
+  export type AgentUncheckedCreateWithoutCallsInput = {
+    id?: string
+    name: string
+    elevenLabsId: string
+    workspaceId: string
+    config?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    tools?: ToolUncheckedCreateNestedManyWithoutAgentsInput
+  }
+
+  export type AgentCreateOrConnectWithoutCallsInput = {
+    where: AgentWhereUniqueInput
+    create: XOR<AgentCreateWithoutCallsInput, AgentUncheckedCreateWithoutCallsInput>
+  }
+
+  export type LeadCreateWithoutCallsInput = {
+    id?: string
+    name: string
+    phoneNumber: string
+    status?: string | null
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    workspace: WorkspaceCreateNestedOneWithoutLeadsInput
+  }
+
+  export type LeadUncheckedCreateWithoutCallsInput = {
+    id?: string
+    workspaceId: string
+    name: string
+    phoneNumber: string
+    status?: string | null
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type LeadCreateOrConnectWithoutCallsInput = {
+    where: LeadWhereUniqueInput
+    create: XOR<LeadCreateWithoutCallsInput, LeadUncheckedCreateWithoutCallsInput>
+  }
+
+  export type PhoneNumberCreateWithoutCallsInput = {
+    id?: string
+    number: string
+    label?: string | null
+    elevenLabsPhoneNumberId?: string | null
+    assignedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    workspace?: WorkspaceCreateNestedOneWithoutPhoneNumberInput
+  }
+
+  export type PhoneNumberUncheckedCreateWithoutCallsInput = {
+    id?: string
+    number: string
+    label?: string | null
+    elevenLabsPhoneNumberId?: string | null
+    assignedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    workspace?: WorkspaceUncheckedCreateNestedOneWithoutPhoneNumberInput
+  }
+
+  export type PhoneNumberCreateOrConnectWithoutCallsInput = {
+    where: PhoneNumberWhereUniqueInput
+    create: XOR<PhoneNumberCreateWithoutCallsInput, PhoneNumberUncheckedCreateWithoutCallsInput>
+  }
+
+  export type WorkspaceUpsertWithoutCallsInput = {
+    update: XOR<WorkspaceUpdateWithoutCallsInput, WorkspaceUncheckedUpdateWithoutCallsInput>
+    create: XOR<WorkspaceCreateWithoutCallsInput, WorkspaceUncheckedCreateWithoutCallsInput>
+    where?: WorkspaceWhereInput
+  }
+
+  export type WorkspaceUpdateToOneWithWhereWithoutCallsInput = {
+    where?: WorkspaceWhereInput
+    data: XOR<WorkspaceUpdateWithoutCallsInput, WorkspaceUncheckedUpdateWithoutCallsInput>
+  }
+
+  export type WorkspaceUpdateWithoutCallsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    users?: UserUpdateManyWithoutWorkspacesNestedInput
+    agents?: AgentUpdateManyWithoutWorkspaceNestedInput
+    leads?: LeadUpdateManyWithoutWorkspaceNestedInput
+    tools?: ToolUpdateManyWithoutWorkspaceNestedInput
+    phoneNumber?: PhoneNumberUpdateOneWithoutWorkspaceNestedInput
+  }
+
+  export type WorkspaceUncheckedUpdateWithoutCallsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    phoneNumberId?: NullableStringFieldUpdateOperationsInput | string | null
+    users?: UserUncheckedUpdateManyWithoutWorkspacesNestedInput
+    agents?: AgentUncheckedUpdateManyWithoutWorkspaceNestedInput
+    leads?: LeadUncheckedUpdateManyWithoutWorkspaceNestedInput
+    tools?: ToolUncheckedUpdateManyWithoutWorkspaceNestedInput
+  }
+
+  export type AgentUpsertWithoutCallsInput = {
+    update: XOR<AgentUpdateWithoutCallsInput, AgentUncheckedUpdateWithoutCallsInput>
+    create: XOR<AgentCreateWithoutCallsInput, AgentUncheckedCreateWithoutCallsInput>
+    where?: AgentWhereInput
+  }
+
+  export type AgentUpdateToOneWithWhereWithoutCallsInput = {
+    where?: AgentWhereInput
+    data: XOR<AgentUpdateWithoutCallsInput, AgentUncheckedUpdateWithoutCallsInput>
+  }
+
+  export type AgentUpdateWithoutCallsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    elevenLabsId?: StringFieldUpdateOperationsInput | string
+    config?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    workspace?: WorkspaceUpdateOneRequiredWithoutAgentsNestedInput
+    tools?: ToolUpdateManyWithoutAgentsNestedInput
+  }
+
+  export type AgentUncheckedUpdateWithoutCallsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    elevenLabsId?: StringFieldUpdateOperationsInput | string
+    workspaceId?: StringFieldUpdateOperationsInput | string
+    config?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    tools?: ToolUncheckedUpdateManyWithoutAgentsNestedInput
+  }
+
+  export type LeadUpsertWithoutCallsInput = {
+    update: XOR<LeadUpdateWithoutCallsInput, LeadUncheckedUpdateWithoutCallsInput>
+    create: XOR<LeadCreateWithoutCallsInput, LeadUncheckedCreateWithoutCallsInput>
+    where?: LeadWhereInput
+  }
+
+  export type LeadUpdateToOneWithWhereWithoutCallsInput = {
+    where?: LeadWhereInput
+    data: XOR<LeadUpdateWithoutCallsInput, LeadUncheckedUpdateWithoutCallsInput>
+  }
+
+  export type LeadUpdateWithoutCallsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    phoneNumber?: StringFieldUpdateOperationsInput | string
+    status?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    workspace?: WorkspaceUpdateOneRequiredWithoutLeadsNestedInput
+  }
+
+  export type LeadUncheckedUpdateWithoutCallsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    workspaceId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    phoneNumber?: StringFieldUpdateOperationsInput | string
+    status?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PhoneNumberUpsertWithoutCallsInput = {
+    update: XOR<PhoneNumberUpdateWithoutCallsInput, PhoneNumberUncheckedUpdateWithoutCallsInput>
+    create: XOR<PhoneNumberCreateWithoutCallsInput, PhoneNumberUncheckedCreateWithoutCallsInput>
+    where?: PhoneNumberWhereInput
+  }
+
+  export type PhoneNumberUpdateToOneWithWhereWithoutCallsInput = {
+    where?: PhoneNumberWhereInput
+    data: XOR<PhoneNumberUpdateWithoutCallsInput, PhoneNumberUncheckedUpdateWithoutCallsInput>
+  }
+
+  export type PhoneNumberUpdateWithoutCallsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    number?: StringFieldUpdateOperationsInput | string
+    label?: NullableStringFieldUpdateOperationsInput | string | null
+    elevenLabsPhoneNumberId?: NullableStringFieldUpdateOperationsInput | string | null
+    assignedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    workspace?: WorkspaceUpdateOneWithoutPhoneNumberNestedInput
+  }
+
+  export type PhoneNumberUncheckedUpdateWithoutCallsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    number?: StringFieldUpdateOperationsInput | string
+    label?: NullableStringFieldUpdateOperationsInput | string | null
+    elevenLabsPhoneNumberId?: NullableStringFieldUpdateOperationsInput | string | null
+    assignedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    workspace?: WorkspaceUncheckedUpdateOneWithoutPhoneNumberNestedInput
+  }
+
   export type WorkspaceUpdateWithoutUsersInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
@@ -10899,6 +13611,8 @@ export namespace Prisma {
     agents?: AgentUpdateManyWithoutWorkspaceNestedInput
     leads?: LeadUpdateManyWithoutWorkspaceNestedInput
     tools?: ToolUpdateManyWithoutWorkspaceNestedInput
+    calls?: CallUpdateManyWithoutWorkspaceNestedInput
+    phoneNumber?: PhoneNumberUpdateOneWithoutWorkspaceNestedInput
   }
 
   export type WorkspaceUncheckedUpdateWithoutUsersInput = {
@@ -10906,9 +13620,11 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    phoneNumberId?: NullableStringFieldUpdateOperationsInput | string | null
     agents?: AgentUncheckedUpdateManyWithoutWorkspaceNestedInput
     leads?: LeadUncheckedUpdateManyWithoutWorkspaceNestedInput
     tools?: ToolUncheckedUpdateManyWithoutWorkspaceNestedInput
+    calls?: CallUncheckedUpdateManyWithoutWorkspaceNestedInput
   }
 
   export type WorkspaceUncheckedUpdateManyWithoutUsersInput = {
@@ -10916,6 +13632,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    phoneNumberId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type AgentCreateManyWorkspaceInput = {
@@ -10943,6 +13660,22 @@ export namespace Prisma {
     description: string
     config: JsonNullValueInput | InputJsonValue
     elevenLabsToolId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type CallCreateManyWorkspaceInput = {
+    id?: string
+    agentId: string
+    leadId: string
+    phoneNumberId: string
+    callSid?: string | null
+    status: string
+    startedAt?: Date | string
+    endedAt?: Date | string | null
+    duration?: number | null
+    notes?: string | null
+    recordingUrl?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -10981,8 +13714,8 @@ export namespace Prisma {
     config?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    phoneNumbers?: PhoneNumberUpdateManyWithoutAgentNestedInput
     tools?: ToolUpdateManyWithoutAgentsNestedInput
+    calls?: CallUpdateManyWithoutAgentNestedInput
   }
 
   export type AgentUncheckedUpdateWithoutWorkspaceInput = {
@@ -10992,8 +13725,8 @@ export namespace Prisma {
     config?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    phoneNumbers?: PhoneNumberUncheckedUpdateManyWithoutAgentNestedInput
     tools?: ToolUncheckedUpdateManyWithoutAgentsNestedInput
+    calls?: CallUncheckedUpdateManyWithoutAgentNestedInput
   }
 
   export type AgentUncheckedUpdateManyWithoutWorkspaceInput = {
@@ -11013,6 +13746,7 @@ export namespace Prisma {
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    calls?: CallUpdateManyWithoutLeadNestedInput
   }
 
   export type LeadUncheckedUpdateWithoutWorkspaceInput = {
@@ -11023,6 +13757,7 @@ export namespace Prisma {
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    calls?: CallUncheckedUpdateManyWithoutLeadNestedInput
   }
 
   export type LeadUncheckedUpdateManyWithoutWorkspaceInput = {
@@ -11067,40 +13802,68 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type PhoneNumberCreateManyAgentInput = {
+  export type CallUpdateWithoutWorkspaceInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    callSid?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    endedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    duration?: NullableIntFieldUpdateOperationsInput | number | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    recordingUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    agent?: AgentUpdateOneRequiredWithoutCallsNestedInput
+    lead?: LeadUpdateOneRequiredWithoutCallsNestedInput
+    phoneNumber?: PhoneNumberUpdateOneRequiredWithoutCallsNestedInput
+  }
+
+  export type CallUncheckedUpdateWithoutWorkspaceInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    agentId?: StringFieldUpdateOperationsInput | string
+    leadId?: StringFieldUpdateOperationsInput | string
+    phoneNumberId?: StringFieldUpdateOperationsInput | string
+    callSid?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    endedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    duration?: NullableIntFieldUpdateOperationsInput | number | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    recordingUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CallUncheckedUpdateManyWithoutWorkspaceInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    agentId?: StringFieldUpdateOperationsInput | string
+    leadId?: StringFieldUpdateOperationsInput | string
+    phoneNumberId?: StringFieldUpdateOperationsInput | string
+    callSid?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    endedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    duration?: NullableIntFieldUpdateOperationsInput | number | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    recordingUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CallCreateManyAgentInput = {
     id?: string
-    number: string
-    label?: string | null
-    assignedAt?: Date | string | null
+    workspaceId: string
+    leadId: string
+    phoneNumberId: string
+    callSid?: string | null
+    status: string
+    startedAt?: Date | string
+    endedAt?: Date | string | null
+    duration?: number | null
+    notes?: string | null
+    recordingUrl?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-  }
-
-  export type PhoneNumberUpdateWithoutAgentInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    number?: StringFieldUpdateOperationsInput | string
-    label?: NullableStringFieldUpdateOperationsInput | string | null
-    assignedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type PhoneNumberUncheckedUpdateWithoutAgentInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    number?: StringFieldUpdateOperationsInput | string
-    label?: NullableStringFieldUpdateOperationsInput | string | null
-    assignedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type PhoneNumberUncheckedUpdateManyWithoutAgentInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    number?: StringFieldUpdateOperationsInput | string
-    label?: NullableStringFieldUpdateOperationsInput | string | null
-    assignedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type ToolUpdateWithoutAgentsInput = {
@@ -11136,6 +13899,182 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type CallUpdateWithoutAgentInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    callSid?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    endedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    duration?: NullableIntFieldUpdateOperationsInput | number | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    recordingUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    workspace?: WorkspaceUpdateOneRequiredWithoutCallsNestedInput
+    lead?: LeadUpdateOneRequiredWithoutCallsNestedInput
+    phoneNumber?: PhoneNumberUpdateOneRequiredWithoutCallsNestedInput
+  }
+
+  export type CallUncheckedUpdateWithoutAgentInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    workspaceId?: StringFieldUpdateOperationsInput | string
+    leadId?: StringFieldUpdateOperationsInput | string
+    phoneNumberId?: StringFieldUpdateOperationsInput | string
+    callSid?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    endedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    duration?: NullableIntFieldUpdateOperationsInput | number | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    recordingUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CallUncheckedUpdateManyWithoutAgentInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    workspaceId?: StringFieldUpdateOperationsInput | string
+    leadId?: StringFieldUpdateOperationsInput | string
+    phoneNumberId?: StringFieldUpdateOperationsInput | string
+    callSid?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    endedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    duration?: NullableIntFieldUpdateOperationsInput | number | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    recordingUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CallCreateManyLeadInput = {
+    id?: string
+    workspaceId: string
+    agentId: string
+    phoneNumberId: string
+    callSid?: string | null
+    status: string
+    startedAt?: Date | string
+    endedAt?: Date | string | null
+    duration?: number | null
+    notes?: string | null
+    recordingUrl?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type CallUpdateWithoutLeadInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    callSid?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    endedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    duration?: NullableIntFieldUpdateOperationsInput | number | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    recordingUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    workspace?: WorkspaceUpdateOneRequiredWithoutCallsNestedInput
+    agent?: AgentUpdateOneRequiredWithoutCallsNestedInput
+    phoneNumber?: PhoneNumberUpdateOneRequiredWithoutCallsNestedInput
+  }
+
+  export type CallUncheckedUpdateWithoutLeadInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    workspaceId?: StringFieldUpdateOperationsInput | string
+    agentId?: StringFieldUpdateOperationsInput | string
+    phoneNumberId?: StringFieldUpdateOperationsInput | string
+    callSid?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    endedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    duration?: NullableIntFieldUpdateOperationsInput | number | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    recordingUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CallUncheckedUpdateManyWithoutLeadInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    workspaceId?: StringFieldUpdateOperationsInput | string
+    agentId?: StringFieldUpdateOperationsInput | string
+    phoneNumberId?: StringFieldUpdateOperationsInput | string
+    callSid?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    endedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    duration?: NullableIntFieldUpdateOperationsInput | number | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    recordingUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CallCreateManyPhoneNumberInput = {
+    id?: string
+    workspaceId: string
+    agentId: string
+    leadId: string
+    callSid?: string | null
+    status: string
+    startedAt?: Date | string
+    endedAt?: Date | string | null
+    duration?: number | null
+    notes?: string | null
+    recordingUrl?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type CallUpdateWithoutPhoneNumberInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    callSid?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    endedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    duration?: NullableIntFieldUpdateOperationsInput | number | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    recordingUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    workspace?: WorkspaceUpdateOneRequiredWithoutCallsNestedInput
+    agent?: AgentUpdateOneRequiredWithoutCallsNestedInput
+    lead?: LeadUpdateOneRequiredWithoutCallsNestedInput
+  }
+
+  export type CallUncheckedUpdateWithoutPhoneNumberInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    workspaceId?: StringFieldUpdateOperationsInput | string
+    agentId?: StringFieldUpdateOperationsInput | string
+    leadId?: StringFieldUpdateOperationsInput | string
+    callSid?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    endedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    duration?: NullableIntFieldUpdateOperationsInput | number | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    recordingUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CallUncheckedUpdateManyWithoutPhoneNumberInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    workspaceId?: StringFieldUpdateOperationsInput | string
+    agentId?: StringFieldUpdateOperationsInput | string
+    leadId?: StringFieldUpdateOperationsInput | string
+    callSid?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    endedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    duration?: NullableIntFieldUpdateOperationsInput | number | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    recordingUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type AgentUpdateWithoutToolsInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
@@ -11144,7 +14083,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     workspace?: WorkspaceUpdateOneRequiredWithoutAgentsNestedInput
-    phoneNumbers?: PhoneNumberUpdateManyWithoutAgentNestedInput
+    calls?: CallUpdateManyWithoutAgentNestedInput
   }
 
   export type AgentUncheckedUpdateWithoutToolsInput = {
@@ -11155,7 +14094,7 @@ export namespace Prisma {
     config?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    phoneNumbers?: PhoneNumberUncheckedUpdateManyWithoutAgentNestedInput
+    calls?: CallUncheckedUpdateManyWithoutAgentNestedInput
   }
 
   export type AgentUncheckedUpdateManyWithoutToolsInput = {
