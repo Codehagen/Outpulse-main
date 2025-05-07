@@ -1,33 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from "@/lib/db";
-import { z } from 'zod';
-import type { Tool } from "@/lib/generated/prisma";
-
-
-interface WebhookConfig {
-  type: 'webhook';
-  url: string;
-  events?: string[];
-  headers: Record<string, string>;
-  secret?: string;
-  active: boolean;
-  lastTriggered: string | null;
-  failureCount: number;
-  createdAt: string;
-}
-
-
-// Schema for webhook validation
-const webhookSchema = z.object({
-  name: z.string().min(1, "Name is required"),
-  description: z.string().optional(),
-  workspaceId: z.string().min(1, "Workspace ID is required"),
-  url: z.string().url("Valid URL is required"),
-  events: z.array(z.string()).optional(),
-  headers: z.record(z.string()).optional(),
-  secret: z.string().optional(),
-  active: z.boolean().default(true),
-});
+import { WebhookConfig } from "@/app/api/notifications/types";
+import { webhookSchema } from './schemas';
+import { getWebhooks } from '@/actions/webhooks/notifications/handlers';
 
 
 export async function POST(req: NextRequest) {
@@ -44,7 +19,7 @@ export async function POST(req: NextRequest) {
       );
     }
     
-    const { name, description, workspaceId, url, events, headers, secret, active } = validationResult.data;
+    const { name, description, workspaceId, url, events, headers, secret, active, channel } = validationResult.data;
     
     // Check if workspace exists
     const workspace = await prisma.workspace.findUnique({
@@ -77,7 +52,8 @@ export async function POST(req: NextRequest) {
         name,
         description,
         workspaceId,
-        config: JSON.parse(JSON.stringify(config))
+        config: JSON.parse(JSON.stringify(config)),
+        channel
       }
     });
 
@@ -89,9 +65,10 @@ export async function POST(req: NextRequest) {
         url: config.url,
         events: config.events,
         active: config.active,
-        createdAt: config.createdAt
+        createdAt: config.createdAt,
+        channel: webhook.channel
       }, { status: 201 });
-    
+
   } catch (error) {
     console.error("Failed to create webhook:", error);
     return NextResponse.json(
@@ -101,46 +78,24 @@ export async function POST(req: NextRequest) {
   }
 }
 
+
 // Get all webhooks for a workspace
 export async function GET(req: NextRequest) {
   try {
     const { searchParams } = new URL(req.url);
     const workspaceId = searchParams.get('workspaceId');
-    
+    const channel = searchParams.get('channel')
+
     if (!workspaceId) {
       return NextResponse.json(
         { error: "Workspace ID is required" },
         { status: 400 }
       );
     }
-    
-    const webhooks = await prisma.tool.findMany({
-      where: {
-        workspaceId,
-        config: {
-          path: 'type',
-          equals: 'webhook'
-        }
-      }
-    });
-    
-    // Transform the response to include relevant webhook details
-    const formattedWebhooks = webhooks.map((webhook: Tool) => {
-        const config = webhook.config as unknown as WebhookConfig;
-        return {
-          id: webhook.id,
-          name: webhook.name,
-          description: webhook.description,
-          workspaceId: webhook.workspaceId,
-          url: config.url,
-          events: config.events,
-          active: config.active,
-          createdAt: config.createdAt
-        };
-      });
-      
-      return NextResponse.json(formattedWebhooks);
-    
+
+    const webhooks = await getWebhooks(workspaceId, channel);
+    return NextResponse.json(webhooks);
+
   } catch (error) {
     console.error("Failed to fetch webhooks:", error);
     return NextResponse.json(
