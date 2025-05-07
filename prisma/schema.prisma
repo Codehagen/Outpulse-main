@@ -50,7 +50,7 @@ model Agent {
   tools        Tool[]    @relation("AgentTools")
   createdAt    DateTime  @default(now())
   updatedAt    DateTime  @updatedAt
-  calls        Call[] // Relation to calls made by this agent
+  calls        Call[] // Relation to calls made by this agent (onDelete is handled on the Call model)
 }
 
 model Lead {
@@ -98,7 +98,7 @@ model Call {
   id            String      @id @default(cuid())
   workspace     Workspace   @relation(fields: [workspaceId], references: [id])
   workspaceId   String
-  agent         Agent       @relation(fields: [agentId], references: [id])
+  agent         Agent       @relation(fields: [agentId], references: [id], onDelete: Cascade)
   agentId       String
   lead          Lead        @relation(fields: [leadId], references: [id])
   leadId        String

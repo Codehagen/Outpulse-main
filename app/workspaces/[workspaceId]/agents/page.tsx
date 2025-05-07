@@ -2,6 +2,7 @@ import Link from "next/link";
 import { getWorkspaceAgents } from "@/app/actions/Agent/action";
 import { Button } from "@/components/ui/button";
 import { PlusIcon } from "lucide-react";
+import { AgentDeleteButton } from "@/components/AgentDeleteButton";
 
 interface AgentsPageProps {
   params: {
@@ -50,7 +51,7 @@ export default async function AgentsPage({ params }: AgentsPageProps) {
               <p className="text-sm text-muted-foreground mb-4">
                 ID: {agent.elevenLabsId.slice(0, 8)}...
               </p>
-              <div className="flex space-x-2">
+              <div className="flex space-x-2 mt-4">
                 <Button variant="outline" size="sm" asChild>
                   <Link href={`/workspaces/${workspaceId}/agents/${agent.id}`}>
                     Manage
@@ -63,6 +64,7 @@ export default async function AgentsPage({ params }: AgentsPageProps) {
                     Call History
                   </Link>
                 </Button>
+                <AgentDeleteButton agentId={agent.id} agentName={agent.name} />
               </div>
             </div>
           ))}

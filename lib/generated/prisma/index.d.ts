@@ -7345,6 +7345,7 @@ export namespace Prisma {
     id: string | null
     name: string | null
     description: string | null
+    type: string | null
     workspaceId: string | null
     elevenLabsToolId: string | null
     createdAt: Date | null
@@ -7355,6 +7356,7 @@ export namespace Prisma {
     id: string | null
     name: string | null
     description: string | null
+    type: string | null
     workspaceId: string | null
     elevenLabsToolId: string | null
     createdAt: Date | null
@@ -7365,6 +7367,7 @@ export namespace Prisma {
     id: number
     name: number
     description: number
+    type: number
     config: number
     workspaceId: number
     elevenLabsToolId: number
@@ -7378,6 +7381,7 @@ export namespace Prisma {
     id?: true
     name?: true
     description?: true
+    type?: true
     workspaceId?: true
     elevenLabsToolId?: true
     createdAt?: true
@@ -7388,6 +7392,7 @@ export namespace Prisma {
     id?: true
     name?: true
     description?: true
+    type?: true
     workspaceId?: true
     elevenLabsToolId?: true
     createdAt?: true
@@ -7398,6 +7403,7 @@ export namespace Prisma {
     id?: true
     name?: true
     description?: true
+    type?: true
     config?: true
     workspaceId?: true
     elevenLabsToolId?: true
@@ -7482,6 +7488,7 @@ export namespace Prisma {
     id: string
     name: string
     description: string
+    type: string
     config: JsonValue
     workspaceId: string
     elevenLabsToolId: string | null
@@ -7510,6 +7517,7 @@ export namespace Prisma {
     id?: boolean
     name?: boolean
     description?: boolean
+    type?: boolean
     config?: boolean
     workspaceId?: boolean
     elevenLabsToolId?: boolean
@@ -7524,6 +7532,7 @@ export namespace Prisma {
     id?: boolean
     name?: boolean
     description?: boolean
+    type?: boolean
     config?: boolean
     workspaceId?: boolean
     elevenLabsToolId?: boolean
@@ -7536,6 +7545,7 @@ export namespace Prisma {
     id?: boolean
     name?: boolean
     description?: boolean
+    type?: boolean
     config?: boolean
     workspaceId?: boolean
     elevenLabsToolId?: boolean
@@ -7548,6 +7558,7 @@ export namespace Prisma {
     id?: boolean
     name?: boolean
     description?: boolean
+    type?: boolean
     config?: boolean
     workspaceId?: boolean
     elevenLabsToolId?: boolean
@@ -7555,7 +7566,7 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type ToolOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "description" | "config" | "workspaceId" | "elevenLabsToolId" | "createdAt" | "updatedAt", ExtArgs["result"]["tool"]>
+  export type ToolOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "description" | "type" | "config" | "workspaceId" | "elevenLabsToolId" | "createdAt" | "updatedAt", ExtArgs["result"]["tool"]>
   export type ToolInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     workspace?: boolean | WorkspaceDefaultArgs<ExtArgs>
     agents?: boolean | Tool$agentsArgs<ExtArgs>
@@ -7578,6 +7589,7 @@ export namespace Prisma {
       id: string
       name: string
       description: string
+      type: string
       config: Prisma.JsonValue
       workspaceId: string
       elevenLabsToolId: string | null
@@ -8011,6 +8023,7 @@ export namespace Prisma {
     readonly id: FieldRef<"Tool", 'String'>
     readonly name: FieldRef<"Tool", 'String'>
     readonly description: FieldRef<"Tool", 'String'>
+    readonly type: FieldRef<"Tool", 'String'>
     readonly config: FieldRef<"Tool", 'Json'>
     readonly workspaceId: FieldRef<"Tool", 'String'>
     readonly elevenLabsToolId: FieldRef<"Tool", 'String'>
@@ -9768,6 +9781,7 @@ export namespace Prisma {
     id: 'id',
     name: 'name',
     description: 'description',
+    type: 'type',
     config: 'config',
     workspaceId: 'workspaceId',
     elevenLabsToolId: 'elevenLabsToolId',
@@ -10273,6 +10287,7 @@ export namespace Prisma {
     id?: StringFilter<"Tool"> | string
     name?: StringFilter<"Tool"> | string
     description?: StringFilter<"Tool"> | string
+    type?: StringFilter<"Tool"> | string
     config?: JsonFilter<"Tool">
     workspaceId?: StringFilter<"Tool"> | string
     elevenLabsToolId?: StringNullableFilter<"Tool"> | string | null
@@ -10286,6 +10301,7 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     description?: SortOrder
+    type?: SortOrder
     config?: SortOrder
     workspaceId?: SortOrder
     elevenLabsToolId?: SortOrderInput | SortOrder
@@ -10302,6 +10318,7 @@ export namespace Prisma {
     NOT?: ToolWhereInput | ToolWhereInput[]
     name?: StringFilter<"Tool"> | string
     description?: StringFilter<"Tool"> | string
+    type?: StringFilter<"Tool"> | string
     config?: JsonFilter<"Tool">
     workspaceId?: StringFilter<"Tool"> | string
     elevenLabsToolId?: StringNullableFilter<"Tool"> | string | null
@@ -10315,6 +10332,7 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     description?: SortOrder
+    type?: SortOrder
     config?: SortOrder
     workspaceId?: SortOrder
     elevenLabsToolId?: SortOrderInput | SortOrder
@@ -10332,6 +10350,7 @@ export namespace Prisma {
     id?: StringWithAggregatesFilter<"Tool"> | string
     name?: StringWithAggregatesFilter<"Tool"> | string
     description?: StringWithAggregatesFilter<"Tool"> | string
+    type?: StringWithAggregatesFilter<"Tool"> | string
     config?: JsonWithAggregatesFilter<"Tool">
     workspaceId?: StringWithAggregatesFilter<"Tool"> | string
     elevenLabsToolId?: StringNullableWithAggregatesFilter<"Tool"> | string | null
@@ -10831,6 +10850,7 @@ export namespace Prisma {
     id?: string
     name: string
     description: string
+    type: string
     config: JsonNullValueInput | InputJsonValue
     elevenLabsToolId?: string | null
     createdAt?: Date | string
@@ -10843,6 +10863,7 @@ export namespace Prisma {
     id?: string
     name: string
     description: string
+    type: string
     config: JsonNullValueInput | InputJsonValue
     workspaceId: string
     elevenLabsToolId?: string | null
@@ -10855,6 +10876,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
     config?: JsonNullValueInput | InputJsonValue
     elevenLabsToolId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -10867,6 +10889,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
     config?: JsonNullValueInput | InputJsonValue
     workspaceId?: StringFieldUpdateOperationsInput | string
     elevenLabsToolId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -10879,6 +10902,7 @@ export namespace Prisma {
     id?: string
     name: string
     description: string
+    type: string
     config: JsonNullValueInput | InputJsonValue
     workspaceId: string
     elevenLabsToolId?: string | null
@@ -10890,6 +10914,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
     config?: JsonNullValueInput | InputJsonValue
     elevenLabsToolId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -10900,6 +10925,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
     config?: JsonNullValueInput | InputJsonValue
     workspaceId?: StringFieldUpdateOperationsInput | string
     elevenLabsToolId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -11436,6 +11462,7 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     description?: SortOrder
+    type?: SortOrder
     config?: SortOrder
     workspaceId?: SortOrder
     elevenLabsToolId?: SortOrder
@@ -11447,6 +11474,7 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     description?: SortOrder
+    type?: SortOrder
     workspaceId?: SortOrder
     elevenLabsToolId?: SortOrder
     createdAt?: SortOrder
@@ -11457,6 +11485,7 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     description?: SortOrder
+    type?: SortOrder
     workspaceId?: SortOrder
     elevenLabsToolId?: SortOrder
     createdAt?: SortOrder
@@ -12560,6 +12589,7 @@ export namespace Prisma {
     id?: string
     name: string
     description: string
+    type: string
     config: JsonNullValueInput | InputJsonValue
     elevenLabsToolId?: string | null
     createdAt?: Date | string
@@ -12571,6 +12601,7 @@ export namespace Prisma {
     id?: string
     name: string
     description: string
+    type: string
     config: JsonNullValueInput | InputJsonValue
     elevenLabsToolId?: string | null
     createdAt?: Date | string
@@ -12767,6 +12798,7 @@ export namespace Prisma {
     id?: StringFilter<"Tool"> | string
     name?: StringFilter<"Tool"> | string
     description?: StringFilter<"Tool"> | string
+    type?: StringFilter<"Tool"> | string
     config?: JsonFilter<"Tool">
     workspaceId?: StringFilter<"Tool"> | string
     elevenLabsToolId?: StringNullableFilter<"Tool"> | string | null
@@ -12876,6 +12908,7 @@ export namespace Prisma {
     id?: string
     name: string
     description: string
+    type: string
     config: JsonNullValueInput | InputJsonValue
     elevenLabsToolId?: string | null
     createdAt?: Date | string
@@ -12887,6 +12920,7 @@ export namespace Prisma {
     id?: string
     name: string
     description: string
+    type: string
     config: JsonNullValueInput | InputJsonValue
     workspaceId: string
     elevenLabsToolId?: string | null
@@ -13658,6 +13692,7 @@ export namespace Prisma {
     id?: string
     name: string
     description: string
+    type: string
     config: JsonNullValueInput | InputJsonValue
     elevenLabsToolId?: string | null
     createdAt?: Date | string
@@ -13774,6 +13809,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
     config?: JsonNullValueInput | InputJsonValue
     elevenLabsToolId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -13785,6 +13821,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
     config?: JsonNullValueInput | InputJsonValue
     elevenLabsToolId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -13796,6 +13833,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
     config?: JsonNullValueInput | InputJsonValue
     elevenLabsToolId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -13870,6 +13908,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
     config?: JsonNullValueInput | InputJsonValue
     elevenLabsToolId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -13881,6 +13920,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
     config?: JsonNullValueInput | InputJsonValue
     workspaceId?: StringFieldUpdateOperationsInput | string
     elevenLabsToolId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -13892,6 +13932,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
     config?: JsonNullValueInput | InputJsonValue
     workspaceId?: StringFieldUpdateOperationsInput | string
     elevenLabsToolId?: NullableStringFieldUpdateOperationsInput | string | null

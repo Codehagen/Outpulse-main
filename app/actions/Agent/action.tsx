@@ -85,7 +85,7 @@ export async function createAgent({
           language: language,
           prompt: {
             prompt: systemPrompt,
-            llm: "gemini-2.0-flash-001", // Use the requested Gemini model
+            llm: "gemini-2.0-flash-001",
             temperature: 0.7,
             tool_ids: toolIds,
           },
