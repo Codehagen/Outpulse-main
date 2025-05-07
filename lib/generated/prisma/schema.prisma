@@ -85,11 +85,10 @@ model Tool {
   id               String    @id @default(cuid())
   name             String
   description      String
-  type             String // e.g., "webhook", "client", "system"
-  config           Json // For webhook: { url, method, api_schema: { path_params_schema, query_params_schema, ... } }
+  config           Json
   workspace        Workspace @relation(fields: [workspaceId], references: [id])
   workspaceId      String
-  elevenLabsToolId String? // Optional: If the tool is also registered separately in ElevenLabs
+  elevenLabsToolId String?
   createdAt        DateTime  @default(now())
   updatedAt        DateTime  @updatedAt
   agents           Agent[]   @relation("AgentTools")

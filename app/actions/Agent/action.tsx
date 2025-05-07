@@ -20,12 +20,7 @@ type CreateAgentParams = {
   language: string;
   firstMessage: string;
   systemPrompt: string;
-  toolIds?: string[]; // Add optional tool IDs
-};
-
-// Type for ElevenLabs API response
-type ElevenLabsCreateAgentResponse = {
-  agent_id: string;
+  // toolIds?: string[]; // Remove this, tools are created with the agent
 };
 
 /**
@@ -37,7 +32,6 @@ export async function createAgent({
   language,
   firstMessage,
   systemPrompt,
-  toolIds = [], // Default to empty array
 }: CreateAgentParams): Promise<Agent> {
   const userId = await getUserIdOrThrow();
 
@@ -58,13 +52,62 @@ export async function createAgent({
   }
 
   // 2. Create the agent in ElevenLabs
-  // Make sure ELEVENLABS_API_KEY is in your .env
   const elevenLabsApiKey = process.env.ELEVENLABS_API_KEY;
   if (!elevenLabsApiKey) {
     throw new Error("ELEVENLABS_API_KEY environment variable is not set");
   }
 
   try {
+    // Define the webhook tool (sendLead)
+    const webhookTool = {
+      type: "webhook",
+      name: "sendLead",
+      description:
+        "Sends a notification to a Discord channel when a customer expresses interest in being contacted by Outpulse",
+      api_schema: {
+        url: "https://discord.com/api/webhooks/1364660351056220300/5BVQGczEI8dYqwYbdgQIyFJFpnKUlmXz7u1zmye44F3aMP5nM3AR4YTe7V3HoybJZv8d",
+        method: "POST",
+        path_params_schema: {},
+        query_params_schema: null,
+        request_body_schema: {
+          type: "object",
+          properties: {
+            content: {
+              type: "string",
+              description:
+                "The message text to send to the Discord channel when a customer agrees to be contacted by an Outpulse advisor. The message should include the customer's expressed interest, any relevant company details (if provided, e.g., company name or industry), and a note that a lead has been generated. For example: 'Lead generated: [Company Name] is interested in Outpulse. They want an advisor to discuss automation for customer service.' If specific details are unavailable, use a generic format like: 'Lead generated: A customer is interested in Outpulse and has requested advisor contact.",
+              dynamic_variable: "",
+              constant_value: "",
+            },
+            company_name: {
+              type: "string",
+              description:
+                "The name of the customer's company, if provided in the conversation",
+              dynamic_variable: "",
+              constant_value: "",
+            },
+          },
+          required: ["content"],
+          description:
+            "Meldingsteksten som skal sendes til Discord-kanalen når en kunde samtykker i å bli kontaktet av en Outpulse-rådgiver. Meldingen skal inkludere kundens uttrykte interesse, eventuelle relevante bedriftsdetaljer (hvis oppgitt, f.eks. bedriftsnavn eller bransje), og en merknad om at et lead er generert. For eksempel: 'Lead generert: [Bedriftsnavn] er interessert i Outpulse. De ønsker en rådgiver for å diskutere automatisering av kundeservice.' Hvis spesifikke detaljer ikke er tilgjengelige, bruk et generisk format som: 'Lead generert: En kunde er interessert i Outpulse og har bedt om kontakt med en rådgiver.'",
+        },
+        request_headers: {},
+      },
+      dynamic_variables: {
+        dynamic_variable_placeholders: {},
+      },
+    };
+
+    // Define the system tool (end_call)
+    const systemTool = {
+      type: "system",
+      name: "end_call",
+      description: "",
+      params: {
+        system_tool_type: "end_call",
+      },
+    };
+
     // Create the configuration for the ElevenLabs agent
     const agentConfig = {
       conversation_config: {
@@ -87,7 +130,7 @@ export async function createAgent({
             prompt: systemPrompt,
             llm: "gemini-2.0-flash-001",
             temperature: 0.7,
-            tool_ids: toolIds,
+            tools: [webhookTool, systemTool],
           },
         },
       },
@@ -109,7 +152,7 @@ export async function createAgent({
 
     if (!response.ok) {
       const errorData = await response.json();
-      console.error("ElevenLabs API Error:", errorData); // Log the error details
+      console.error("ElevenLabs API Error:", errorData);
       throw new Error(
         `ElevenLabs API error: ${response.status} - ${JSON.stringify(
           errorData
@@ -117,8 +160,10 @@ export async function createAgent({
       );
     }
 
-    const data = (await response.json()) as ElevenLabsCreateAgentResponse;
+    const data = await response.json();
     const elevenLabsAgentId = data.agent_id;
+    // Optionally, get tool IDs from the response if available
+    const toolIds = data.conversation_config?.agent?.prompt?.tool_ids || [];
 
     // 3. Store the agent in our database
     const agent = await prisma.agent.create({
@@ -126,18 +171,17 @@ export async function createAgent({
         name,
         elevenLabsId: elevenLabsAgentId,
         workspaceId,
-        config: agentConfig, // Store the configuration for reference
-        // Connect the selected tools
-        tools: {
-          connect: toolIds.map((id) => ({ id })),
+        config: {
+          ...agentConfig,
+          toolIds, // Store tool IDs for reference
         },
+        // Optionally, connect tools in your DB if you want to track them
       },
     });
 
     return agent;
   } catch (error) {
     console.error("Failed to create agent:", error);
-    // Re-throw the original error for better debugging
     if (error instanceof Error) {
       throw new Error(`Failed to create agent: ${error.message}`);
     }

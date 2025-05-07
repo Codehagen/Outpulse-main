@@ -2,6 +2,7 @@ import { redirect } from "next/navigation";
 import { auth } from "@clerk/nextjs/server";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { SignInButton } from "@clerk/nextjs";
 
 export default async function HomePage() {
   const { userId } = await auth();
@@ -26,6 +27,7 @@ export default async function HomePage() {
           <Button asChild className="w-full" size="lg">
             <Link href="/sign-in">Sign In</Link>
           </Button>
+          <SignInButton />
 
           <div className="text-center text-sm">
             <p>
