@@ -1,5 +1,11 @@
 import { getWebhookById } from "./handlers";
 
+import { formatForDiscordWebhook } from "./channels/discord";
+// import type { DiscordWebhookPayload } from "./channels/discord";
+
+import { formatForSlackWebhook } from "./channels/slack";
+// import type { SlackWebhookPayload } from "./channels/slack";
+
 
 async function _sendWebhookRequest(
     url: string,
@@ -28,16 +34,16 @@ async function _sendWebhookRequest(
  * @param headers - Optional headers (defaults to JSON content-type)
  * @param retries - Number of retry attempts (default: 1)
  * @param delayMs - Delay between attempts in milliseconds (default: 1000ms)
- * @param successStatusCodes - Array of HTTP status codes that count as success (default: [200, 201])
+ * @param successStatusCodes - Array of HTTP status codes that count as success (default: [200, 201, 204])
  * @returns True if the webhook succeeded; false if all attempts failed
  */
 async function triggerWebhookWithRetry(
     url: string,
-    payload?: unknown,
+    payload: unknown,
     headers: Record<string, string> = { "Content-Type": "application/json" },
     retries: number = 1,
     delayMs: number = 1000,
-    successStatusCodes: number[] = [200, 201]
+    successStatusCodes: number[] = [200, 201, 204]
   ): Promise<boolean> {
     let attempt = 0;
 
@@ -58,17 +64,30 @@ async function triggerWebhookWithRetry(
 
 
 async function triggerWebhook(
-    webhookId: string
+    webhookId: string,
+    message: string,
   ): Promise<boolean> {
     const webhook = await getWebhookById(webhookId)
     if (webhook == null) {
         throw new Error("No webhook")
     }
+  
+    let payload: unknown
+
+    // Use correct channel handler
+    switch (webhook.channel) {
+      case "discord":
+        payload = await formatForDiscordWebhook(message)
+      case "slack":
+        payload = await formatForSlackWebhook(message)
+      default:
+        payload = message
+    }
 
     const result = await triggerWebhookWithRetry(
         webhook.url,
-        null,
-        webhook.headers,
+        payload,
+        //webhook.headers,
     )
 
     return result
