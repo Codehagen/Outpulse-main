@@ -1,9 +1,9 @@
 import { getWebhookById } from "./handlers";
 
-import { formatForDiscordWebhook } from "./channels/discord";
+import { formatForDiscordWebhook } from "./notifications/channels/discord";
 // import type { DiscordWebhookPayload } from "./channels/discord";
 
-import { formatForSlackWebhook } from "./channels/slack";
+import { formatForSlackWebhook } from "./notifications/channels/slack";
 // import type { SlackWebhookPayload } from "./channels/slack";
 
 
@@ -63,6 +63,13 @@ async function triggerWebhookWithRetry(
   }
 
 
+/**
+ * Sends a POST request to a webhook.
+ *
+ * @param webhookdId - The internal ID of the webhook
+ * @param message - Data (string) to send to the webhook, must be a regular string
+ * @returns True if the webhook succeeded; false if all attempts failed
+ */
 async function triggerWebhook(
     webhookId: string,
     message: string,

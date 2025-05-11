@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { triggerWebhook } from '@/actions/webhooks/notifications/triggers';
+import { triggerWebhook } from '@/actions/webhooks/triggers';
 
 
 export async function POST(req: NextRequest) {

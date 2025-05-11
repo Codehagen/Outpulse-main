@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from "@/lib/db";
 import { WebhookConfig } from "@/app/api/notifications/types";
 import { webhookSchema } from './schemas';
-import { getWebhooks } from '@/actions/webhooks/notifications/handlers';
+import { getWebhooks } from '@/actions/webhooks/handlers';
 
 
 export async function POST(req: NextRequest) {
