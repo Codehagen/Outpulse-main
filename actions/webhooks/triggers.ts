@@ -72,7 +72,7 @@ async function triggerWebhookWithRetry(
  */
 async function triggerWebhook(
     webhookId: string,
-    message: string,
+    message: string | Record<string, unknown>,
   ): Promise<boolean> {
     const webhook = await getWebhookById(webhookId)
     if (webhook == null) {
@@ -84,8 +84,14 @@ async function triggerWebhook(
     // Use correct channel handler
     switch (webhook.channel) {
       case "discord":
+        if (typeof message != 'string') {
+          throw new Error("`message` has wrong type for this channel")
+        }
         payload = await formatForDiscordWebhook(message)
       case "slack":
+        if (typeof message != 'string') {
+          throw new Error("`message` has wrong type for this channel")
+        }
         payload = await formatForSlackWebhook(message)
       default:
         payload = message
