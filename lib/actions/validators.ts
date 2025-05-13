@@ -14,7 +14,7 @@ export type ActionState = {
 function handleValidation<S extends z.ZodTypeAny>(
     schema: S,
     formData: FormData
-  ): { success: true; data: z.infer<S> } | { success: false; error: string } {
+): { success: true; data: z.infer<S> } | { success: false; error: string } {
     const data = Object.fromEntries(formData.entries());
     const result = schema.safeParse(data);
   
@@ -24,7 +24,7 @@ function handleValidation<S extends z.ZodTypeAny>(
     }
   
     return { success: true, data: result.data };
-  }
+}
 
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -38,7 +38,7 @@ type ValidatedActionFunction<S extends z.ZodType<any, any>, T> = (
 export function validatedActionFactory<S extends z.ZodType<any, any>, T>(
     schema: S,
     action: ValidatedActionFunction<S, T>
-  ) {
+) {
     async function validatedActionHandler(
       _prevState: unknown,
       formData: FormData
@@ -52,7 +52,7 @@ export function validatedActionFactory<S extends z.ZodType<any, any>, T>(
     }
   
     return validatedActionHandler;
-  }
+}
 
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -67,7 +67,7 @@ type ValidatedActionWithUserFunction<S extends z.ZodType<any, any>, T> = (
 export function validatedActionWithUserFactory<S extends z.ZodType<any, any>, T>(
     schema: S,
     action: ValidatedActionWithUserFunction<S, T>
-  ) {
+) {
     async function validatedActionWithUserHandler(
       _prevState: unknown,
       formData: FormData
@@ -84,4 +84,27 @@ export function validatedActionWithUserFactory<S extends z.ZodType<any, any>, T>
     }
 
     return validatedActionWithUserHandler;
-  }
+}
+
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function validatedServerFunctionWithUser<S extends z.ZodType<any, any>, T>(
+    schema: S,
+    action: (input: z.infer<S>, user: User) => Promise<T>
+) {
+    async function validatedServerFunctionHandler(input: unknown): Promise<T> {
+      const user = await getUser();
+      if (!user) {
+        throw new Error("User is not authenticated");
+      }
+
+      const parsed = schema.safeParse(input);
+      if (!parsed.success) {
+        return { error: parsed.error.format?.() ?? parsed.error } as T;
+      }
+
+      return action(parsed.data, user);
+    }
+
+    return validatedServerFunctionHandler;
+}
