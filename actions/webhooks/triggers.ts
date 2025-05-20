@@ -98,7 +98,7 @@ async function triggerWebhook(
  */
 async function triggerNotificationWebhook(
     webhookId: string,
-    message: string | Record<string, unknown>,
+    message: string,
   ): Promise<boolean> {
     const webhook = await getWebhookById(webhookId)
     if (webhook == null) {
@@ -107,17 +107,10 @@ async function triggerNotificationWebhook(
 
     let payload: unknown = null
 
-    // Use correct channel handler
     switch (webhook.channel) {
       case "discord":
-        if (typeof message != 'string') {
-          throw new Error("`message` has wrong type for this channel")
-        }
         payload = await formatForDiscordWebhook(message)
       case "slack":
-        if (typeof message != 'string') {
-          throw new Error("`message` has wrong type for this channel")
-        }
         payload = await formatForSlackWebhook(message)
     }
 
