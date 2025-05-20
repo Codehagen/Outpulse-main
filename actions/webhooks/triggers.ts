@@ -1,4 +1,6 @@
 import { getWebhookById } from "./handlers";
+import { formatForGoogleCalendarEvent } from "./notifications/calendars/google";
+import { formatForOutlookCalendarEvent } from "./notifications/calendars/outlook";
 
 import { formatForDiscordWebhook } from "./notifications/channels/discord";
 // import type { DiscordWebhookPayload } from "./channels/discord";
@@ -71,22 +73,22 @@ async function triggerWebhookWithRetry(
  * @returns True if the webhook succeeded; false if all attempts failed
  */
 async function triggerWebhook(
-  webhookId: string,
-  payload: string | Record<string, unknown>,
-): Promise<boolean> {
-  const webhook = await getWebhookById(webhookId)
-  if (webhook == null) {
-      throw new Error(`No webhook found with ID: ${webhookId}`)
+    webhookId: string,
+    payload: string | Record<string, unknown>,
+  ): Promise<boolean> {
+    const webhook = await getWebhookById(webhookId)
+    if (webhook == null) {
+        throw new Error(`No webhook found with ID: ${webhookId}`)
+    }
+
+    const result = await triggerWebhookWithRetry(
+        webhook.url,
+        payload,
+        //webhook.headers,
+    )
+
+    return result
   }
-
-  const result = await triggerWebhookWithRetry(
-      webhook.url,
-      payload,
-      //webhook.headers,
-  )
-
-  return result
-}
 
 
 /**
@@ -115,7 +117,50 @@ async function triggerNotificationWebhook(
     }
 
     if (!payload) {
-      throw new Error("That webhook has an invalid channel")
+      throw new Error("That webhook has an invalid channel for this helper")
+    }
+
+    const result = await triggerWebhookWithRetry(
+        webhook.url,
+        payload,
+        //webhook.headers,
+    )
+
+    return result
+  }
+
+
+/**
+ * Triggers a webhook to add a calendar event.
+ *
+ * @param webhookdId - The internal ID of the webhook
+ * @returns True if the webhook succeeded; false if all attempts failed
+ */
+async function triggerCalendarWebhook(
+    webhookId: string,
+    title: string,
+    start: Date,
+    end: Date,
+    timeZone: string = "UTC",
+    description?: string,
+    location?: string,
+  ): Promise<boolean> {
+    const webhook = await getWebhookById(webhookId)
+    if (webhook == null) {
+        throw new Error(`No webhook found with ID: ${webhookId}`)
+    }
+
+    let payload: unknown = null
+
+    switch (webhook.channel) {
+      case "google-calendar":
+        payload = await formatForGoogleCalendarEvent(title, start, end, timeZone, description, location)
+      case "outlook-calendar":
+        payload = await formatForOutlookCalendarEvent(title, start, end, timeZone, description, location);
+    }
+
+    if (!payload) {
+      throw new Error("That webhook has an invalid channel for this helper")
     }
 
     const result = await triggerWebhookWithRetry(
@@ -129,4 +174,4 @@ async function triggerNotificationWebhook(
 
 
 
-export { triggerWebhook, triggerNotificationWebhook }
+export { triggerWebhook, triggerNotificationWebhook, triggerCalendarWebhook }
