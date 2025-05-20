@@ -64,22 +64,48 @@ async function triggerWebhookWithRetry(
 
 
 /**
- * Sends a POST request to a webhook.
+ * Generic simplicity-wrapper for webhooks.
  *
  * @param webhookdId - The internal ID of the webhook
- * @param message - Data (string) to send to the webhook, must be a regular string
+ * @param payload - Payload to send to the webhook, must be a regular string or a JSON-serializable object
  * @returns True if the webhook succeeded; false if all attempts failed
  */
 async function triggerWebhook(
+  webhookId: string,
+  payload: string | Record<string, unknown>,
+): Promise<boolean> {
+  const webhook = await getWebhookById(webhookId)
+  if (webhook == null) {
+      throw new Error(`No webhook found with ID: ${webhookId}`)
+  }
+
+  const result = await triggerWebhookWithRetry(
+      webhook.url,
+      payload,
+      //webhook.headers,
+  )
+
+  return result
+}
+
+
+/**
+ * Triggers a webhook for notifications.
+ *
+ * @param webhookdId - The internal ID of the webhook
+ * @param message - Data to send to the webhook
+ * @returns True if the webhook succeeded; false if all attempts failed
+ */
+async function triggerNotificationWebhook(
     webhookId: string,
     message: string | Record<string, unknown>,
   ): Promise<boolean> {
     const webhook = await getWebhookById(webhookId)
     if (webhook == null) {
-        throw new Error("No webhook")
+        throw new Error(`No webhook found with ID: ${webhookId}`)
     }
-  
-    let payload: unknown
+
+    let payload: unknown = null
 
     // Use correct channel handler
     switch (webhook.channel) {
@@ -93,8 +119,10 @@ async function triggerWebhook(
           throw new Error("`message` has wrong type for this channel")
         }
         payload = await formatForSlackWebhook(message)
-      default:
-        payload = message
+    }
+
+    if (!payload) {
+      throw new Error("That webhook has an invalid channel")
     }
 
     const result = await triggerWebhookWithRetry(
@@ -107,4 +135,5 @@ async function triggerWebhook(
   }
 
 
-export { triggerWebhook }
+
+export { triggerWebhook, triggerNotificationWebhook }
