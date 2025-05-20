@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { triggerWebhook } from '@/actions/webhooks/triggers';
+import { triggerNotificationWebhook } from '@/actions/webhooks/triggers';
 
 
 export async function POST(req: NextRequest) {
@@ -7,7 +7,7 @@ export async function POST(req: NextRequest) {
     const body = await req.json();
     const { webhookId, message } = body
 
-    const result = await triggerWebhook(webhookId, message)
+    const result = await triggerNotificationWebhook(webhookId, message)
 
     return NextResponse.json({ 
         success: result,
